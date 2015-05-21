@@ -12,6 +12,6 @@ github_username:  lakshgupta
 # Build settings
 markdown: kramdown
 highlighter: pygments
-permalink: pretty
+permalink: /404.html
 paginate: 5
 exclude: ["less","node_modules","Gruntfile.js","package.json","README.md"]
