@@ -3,7 +3,7 @@ title: Laksh Gupta
 header-img: img/home-bg.jpg
 #email: your-email@yourdomain.com
 description: "A Blog for Some Stuff"
-baseurl: "/index.html"
+baseurl: ""
 url: "http://lakshgupta.github.io"
 twitter_username: lakshgupta_
 github_username:  lakshgupta
