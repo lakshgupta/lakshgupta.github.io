@@ -1,0 +1,22 @@
+---
+layout:     post
+title:      "Sample post"
+subtitle:   "basic blocks"
+date:       2015-05-21 12:00:00
+author:     "Laksh Gupta"
+header-img: "img/post-bg-01.jpg"
+---
+
+<p>under para tag</p>
+
+<h2 class="section-heading">Section Heading</h2>
+
+<blockquote>blockquote</blockquote>
+
+
+<a href="#">
+    <img src="{{ site.baseurl }}/img/post-sample-image.jpg" alt="Post Sample Image">
+</a>
+<span class="caption text-muted">To go places and do things that have never been done before – that’s what living is all about.</span>
+
+
