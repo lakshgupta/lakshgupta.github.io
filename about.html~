@@ -1,0 +1,14 @@
+---
+layout: page
+title: "About"
+description: "This is what I do."
+header-img: "img/about-bg.jpg"
+---
+</p>
+Hello! I am Laksh Gupta and like to read, travel and code. This blog is just for keeping notes of what I am doing. 
+If you have any questions or suggestions feel free to contact me on <a href="https://twitter.com/{{ site.twitter_username }}">twitter</a>.
+</p>
+
+</p>
+Thanks for reading!
+</p>
