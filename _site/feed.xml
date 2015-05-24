@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Laksh Gupta</title>
+    <description>A Blog for Some Stuff</description>
+    <link>http://lakshgupta.github.io/</link>
+    <atom:link href="http://lakshgupta.github.io/feed.xml" rel="self" type="application/rss+xml" />
+    <pubDate>2015-05-24 11:48:26 -0700</pubDate>
+    <lastBuildDate>2015-05-24 11:48:26 -0700</lastBuildDate>
+    <generator>Jekyll v</generator>
+    
+      <item>
+        <title>Perceptron</title>
+        <description>&lt;p&gt;Billions of neuron work together in a highly parallel manner to form the most sophisticated computing device known as the human brain. A single neuron:
+&lt;ul&gt;
+  &lt;li&gt;receives the electrical signals from the axons of other neurons through dendrites. Signals can come from different organs such as eyes and ears.&lt;/li&gt;
+  &lt;li&gt;modulates the signals in various amounts at the synapses between the dendrite and axons.&lt;/li&gt;
+  &lt;li&gt;fires an output signal only when the total strength of the input signals exceed a certain threshold. This signal is sent further to other neurons.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p align=&quot;middle&quot;&gt;
+&lt;img src=&quot;/img/nn/bioneuron.jpg&quot; alt=&quot;Biological Neuron&quot; /&gt;
+&lt;span class=&quot;caption text-muted&quot;&gt;A Biological Neuron&lt;/span&gt;
+&lt;p&gt;
+
+More information about a biological neuron can be found on &lt;a href=&quot;http://en.wikipedia.org/wiki/Neuron&quot;&gt;Wikipedia&lt;/a&gt;.
+&lt;/p&gt;
+
+&lt;h2 class=&quot;section-heading&quot;&gt;The Perceptron&lt;/h2&gt;
+&lt;p&gt;
+The perceptron is a mathematical model of a biological neuron. The steps mentined for a biological neuron can be mapped to a perceptron as:
+&lt;ul&gt;
+  &lt;li&gt;a perceptron receives the input as numerical values rather than the electrical signals. Input can come from different sources such as an image or a text.&lt;/li&gt;
+  &lt;li&gt;it then multiplies each of the input value by a value called the weight.&lt;/li&gt;
+  &lt;li&gt;weighted sum is calculated then to represent the total strength of the input signal, and an activation function is applied on the sum to get the output. This output can be sent 
+  further to other perceptrons.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;The artificial neuron receives one or more inputs (representing dendrites) and sums them to produce an output (representing a neuron's axon). 
+Usually the sums of each node are weighted, and the sum is passed through a non-linear function known as an activation function or transfer function. 
+The transfer functions usually have a sigmoid shape, but they may also take the form of other non-linear functions, piecewise linear functions, or step functions. 
+They are also often monotonically increasing, continuous, differentiable and bounded.
+&lt;p align=&quot;right&quot;&gt;- &lt;a href=&quot;http://en.wikipedia.org/wiki/Artificial_neuron&quot;&gt;Wikipedia&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;/p&gt;
+
+
+
+&lt;/p&gt;&lt;/p&gt;
+</description>
+        <pubDate>2015-05-21 05:00:00 -0700</pubDate>
+        <link>http://lakshgupta.github.io/2015/05/21/perceptron/</link>
+        <guid isPermaLink="true">http://lakshgupta.github.io/2015/05/21/perceptron/</guid>
+        
+        
+      </item>
+    
+  </channel>
+</rss>
