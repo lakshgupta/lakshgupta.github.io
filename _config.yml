@@ -11,6 +11,8 @@ github_username:  lakshgupta
 
 # Build settings
 markdown: kramdown
+kramdown:
+  input: GFM
 highlighter: pygments
 permalink: pretty
 paginate: 5
