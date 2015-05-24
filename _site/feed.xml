@@ -5,12 +5,12 @@
     <description>A Blog for Some Stuff</description>
     <link>http://lakshgupta.github.io/</link>
     <atom:link href="http://lakshgupta.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>2015-05-24 15:43:43 -0700</pubDate>
-    <lastBuildDate>2015-05-24 15:43:43 -0700</lastBuildDate>
+    <pubDate>2015-05-24 15:57:04 -0700</pubDate>
+    <lastBuildDate>2015-05-24 15:57:04 -0700</lastBuildDate>
     <generator>Jekyll v</generator>
     
       <item>
-        <title>Perceptron</title>
+        <title>Artificial Neuron</title>
         <description>&lt;p&gt;Billions of neuron work together in a highly parallel manner to form the most sophisticated computing device known as the human brain. A single neuron:&lt;/p&gt;
 
 &lt;ul&gt;
@@ -27,14 +27,14 @@
 
 &lt;p&gt;More information about a biological neuron can be found on &lt;a href=&quot;http://en.wikipedia.org/wiki/Neuron&quot;&gt;Wikipedia&lt;/a&gt;.&lt;/p&gt;
 
-&lt;h2 class=&quot;section-heading&quot;&gt;The Perceptron&lt;/h2&gt;
-&lt;p&gt;The perceptron is a mathematical model of a biological neuron. The steps mentined for a biological neuron can be mapped to a perceptron as:&lt;/p&gt;
+&lt;h2 class=&quot;section-heading&quot;&gt;Artificial Neuron&lt;/h2&gt;
+&lt;p&gt;An artificial neuron is a mathematical model of a biological neuron. The steps mentined for a biological neuron can be mapped to an artificial neuron as:&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;a perceptron receives the input as numerical values rather than the electrical signals. Input can come from different sources such as an image or a text.&lt;/li&gt;
+  &lt;li&gt;an artificial neuron receives the input as numerical values rather than the electrical signals. Input can come from different sources such as an image or a text.&lt;/li&gt;
   &lt;li&gt;it then multiplies each of the input value by a value called the weight.&lt;/li&gt;
   &lt;li&gt;weighted sum is calculated then to represent the total strength of the input signal, and an activation function is applied on the sum to get the output. This output can be sent 
-further to other perceptrons.&lt;/li&gt;
+further to other artificial neurons.&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;blockquote&gt;The artificial neuron receives one or more inputs (representing dendrites) and sums them to produce an output (representing a neuron's axon). 
@@ -46,8 +46,8 @@ They are also often monotonically increasing, continuous, differentiable and bou
 
 </description>
         <pubDate>2015-05-21 05:00:00 -0700</pubDate>
-        <link>http://lakshgupta.github.io/2015/05/21/perceptron/</link>
-        <guid isPermaLink="true">http://lakshgupta.github.io/2015/05/21/perceptron/</guid>
+        <link>http://lakshgupta.github.io/2015/05/21/ArtificialNeuron/</link>
+        <guid isPermaLink="true">http://lakshgupta.github.io/2015/05/21/ArtificialNeuron/</guid>
         
         
       </item>

@@ -1,6 +1,6 @@
 ---
 layout:     post
-title:      "Perceptron"
+title:      "Artificial Neuron"
 subtitle:   "Fundamentals of Neural Network I"
 date:       2015-05-21 12:00:00
 author:     "Laksh Gupta"
@@ -21,13 +21,13 @@ Billions of neuron work together in a highly parallel manner to form the most so
 
 More information about a biological neuron can be found on <a href="http://en.wikipedia.org/wiki/Neuron">Wikipedia</a>.
 
-<h2 class="section-heading">The Perceptron</h2>
-The perceptron is a mathematical model of a biological neuron. The steps mentined for a biological neuron can be mapped to a perceptron as:
+<h2 class="section-heading">Artificial Neuron</h2>
+An artificial neuron is a mathematical model of a biological neuron. The steps mentined for a biological neuron can be mapped to an artificial neuron as:
 
-- a perceptron receives the input as numerical values rather than the electrical signals. Input can come from different sources such as an image or a text.
+- an artificial neuron receives the input as numerical values rather than the electrical signals. Input can come from different sources such as an image or a text.
 - it then multiplies each of the input value by a value called the weight.
 - weighted sum is calculated then to represent the total strength of the input signal, and an activation function is applied on the sum to get the output. This output can be sent 
-  further to other perceptrons.
+  further to other artificial neurons.
 
 
 
