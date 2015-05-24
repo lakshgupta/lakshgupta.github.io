@@ -5,8 +5,8 @@
     <description>A Blog for Some Stuff</description>
     <link>http://lakshgupta.github.io/</link>
     <atom:link href="http://lakshgupta.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>2015-05-24 11:48:26 -0700</pubDate>
-    <lastBuildDate>2015-05-24 11:48:26 -0700</lastBuildDate>
+    <pubDate>2015-05-24 14:12:21 -0700</pubDate>
+    <lastBuildDate>2015-05-24 14:12:21 -0700</lastBuildDate>
     <generator>Jekyll v</generator>
     
       <item>
@@ -18,10 +18,10 @@
   &lt;li&gt;fires an output signal only when the total strength of the input signals exceed a certain threshold. This signal is sent further to other neurons.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p align=&quot;middle&quot;&gt;
+&lt;center&gt;
 &lt;img src=&quot;/img/nn/bioneuron.jpg&quot; alt=&quot;Biological Neuron&quot; /&gt;
 &lt;span class=&quot;caption text-muted&quot;&gt;A Biological Neuron&lt;/span&gt;
-&lt;p&gt;
+&lt;/center&gt;
 
 More information about a biological neuron can be found on &lt;a href=&quot;http://en.wikipedia.org/wiki/Neuron&quot;&gt;Wikipedia&lt;/a&gt;.
 &lt;/p&gt;
@@ -45,9 +45,6 @@ They are also often monotonically increasing, continuous, differentiable and bou
 
 &lt;/p&gt;
 
-
-
-&lt;/p&gt;&lt;/p&gt;
 </description>
         <pubDate>2015-05-21 05:00:00 -0700</pubDate>
         <link>http://lakshgupta.github.io/2015/05/21/perceptron/</link>

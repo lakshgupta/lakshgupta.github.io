@@ -14,10 +14,10 @@ header-img: "img/perceptron-bg.jpg"
   <li>fires an output signal only when the total strength of the input signals exceed a certain threshold. This signal is sent further to other neurons.</li>
 </ul>
 
-<p align="middle">
+<center>
 <img src="{{ site.baseurl }}/img/nn/bioneuron.jpg" alt="Biological Neuron">
 <span class="caption text-muted">A Biological Neuron</span>
-<p>
+</center>
 
 More information about a biological neuron can be found on <a href="http://en.wikipedia.org/wiki/Neuron">Wikipedia</a>.
 </p>
