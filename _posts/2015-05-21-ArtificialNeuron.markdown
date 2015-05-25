@@ -62,7 +62,7 @@ But step activation function may not be a good choice every time.
   That flip may then cause the behaviour of the rest of the network to completely change in some very complicated way. 
   So while your "9" might now be classified correctly, the behaviour of the network on all the other images is likely to have completely changed in some hard-to-control way. 
   That makes it difficult to see how to gradually modify the weights and biases so that the network gets closer to the desired behaviour.
-  <p align="right">- <a href="http://neuralnetworksanddeeplearning.com/chap1.html">http://neuralnetworksanddeeplearning.com</a></p>
+  <p align="right">- <a href="http://neuralnetworksanddeeplearning.com/chap1.html">Michael Nielsen</a></p>
 </blockquote>
 
 
