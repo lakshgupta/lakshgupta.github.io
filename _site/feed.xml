@@ -5,8 +5,8 @@
     <description>A Blog for Some Stuff</description>
     <link>http://lakshgupta.github.io/</link>
     <atom:link href="http://lakshgupta.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>2015-05-24 20:30:29 -0700</pubDate>
-    <lastBuildDate>2015-05-24 20:30:29 -0700</lastBuildDate>
+    <pubDate>2015-05-25 00:13:44 -0700</pubDate>
+    <lastBuildDate>2015-05-25 00:13:44 -0700</lastBuildDate>
     <generator>Jekyll v</generator>
     
       <item>
@@ -50,23 +50,49 @@ They are also often monotonically increasing, continuous, differentiable and bou
   &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;f(w^Tx) = \phi(\sum\limits_{i=0}^n(w_i x_i))&lt;/script&gt;  &lt;/li&gt;
   &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;\phi&lt;/script&gt; is our activation function.&lt;/li&gt;
   &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;x_i&lt;/script&gt; are the elements of the input matrix x.&lt;/li&gt;
-  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;w_i&lt;/script&gt; are the elements of the weight matrix y.&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;w_i&lt;/script&gt; are the elements of the weight matrix y. &lt;/li&gt;
   &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;y&lt;/script&gt; is the output.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;An artificial neuron using a step activation function is known as a Perceptron.&lt;/p&gt;
-&lt;blockquote&gt;In fact, a small change in the weights or bias of any single perceptron in the network can sometimes cause the output of that perceptron to completely flip, say from 0 to 1. 
-That flip may then cause the behaviour of the rest of the network to completely change in some very complicated way. 
-So while your &quot;9&quot; might now be classified correctly, the behaviour of the network on all the other images is likely to have completely changed in some hard-to-control way. 
-That makes it difficult to see how to gradually modify the weights and biases so that the network gets closer to the desired behaviour.
-&lt;p align=&quot;right&quot;&gt;- &lt;a href=&quot;http://neuralnetworksanddeeplearning.com/chap1.html&quot;&gt;http://neuralnetworksanddeeplearning.com&lt;/a&gt;
+&lt;p&gt;Notice that in terms of “learning” in almost all of the machine learning algorithms, we learn the weight parameters &lt;script type=&quot;math/tex&quot;&gt;w_i&lt;/script&gt;. &lt;/p&gt;
 
+&lt;h2 class=&quot;section-heading&quot;&gt;Activation Function&lt;/h2&gt;
+&lt;p&gt;An artificial neuron using a step activation function is known as a Perceptron. 
+Perceptron can act as a binary classifier where it output 0 or 1 based on if the value of the activation function is above or below a threashold. 
+But step activation function may not be a good choice every time.&lt;/p&gt;
 
+&lt;blockquote&gt;
+  In fact, a small change in the weights or bias of any single perceptron in the network can sometimes cause the output of that perceptron to completely flip, say from 0 to 1. 
+  That flip may then cause the behaviour of the rest of the network to completely change in some very complicated way. 
+  So while your &quot;9&quot; might now be classified correctly, the behaviour of the network on all the other images is likely to have completely changed in some hard-to-control way. 
+  That makes it difficult to see how to gradually modify the weights and biases so that the network gets closer to the desired behaviour.
+  &lt;p align=&quot;right&quot;&gt;- &lt;a href=&quot;http://neuralnetworksanddeeplearning.com/chap1.html&quot;&gt;http://neuralnetworksanddeeplearning.com&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
 
- 
+&lt;p&gt;There are other activation functions which seem to work generally better in most of the cases, such as tanh or maxout functions.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &quot;What neuron type should I use?&quot; Use the ReLU non-linearity, be careful with your learning rates and possibly monitor the fraction of &quot;dead&quot; units in a network. 
+  If this concerns you, give Leaky ReLU or Maxout a try. Never use sigmoid. 
+  Try tanh, but expect it to work worse than ReLU/Maxout.
+  &lt;p align=&quot;right&quot;&gt;- &lt;a href=&quot;http://cs231n.github.io/neural-networks-1/&quot;&gt;Anrej Karpathy&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;!--
+&lt;center&gt;
+&lt;canvas id=&quot;sigmoid&quot; width=&quot;400&quot; heigth=&quot;400&quot; bgcolor='blue'&gt;&lt;/canvas&gt;
+&lt;canvas id=&quot;tanh&quot; width=&quot;400&quot; heigth=&quot;400&quot; markdown=&quot;0&quot;&gt;&lt;/canvas&gt;
+&lt;/center&gt;
+--&gt;
+
+&lt;p&gt;We can also do a linear regression using a a single neuron. I’ll try to go into the implementation of both linear classification and regression in my next post. Till then, enjoy!&lt;/p&gt;
+
 &lt;script src=&quot;/js/nn/canvas.js&quot;&gt;&lt;/script&gt;
+
 &lt;script src=&quot;/js/nn/neuron.js&quot;&gt;&lt;/script&gt;
+
 &lt;script src=&quot;/js/nn/neuralnet.js&quot;&gt;&lt;/script&gt;
+
 &lt;script&gt;
 //artificial neuron
 var _ancanvas = document.getElementById(&quot;artificialneuron&quot;);
@@ -81,8 +107,23 @@ connectLayers([neuronIn1, neuronIn2], [hiddenLayer]);
 //hidden to output layer
 connectLayers([hiddenLayer], [neuronOut]);
 
+//plot sigmoid
+/*
+function sigmoid(z){ return  1.0/(1.0+Math.exp(-z));}
+var _sigmoidCanvas = document.getElementById(&quot;sigmoid&quot;);
+var _sigmoidctx = _sigmoidCanvas.getContext(&quot;2d&quot;);
+_sigmoidctx.arrow(20.5, 280.5, 280.5, 280.5, defaultLine);
+_sigmoidctx.arrow(20.5, 280.5, 20.5, 20.5, defaultLine);
+var xScale = scale(0, 10, 20.5, 280.5);
+var yScale = scale(0, 1, 280.5, 20.5);
+var xRange = range(0, 10, 0.01);
+_sigmoidctx.mathText(&quot;x&quot;, xScale(1)+8, yScale(0)+3, {&quot;size&quot;: 14});
+_sigmoidctx.mathText(&quot;f(x)&quot;, 140, 20);
+var data = xRange.map(function(x) {return {&quot;x&quot;: x, &quot;y&quot;: sigmoid(x)} });
+_sigmoidctx.plot(data, xScale, yScale, graphColorAlt);
+*/
 &lt;/script&gt;
-&lt;/p&gt;&lt;/blockquote&gt;
+
 </description>
         <pubDate>2015-05-21 05:00:00 -0700</pubDate>
         <link>http://lakshgupta.github.io/2015/05/21/ArtificialNeuron/</link>
