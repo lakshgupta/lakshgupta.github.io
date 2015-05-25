@@ -39,3 +39,41 @@ They are also often monotonically increasing, continuous, differentiable and bou
 </blockquote>
 
 
+<center><canvas id="artificialneuron" width="500" heigth="400" markdown="0"></canvas></center>
+
+
+- $$f(w^Tx) = \phi(\sum\limits_{i=0}^n(w_i x_i))$$ &nbsp;
+- $$\phi$$ is our activation function.
+- $$x_i$$ are the elements of the input matrix x.
+- $$w_i$$ are the elements of the weight matrix y.
+- $$y$$ is the output.
+
+
+An artificial neuron using a step activation function is known as a Perceptron.
+<blockquote>In fact, a small change in the weights or bias of any single perceptron in the network can sometimes cause the output of that perceptron to completely flip, say from 0 to 1. 
+That flip may then cause the behaviour of the rest of the network to completely change in some very complicated way. 
+So while your "9" might now be classified correctly, the behaviour of the network on all the other images is likely to have completely changed in some hard-to-control way. 
+That makes it difficult to see how to gradually modify the weights and biases so that the network gets closer to the desired behaviour.
+<p align="right">- <a href="http://neuralnetworksanddeeplearning.com/chap1.html">http://neuralnetworksanddeeplearning.com</a>
+</blockquote>
+
+
+ 
+<script src="{{ site.baseurl }}/js/nn/canvas.js"></script>
+<script src="{{ site.baseurl }}/js/nn/neuron.js"></script>
+<script src="{{ site.baseurl }}/js/nn/neuralnet.js"></script>
+<script>
+//artificial neuron
+var _ancanvas = document.getElementById("artificialneuron");
+var _anctx = _ancanvas.getContext("2d");
+var neuronIn1 = new neuron(_anctx, 50, 40, neuronRadius,"x_0");
+var neuronIn2 = new neuron(_anctx, 50, 110, neuronRadius, "x_n");
+var	hiddenLayer= new neuron(_anctx, 250, 75, neuronRadius);
+_anctx.mathText("f(w^Tx)",250,120,{"text-align": "center"});
+var neuronOut = new neuron(_anctx, 350, 75, neuronRadius,"y");
+//input to hidden layer
+connectLayers([neuronIn1, neuronIn2], [hiddenLayer]);
+//hidden to output layer
+connectLayers([hiddenLayer], [neuronOut]);
+
+</script>

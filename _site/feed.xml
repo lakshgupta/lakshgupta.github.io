@@ -5,8 +5,8 @@
     <description>A Blog for Some Stuff</description>
     <link>http://lakshgupta.github.io/</link>
     <atom:link href="http://lakshgupta.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>2015-05-24 15:57:04 -0700</pubDate>
-    <lastBuildDate>2015-05-24 15:57:04 -0700</lastBuildDate>
+    <pubDate>2015-05-24 20:30:29 -0700</pubDate>
+    <lastBuildDate>2015-05-24 20:30:29 -0700</lastBuildDate>
     <generator>Jekyll v</generator>
     
       <item>
@@ -44,6 +44,45 @@ They are also often monotonically increasing, continuous, differentiable and bou
 &lt;p align=&quot;right&quot;&gt;- &lt;a href=&quot;http://en.wikipedia.org/wiki/Artificial_neuron&quot;&gt;Wikipedia&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 
+&lt;center&gt;&lt;canvas id=&quot;artificialneuron&quot; width=&quot;500&quot; heigth=&quot;400&quot;&gt;&lt;/canvas&gt;&lt;/center&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;f(w^Tx) = \phi(\sum\limits_{i=0}^n(w_i x_i))&lt;/script&gt;  &lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;\phi&lt;/script&gt; is our activation function.&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;x_i&lt;/script&gt; are the elements of the input matrix x.&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;w_i&lt;/script&gt; are the elements of the weight matrix y.&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;y&lt;/script&gt; is the output.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;An artificial neuron using a step activation function is known as a Perceptron.&lt;/p&gt;
+&lt;blockquote&gt;In fact, a small change in the weights or bias of any single perceptron in the network can sometimes cause the output of that perceptron to completely flip, say from 0 to 1. 
+That flip may then cause the behaviour of the rest of the network to completely change in some very complicated way. 
+So while your &quot;9&quot; might now be classified correctly, the behaviour of the network on all the other images is likely to have completely changed in some hard-to-control way. 
+That makes it difficult to see how to gradually modify the weights and biases so that the network gets closer to the desired behaviour.
+&lt;p align=&quot;right&quot;&gt;- &lt;a href=&quot;http://neuralnetworksanddeeplearning.com/chap1.html&quot;&gt;http://neuralnetworksanddeeplearning.com&lt;/a&gt;
+
+
+
+ 
+&lt;script src=&quot;/js/nn/canvas.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;/js/nn/neuron.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;/js/nn/neuralnet.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+//artificial neuron
+var _ancanvas = document.getElementById(&quot;artificialneuron&quot;);
+var _anctx = _ancanvas.getContext(&quot;2d&quot;);
+var neuronIn1 = new neuron(_anctx, 50, 40, neuronRadius,&quot;x_0&quot;);
+var neuronIn2 = new neuron(_anctx, 50, 110, neuronRadius, &quot;x_n&quot;);
+var	hiddenLayer= new neuron(_anctx, 250, 75, neuronRadius);
+_anctx.mathText(&quot;f(w^Tx)&quot;,250,120,{&quot;text-align&quot;: &quot;center&quot;});
+var neuronOut = new neuron(_anctx, 350, 75, neuronRadius,&quot;y&quot;);
+//input to hidden layer
+connectLayers([neuronIn1, neuronIn2], [hiddenLayer]);
+//hidden to output layer
+connectLayers([hiddenLayer], [neuronOut]);
+
+&lt;/script&gt;
+&lt;/p&gt;&lt;/blockquote&gt;
 </description>
         <pubDate>2015-05-21 05:00:00 -0700</pubDate>
         <link>http://lakshgupta.github.io/2015/05/21/ArtificialNeuron/</link>
