@@ -83,7 +83,7 @@ There are other activation functions which seem to work generally better in most
  <canvas id="tanh" width="200" height="200"></canvas></br>
 </center>
 
-Other than linear classification, we can also perform linear regression using a a single neuron. I'll try to go into the implementation of both of them in my next post. Till then, enjoy!
+Other than linear classification, we can also perform linear regression using a single neuron. I'll try to go into the implementation of both of them in my next post. Till then, enjoy!
 
 <script language="javascript" type="text/javascript" src="{{ site.baseurl }}/js/nn/canvas.js"></script>
 <script language="javascript" type="text/javascript" src="{{ site.baseurl }}/js/nn/neuron.js"></script>
