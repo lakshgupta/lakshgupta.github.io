@@ -73,21 +73,21 @@ There are other activation functions which seem to work generally better in most
   "What neuron type should I use?" Use the ReLU non-linearity, be careful with your learning rates and possibly monitor the fraction of "dead" units in a network. 
   If this concerns you, give Leaky ReLU or Maxout a try. Never use sigmoid. 
   Try tanh, but expect it to work worse than ReLU/Maxout.
-  <p align="right">- <a href="http://cs231n.github.io/neural-networks-1/">Anrej Karpathy</a></p>
+  <p align="right">- <a href="http://cs231n.github.io/neural-networks-1/">Andrej Karpathy</a></p>
 </blockquote>
 
-<!--
+
 <center>
-<canvas id="sigmoid" width="400" heigth="400" bgcolor='blue'></canvas>
-<canvas id="tanh" width="400" heigth="400" markdown="0"></canvas>
+ <canvas id="sigmoid" width="200" height="200">sigmoid</canvas>
+ <canvas id="tanh" width="200" height="200">tanh</canvas></br>
 </center>
--->
 
-We can also do a linear regression using a a single neuron. I'll try to go into the implementation of both linear classification and regression in my next post. Till then, enjoy!
+Other than linear classification, we can also perform linear regression using a a single neuron. I'll try to go into the implementation of both of them in my next post. Till then, enjoy!
 
-<script src="{{ site.baseurl }}/js/nn/canvas.js"></script>
-<script src="{{ site.baseurl }}/js/nn/neuron.js"></script>
-<script src="{{ site.baseurl }}/js/nn/neuralnet.js"></script>
+<script language="javascript" type="text/javascript" src="{{ site.baseurl }}/js/nn/canvas.js"></script>
+<script language="javascript" type="text/javascript" src="{{ site.baseurl }}/js/nn/neuron.js"></script>
+<script language="javascript" type="text/javascript" src="{{ site.baseurl }}/js/nn/neuralnet.js"></script>
+<script language="javascript" type="text/javascript" src="{{ site.baseurl }}/js/eqgraph.js" charset="utf-8"></script>
 <script>
 //artificial neuron
 var _ancanvas = document.getElementById("artificialneuron");
@@ -103,18 +103,23 @@ connectLayers([neuronIn1, neuronIn2], [hiddenLayer]);
 connectLayers([hiddenLayer], [neuronOut]);
 
 //plot sigmoid
-/*
 function sigmoid(z){ return  1.0/(1.0+Math.exp(-z));}
-var _sigmoidCanvas = document.getElementById("sigmoid");
-var _sigmoidctx = _sigmoidCanvas.getContext("2d");
-_sigmoidctx.arrow(20.5, 280.5, 280.5, 280.5, defaultLine);
-_sigmoidctx.arrow(20.5, 280.5, 20.5, 20.5, defaultLine);
-var xScale = scale(0, 10, 20.5, 280.5);
-var yScale = scale(0, 1, 280.5, 20.5);
-var xRange = range(0, 10, 0.01);
-_sigmoidctx.mathText("x", xScale(1)+8, yScale(0)+3, {"size": 14});
-_sigmoidctx.mathText("f(x)", 140, 20);
-var data = xRange.map(function(x) {return {"x": x, "y": sigmoid(x)} });
-_sigmoidctx.plot(data, xScale, yScale, graphColorAlt);
-*/
+var sigmoidGraph = new EqGraph({canvasId: 'sigmoid', minX: -6, minY: -2, maxX: 6, maxY: 2, unitsPerTick: 1 });
+sigmoidGraph.drawEquation(sigmoid , 'blue', 2);
+var sigmoidCanv = document.getElementById('sigmoid');
+var sigmoidcontext = sigmoidCanv.getContext('2d');
+sigmoidcontext.font = 'italic 14pt Calibri';
+sigmoidcontext.fillStyle = '#777';
+sigmoidcontext.fillText('sigmoid', 10, sigmoidCanv.height-5);
+
+//plot tanh
+function tanh(z){ return (Math.exp(z)-Math.exp(-z))/(Math.exp(z)+Math.exp(-z));}
+var tanhGraph = new EqGraph({canvasId: 'tanh', minX: -6, minY: -2, maxX: 6, maxY: 2, unitsPerTick: 1 });
+tanhGraph.drawEquation(tanh , 'blue', 2);
+var tanhCanv = document.getElementById('tanh');
+var tanhcontext = tanhCanv.getContext('2d');
+tanhcontext.font = 'italic 14pt Calibri';
+tanhcontext.fillStyle = '#777';
+tanhcontext.fillText('tanh', 10, tanhCanv.height-5);
+
 </script>

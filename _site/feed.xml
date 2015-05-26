@@ -5,8 +5,8 @@
     <description>A Blog for Some Stuff</description>
     <link>http://lakshgupta.github.io/</link>
     <atom:link href="http://lakshgupta.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>2015-05-25 00:13:44 -0700</pubDate>
-    <lastBuildDate>2015-05-25 00:13:44 -0700</lastBuildDate>
+    <pubDate>2015-05-25 22:48:57 -0700</pubDate>
+    <lastBuildDate>2015-05-25 22:48:57 -0700</lastBuildDate>
     <generator>Jekyll v</generator>
     
       <item>
@@ -66,7 +66,7 @@ But step activation function may not be a good choice every time.&lt;/p&gt;
   That flip may then cause the behaviour of the rest of the network to completely change in some very complicated way. 
   So while your &quot;9&quot; might now be classified correctly, the behaviour of the network on all the other images is likely to have completely changed in some hard-to-control way. 
   That makes it difficult to see how to gradually modify the weights and biases so that the network gets closer to the desired behaviour.
-  &lt;p align=&quot;right&quot;&gt;- &lt;a href=&quot;http://neuralnetworksanddeeplearning.com/chap1.html&quot;&gt;http://neuralnetworksanddeeplearning.com&lt;/a&gt;&lt;/p&gt;
+  &lt;p align=&quot;right&quot;&gt;- &lt;a href=&quot;http://neuralnetworksanddeeplearning.com/chap1.html&quot;&gt;Michael Nielsen&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;There are other activation functions which seem to work generally better in most of the cases, such as tanh or maxout functions.&lt;/p&gt;
@@ -75,23 +75,23 @@ But step activation function may not be a good choice every time.&lt;/p&gt;
   &quot;What neuron type should I use?&quot; Use the ReLU non-linearity, be careful with your learning rates and possibly monitor the fraction of &quot;dead&quot; units in a network. 
   If this concerns you, give Leaky ReLU or Maxout a try. Never use sigmoid. 
   Try tanh, but expect it to work worse than ReLU/Maxout.
-  &lt;p align=&quot;right&quot;&gt;- &lt;a href=&quot;http://cs231n.github.io/neural-networks-1/&quot;&gt;Anrej Karpathy&lt;/a&gt;&lt;/p&gt;
+  &lt;p align=&quot;right&quot;&gt;- &lt;a href=&quot;http://cs231n.github.io/neural-networks-1/&quot;&gt;Andrej Karpathy&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;!--
 &lt;center&gt;
-&lt;canvas id=&quot;sigmoid&quot; width=&quot;400&quot; heigth=&quot;400&quot; bgcolor='blue'&gt;&lt;/canvas&gt;
-&lt;canvas id=&quot;tanh&quot; width=&quot;400&quot; heigth=&quot;400&quot; markdown=&quot;0&quot;&gt;&lt;/canvas&gt;
+ &lt;canvas id=&quot;sigmoid&quot; width=&quot;200&quot; height=&quot;200&quot;&gt;sigmoid&lt;/canvas&gt;
+ &lt;canvas id=&quot;tanh&quot; width=&quot;200&quot; height=&quot;200&quot;&gt;tanh&lt;/canvas&gt;
 &lt;/center&gt;
---&gt;
 
-&lt;p&gt;We can also do a linear regression using a a single neuron. I’ll try to go into the implementation of both linear classification and regression in my next post. Till then, enjoy!&lt;/p&gt;
+&lt;p&gt;Other than linear classification, we can also perform linear regression using a a single neuron. I’ll try to go into the implementation of both of them in my next post. Till then, enjoy!&lt;/p&gt;
 
-&lt;script src=&quot;/js/nn/canvas.js&quot;&gt;&lt;/script&gt;
+&lt;script language=&quot;javascript&quot; type=&quot;text/javascript&quot; src=&quot;/js/nn/canvas.js&quot;&gt;&lt;/script&gt;
 
-&lt;script src=&quot;/js/nn/neuron.js&quot;&gt;&lt;/script&gt;
+&lt;script language=&quot;javascript&quot; type=&quot;text/javascript&quot; src=&quot;/js/nn/neuron.js&quot;&gt;&lt;/script&gt;
 
-&lt;script src=&quot;/js/nn/neuralnet.js&quot;&gt;&lt;/script&gt;
+&lt;script language=&quot;javascript&quot; type=&quot;text/javascript&quot; src=&quot;/js/nn/neuralnet.js&quot;&gt;&lt;/script&gt;
+
+&lt;script language=&quot;javascript&quot; type=&quot;text/javascript&quot; src=&quot;/js/eqgraph.js&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;
 
 &lt;script&gt;
 //artificial neuron
@@ -108,20 +108,25 @@ connectLayers([neuronIn1, neuronIn2], [hiddenLayer]);
 connectLayers([hiddenLayer], [neuronOut]);
 
 //plot sigmoid
-/*
 function sigmoid(z){ return  1.0/(1.0+Math.exp(-z));}
-var _sigmoidCanvas = document.getElementById(&quot;sigmoid&quot;);
-var _sigmoidctx = _sigmoidCanvas.getContext(&quot;2d&quot;);
-_sigmoidctx.arrow(20.5, 280.5, 280.5, 280.5, defaultLine);
-_sigmoidctx.arrow(20.5, 280.5, 20.5, 20.5, defaultLine);
-var xScale = scale(0, 10, 20.5, 280.5);
-var yScale = scale(0, 1, 280.5, 20.5);
-var xRange = range(0, 10, 0.01);
-_sigmoidctx.mathText(&quot;x&quot;, xScale(1)+8, yScale(0)+3, {&quot;size&quot;: 14});
-_sigmoidctx.mathText(&quot;f(x)&quot;, 140, 20);
-var data = xRange.map(function(x) {return {&quot;x&quot;: x, &quot;y&quot;: sigmoid(x)} });
-_sigmoidctx.plot(data, xScale, yScale, graphColorAlt);
-*/
+var sigmoidGraph = new EqGraph({canvasId: 'sigmoid', minX: -6, minY: -2, maxX: 6, maxY: 2, unitsPerTick: 1 });
+sigmoidGraph.drawEquation(sigmoid , 'blue', 2);
+var sigmoidCanv = document.getElementById('sigmoid');
+var sigmoidcontext = sigmoidCanv.getContext('2d');
+sigmoidcontext.font = 'italic 14pt Calibri';
+sigmoidcontext.fillStyle = '#777';
+sigmoidcontext.fillText('sigmoid', 10, sigmoidCanv.height-5);
+
+//plot tanh
+function tanh(z){ return (Math.exp(z)-Math.exp(-z))/(Math.exp(z)+Math.exp(-z));}
+var tanhGraph = new EqGraph({canvasId: 'tanh', minX: -6, minY: -2, maxX: 6, maxY: 2, unitsPerTick: 1 });
+tanhGraph.drawEquation(tanh , 'blue', 2);
+var tanhCanv = document.getElementById('tanh');
+var tanhcontext = tanhCanv.getContext('2d');
+tanhcontext.font = 'italic 14pt Calibri';
+tanhcontext.fillStyle = '#777';
+tanhcontext.fillText('tanh', 10, tanhCanv.height-5);
+
 &lt;/script&gt;
 
 </description>
