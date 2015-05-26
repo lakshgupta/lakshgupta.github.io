@@ -1,10 +1,10 @@
 ---
 layout:     post
 title:      "Artificial Neuron"
-subtitle:   "Fundamentals of Neural Network I"
+subtitle:   "Fundamentals of Neural Network 1"
 date:       2015-05-21 12:00:00
 author:     "Laksh Gupta"
-header-img: "img/perceptron-bg.jpg"
+header-img: "img/sd1-bg.jpg"
 ---
 
 Billions of neuron work together in a highly parallel manner to form the most sophisticated computing device known as the human brain. A single neuron:
