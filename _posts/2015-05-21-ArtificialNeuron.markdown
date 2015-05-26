@@ -49,7 +49,7 @@ The artificial neuron receives one or more inputs (representing dendrites) and s
 Notice that in terms of "learning" in almost all of the machine learning algorithms, we learn the weight parameters $$w_i$$. 
 
 <h2 class="section-heading">Activation Function</h2>
-An artificial neuron using a step activation function is known as a Perceptron. Perceptron can act as a binary classifier where it output 0 or 1 based on if the value of the activation function is above or below a threashold. But step activation function may not be a good choice every time.
+An artificial neuron using a step activation function is known as a Perceptron. Perceptron can act as a binary classifier based on if the value of the activation function is above or below a threashold. But step activation function may not be a good choice every time.
 
 
 <blockquote>
