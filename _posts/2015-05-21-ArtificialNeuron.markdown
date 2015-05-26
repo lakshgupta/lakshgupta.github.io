@@ -78,8 +78,9 @@ There are other activation functions which seem to work generally better in most
 
 
 <center>
- <canvas id="sigmoid" width="200" height="200">sigmoid</canvas>
- <canvas id="tanh" width="200" height="200">tanh</canvas></br>
+ <canvas id="step" width="200" height="200"></canvas>
+ <canvas id="sigmoid" width="200" height="200"></canvas>
+ <canvas id="tanh" width="200" height="200"></canvas></br>
 </center>
 
 Other than linear classification, we can also perform linear regression using a a single neuron. I'll try to go into the implementation of both of them in my next post. Till then, enjoy!
@@ -101,6 +102,22 @@ var neuronOut = new neuron(_anctx, 350, 75, neuronRadius,"y");
 connectLayers([neuronIn1, neuronIn2], [hiddenLayer]);
 //hidden to output layer
 connectLayers([hiddenLayer], [neuronOut]);
+
+//plot step
+function step(z){ 
+        if(z < 2){
+          return 0;
+        }else{
+          return 1;
+        }
+      }
+var stepGraph = new EqGraph({canvasId: 'step', minX: -4, minY: -2, maxX: 4, maxY: 2, unitsPerTick: 1 });
+stepGraph.drawEquation(step , 'blue', 2);
+var stepCanv = document.getElementById('step');
+var stepcontext = stepCanv.getContext('2d');
+stepcontext.font = 'italic 14pt Calibri';
+stepcontext.fillStyle = '#777';
+stepcontext.fillText('step', 10, stepCanv.height-5);
 
 //plot sigmoid
 function sigmoid(z){ return  1.0/(1.0+Math.exp(-z));}
