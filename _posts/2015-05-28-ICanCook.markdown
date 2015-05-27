@@ -1,0 +1,9 @@
+---
+layout:     post
+title:      "I Can Cook"
+subtitle:   "when hunger calls"
+date:       2015-05-28 12:00:00
+author:     "Laksh Gupta"
+header-img: "img/maggie-bg.jpg"
+---
+
