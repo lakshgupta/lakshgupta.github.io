@@ -73,20 +73,20 @@ There are other activation functions which seem to work generally better in most
  <canvas id="tanh" width="200" height="200"></canvas></br>
 </center>
 
-Other than linear classification, we can also perform linear regression using a single neuron. I'll try to go into the implementation of both of them in my next post. Till then, enjoy!
+Other than linear classification, we can also perform linear regression using a single neuron. I'll try to cover the implementation of both of them in the coming posts. Till then, enjoy!
 
 <script language="javascript" type="text/javascript" src="{{ site.baseurl }}/js/nn/canvas.js"></script>
 <script language="javascript" type="text/javascript" src="{{ site.baseurl }}/js/nn/neuron.js"></script>
 <script language="javascript" type="text/javascript" src="{{ site.baseurl }}/js/nn/neuralnet.js"></script>
-<script language="javascript" type="text/javascript" src="{{ site.baseurl }}/js/eqgraph.js" charset="utf-8"></script>
+<script language="javascript" type="text/javascript" src="{{ site.baseurl }}/js/plot/eqgraph.js" charset="utf-8"></script>
 <script>
 //artificial neuron
 var _ancanvas = document.getElementById("artificialneuron");
 var _anctx = _ancanvas.getContext("2d");
 var neuronIn1 = new neuron(_anctx, 50, 40, neuronRadius,"x_0");
 var neuronIn2 = new neuron(_anctx, 50, 110, neuronRadius, "x_n");
-var	hiddenLayer= new neuron(_anctx, 250, 75, neuronRadius);
-_anctx.mathText("f(w^Tx)",250,120,{"text-align": "center"});
+var	hiddenLayer= new neuron(_anctx, 200, 75, neuronRadius);
+_anctx.mathText("f(w^Tx)",200,120,{"text-align": "center"});
 var neuronOut = new neuron(_anctx, 350, 75, neuronRadius,"y");
 //input to hidden layer
 connectLayers([neuronIn1, neuronIn2], [hiddenLayer]);

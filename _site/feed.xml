@@ -5,9 +5,116 @@
     <description>A Blog for Some Stuff</description>
     <link>http://lakshgupta.github.io/</link>
     <atom:link href="http://lakshgupta.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>2015-05-25 22:58:07 -0700</pubDate>
-    <lastBuildDate>2015-05-25 22:58:07 -0700</lastBuildDate>
+    <pubDate>2015-05-31 01:01:44 -0700</pubDate>
+    <lastBuildDate>2015-05-31 01:01:44 -0700</lastBuildDate>
     <generator>Jekyll v</generator>
+    
+      <item>
+        <title>Linear Regression</title>
+        <description>&lt;p&gt;
+Alright, in the last &lt;ahref src=&quot;http://lakshgupta.github.io/2015/05/21/ArtificialNeuron/&quot;&gt;post we looked at the very basic building block of a neural network: a neuron. But what could possibly a single neuron be 
+good for? Well, as I mentioned in my last post it can be used to learn very simple models. Let us try to solve a linear regression problem using a neuron. 
+
+&lt;blockquote&gt;
+Linear regression is the simplest form of regression.  We model our system with a linear combination of features to produce one output.
+&lt;p align=&quot;right&quot;&gt;- &lt;a href=&quot;http://briandolhansky.com/blog/artificial-neural-networks-linear-regression-part-1&quot;&gt;Brian Dolhansky&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+
+&lt;h2 class=&quot;section-heading&quot;&gt;The Problem&lt;/h2&gt;
+&lt;p&gt;I'll use the problem used in the Andrew Ng's machine learning course. Here we will try to predict the profit for the franchise based on the
+population of the city. We'll use the previous data to prepare a model. So let us understand the data.&lt;/p&gt;
+
+&lt;center&gt;&lt;canvas id=&quot;inputData&quot; width=&quot;600&quot; height=&quot;400&quot;&gt;&lt;/canvas&gt;&lt;/center&gt;
+
+&lt;p&gt;Looking at the data we can say that we don't need a complex model and linear regression is good enough for our purpose. &lt;/p&gt;
+&lt;center&gt;&lt;canvas id=&quot;artificialneuron&quot; width=&quot;500&quot; heigth=&quot;400&quot;&gt;&lt;/canvas&gt;&lt;/center&gt;
+
+
+&lt;!-- ############# JAVASCRIPT ############--&gt;
+&lt;script language=&quot;javascript&quot; type=&quot;text/javascript&quot; src=&quot;http://cdnjs.cloudflare.com/ajax/libs/numeric/1.2.6/numeric.js&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;
+&lt;script language=&quot;javascript&quot; type=&quot;text/javascript&quot; src=&quot;https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.4/p5.min.js&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;
+&lt;script language=&quot;javascript&quot; type=&quot;text/javascript&quot; src=&quot;/js/plot/scatter.js&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;
+&lt;script language=&quot;javascript&quot; type=&quot;text/javascript&quot; src=&quot;/js/utils/mathUtils.js&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;
+&lt;script language=&quot;javascript&quot; type=&quot;text/javascript&quot; src=&quot;/js/nn/canvas.js&quot;&gt;&lt;/script&gt;
+&lt;script language=&quot;javascript&quot; type=&quot;text/javascript&quot; src=&quot;/js/nn/neuron.js&quot;&gt;&lt;/script&gt;
+&lt;script language=&quot;javascript&quot; type=&quot;text/javascript&quot; src=&quot;/js/nn/neuralnet.js&quot;&gt;&lt;/script&gt;
+
+&lt;script language=&quot;javascript&quot;&gt; 
+    
+  //artificial neuron: linear model
+  var _ancanvas = document.getElementById(&quot;artificialneuron&quot;);
+  var _anctx = _ancanvas.getContext(&quot;2d&quot;);
+  var neuronIn1 = new neuron(_anctx, 50, 40, neuronRadius,&quot;1&quot;);
+  var neuronIn2 = new neuron(_anctx, 50, 110, neuronRadius, &quot;x_i&quot;);
+  var	hiddenLayer= new neuron(_anctx, 200, 75, neuronRadius);
+  _anctx.mathText(&quot;f(w^Tx)&quot;,200,120,{&quot;text-align&quot;: &quot;center&quot;});
+  var neuronOut = new neuron(_anctx, 350, 75, neuronRadius,&quot;y&quot;);
+  //input to hidden layer
+  connectLayers([neuronIn1, neuronIn2], [hiddenLayer]);
+  //hidden to output layer
+connectLayers([hiddenLayer], [neuronOut]);
+  
+  function setup(){
+    loadTable(&quot;/data/ex1data1.txt&quot;,&quot;CSV&quot;,linReg);
+  }
+  
+  function linReg(table){
+    var rowCount = table.rows.length - 1;
+    var X = Array.matrix(rowCount, 2, 0);
+    var Y = Array.matrix(rowCount, 1, 0);
+    var iterations = 1500;
+    var alpha = 0.01;
+    var theta = numeric.random([2,1]);
+    var xMax = table.getNum(0,0);
+    var xMin = table.getNum(0,0);
+    var yMax = table.getNum(0,1);
+    var yMin = table.getNum(0,1);
+    //load X and Y from table
+    for(var i=0; i&lt;rowCount; i++){
+      X[i][0] = table.getNum(i,0);
+      X[i][1] = 1;
+      Y[i][0] = table.getNum(i,1);
+      //find min and max
+      if(xMax &lt; X[i][0]){
+        xMax = X[i][0];
+      }
+      if(xMin &gt; X[i][0]){
+        xMin = X[i][0];
+      }
+      if(yMax &lt; Y[i][0]){
+        yMax = Y[i][0];
+      }
+      if(yMin &gt; Y[i][0]){
+        yMin = Y[i][0];
+      }
+    }
+    //plot input data
+    var chartInfo= { y:{min:yMin, max:yMax, steps:5,label:&quot;Profit in $10,000s&quot;},
+                      x:{min:xMin, max:xMax, steps:5,label:&quot;Population of City in 10,000s&quot;}
+    };
+    var inputPlot = new scatter(&quot;inputData&quot;,chartInfo, X, Y);
+        
+    //compute initial cost
+    console.log(computeCost(X,Y, theta));
+  }
+  
+  function computeCost(x,y, theta){
+    var m = 1;
+    if(Array.isArray(x)){
+      m = x.length;
+    } 
+    return numeric.sum(numeric.pow(numeric.sub(numeric.dot(x, theta), y),2))/(2*m);
+  };
+&lt;/script&gt;
+&lt;/ahref&gt;&lt;/p&gt;
+</description>
+        <pubDate>2015-05-27 05:00:00 -0700</pubDate>
+        <link>http://lakshgupta.github.io/2015/05/27/LinearRegression/</link>
+        <guid isPermaLink="true">http://lakshgupta.github.io/2015/05/27/LinearRegression/</guid>
+        
+        
+      </item>
     
       <item>
         <title>Artificial Neuron</title>
@@ -33,14 +140,11 @@
 &lt;ul&gt;
   &lt;li&gt;an artificial neuron receives the input as numerical values rather than the electrical signals. Input can come from different sources such as an image or a text.&lt;/li&gt;
   &lt;li&gt;it then multiplies each of the input value by a value called the weight.&lt;/li&gt;
-  &lt;li&gt;weighted sum is calculated then to represent the total strength of the input signal, and an activation function is applied on the sum to get the output. This output can be sent 
-further to other artificial neurons.&lt;/li&gt;
+  &lt;li&gt;weighted sum is calculated then to represent the total strength of the input signal, and an activation function is applied on the sum to get the output. This output can be sent further to other artificial neurons.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;blockquote&gt;The artificial neuron receives one or more inputs (representing dendrites) and sums them to produce an output (representing a neuron's axon). 
-Usually the sums of each node are weighted, and the sum is passed through a non-linear function known as an activation function or transfer function. 
-The transfer functions usually have a sigmoid shape, but they may also take the form of other non-linear functions, piecewise linear functions, or step functions. 
-They are also often monotonically increasing, continuous, differentiable and bounded.
+&lt;blockquote&gt;
+The artificial neuron receives one or more inputs (representing dendrites) and sums them to produce an output (representing a neuron's axon). Usually the sums of each node are weighted, and the sum is passed through a non-linear function known as an activation function or transfer function. The transfer functions usually have a sigmoid shape, but they may also take the form of other non-linear functions, piecewise linear functions, or step functions. They are also often monotonically increasing, continuous, differentiable and bounded.
 &lt;p align=&quot;right&quot;&gt;- &lt;a href=&quot;http://en.wikipedia.org/wiki/Artificial_neuron&quot;&gt;Wikipedia&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 
@@ -57,24 +161,17 @@ They are also often monotonically increasing, continuous, differentiable and bou
 &lt;p&gt;Notice that in terms of “learning” in almost all of the machine learning algorithms, we learn the weight parameters &lt;script type=&quot;math/tex&quot;&gt;w_i&lt;/script&gt;. &lt;/p&gt;
 
 &lt;h2 class=&quot;section-heading&quot;&gt;Activation Function&lt;/h2&gt;
-&lt;p&gt;An artificial neuron using a step activation function is known as a Perceptron. 
-Perceptron can act as a binary classifier where it output 0 or 1 based on if the value of the activation function is above or below a threashold. 
-But step activation function may not be a good choice every time.&lt;/p&gt;
+&lt;p&gt;An artificial neuron using a step activation function is known as a Perceptron. Perceptron can act as a binary classifier based on if the value of the activation function is above or below a threashold. But step activation function may not be a good choice every time.&lt;/p&gt;
 
 &lt;blockquote&gt;
-  In fact, a small change in the weights or bias of any single perceptron in the network can sometimes cause the output of that perceptron to completely flip, say from 0 to 1. 
-  That flip may then cause the behaviour of the rest of the network to completely change in some very complicated way. 
-  So while your &quot;9&quot; might now be classified correctly, the behaviour of the network on all the other images is likely to have completely changed in some hard-to-control way. 
-  That makes it difficult to see how to gradually modify the weights and biases so that the network gets closer to the desired behaviour.
+  In fact, a small change in the weights or bias of any single perceptron in the network can sometimes cause the output of that perceptron to completely flip, say from 0 to 1. That flip may then cause the behaviour of the rest of the network to completely change in some very complicated way. So while your &quot;9&quot; might now be classified correctly, the behaviour of the network on all the other images is likely to have completely changed in some hard-to-control way. That makes it difficult to see how to gradually modify the weights and biases so that the network gets closer to the desired behaviour.
   &lt;p align=&quot;right&quot;&gt;- &lt;a href=&quot;http://neuralnetworksanddeeplearning.com/chap1.html&quot;&gt;Michael Nielsen&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;There are other activation functions which seem to work generally better in most of the cases, such as tanh or maxout functions.&lt;/p&gt;
 
 &lt;blockquote&gt;
-  &quot;What neuron type should I use?&quot; Use the ReLU non-linearity, be careful with your learning rates and possibly monitor the fraction of &quot;dead&quot; units in a network. 
-  If this concerns you, give Leaky ReLU or Maxout a try. Never use sigmoid. 
-  Try tanh, but expect it to work worse than ReLU/Maxout.
+  &quot;What neuron type should I use?&quot; Use the ReLU non-linearity, be careful with your learning rates and possibly monitor the fraction of &quot;dead&quot; units in a network. If this concerns you, give Leaky ReLU or Maxout a try. Never use sigmoid. Try tanh, but expect it to work worse than ReLU/Maxout.
   &lt;p align=&quot;right&quot;&gt;- &lt;a href=&quot;http://cs231n.github.io/neural-networks-1/&quot;&gt;Andrej Karpathy&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 
@@ -84,7 +181,7 @@ But step activation function may not be a good choice every time.&lt;/p&gt;
  &lt;canvas id=&quot;tanh&quot; width=&quot;200&quot; height=&quot;200&quot;&gt;&lt;/canvas&gt;
 &lt;/center&gt;
 
-&lt;p&gt;Other than linear classification, we can also perform linear regression using a a single neuron. I’ll try to go into the implementation of both of them in my next post. Till then, enjoy!&lt;/p&gt;
+&lt;p&gt;Other than linear classification, we can also perform linear regression using a single neuron. I’ll try to cover the implementation of both of them in the coming posts. Till then, enjoy!&lt;/p&gt;
 
 &lt;script language=&quot;javascript&quot; type=&quot;text/javascript&quot; src=&quot;/js/nn/canvas.js&quot;&gt;&lt;/script&gt;
 
@@ -92,7 +189,7 @@ But step activation function may not be a good choice every time.&lt;/p&gt;
 
 &lt;script language=&quot;javascript&quot; type=&quot;text/javascript&quot; src=&quot;/js/nn/neuralnet.js&quot;&gt;&lt;/script&gt;
 
-&lt;script language=&quot;javascript&quot; type=&quot;text/javascript&quot; src=&quot;/js/eqgraph.js&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;
+&lt;script language=&quot;javascript&quot; type=&quot;text/javascript&quot; src=&quot;/js/plot/eqgraph.js&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;
 
 &lt;script&gt;
 //artificial neuron
@@ -100,8 +197,8 @@ var _ancanvas = document.getElementById(&quot;artificialneuron&quot;);
 var _anctx = _ancanvas.getContext(&quot;2d&quot;);
 var neuronIn1 = new neuron(_anctx, 50, 40, neuronRadius,&quot;x_0&quot;);
 var neuronIn2 = new neuron(_anctx, 50, 110, neuronRadius, &quot;x_n&quot;);
-var	hiddenLayer= new neuron(_anctx, 250, 75, neuronRadius);
-_anctx.mathText(&quot;f(w^Tx)&quot;,250,120,{&quot;text-align&quot;: &quot;center&quot;});
+var	hiddenLayer= new neuron(_anctx, 200, 75, neuronRadius);
+_anctx.mathText(&quot;f(w^Tx)&quot;,200,120,{&quot;text-align&quot;: &quot;center&quot;});
 var neuronOut = new neuron(_anctx, 350, 75, neuronRadius,&quot;y&quot;);
 //input to hidden layer
 connectLayers([neuronIn1, neuronIn2], [hiddenLayer]);
