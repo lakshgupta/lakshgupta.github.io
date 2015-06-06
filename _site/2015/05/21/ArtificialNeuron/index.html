@@ -134,13 +134,14 @@ The artificial neuron receives one or more inputs (representing dendrites) and s
 <p align="right">- <a href="http://en.wikipedia.org/wiki/Artificial_neuron">Wikipedia</a></p>
 </blockquote>
 
+<p>Considering only a single input vector:</p>
 <center><canvas id="artificialneuron" width="500" heigth="400"></canvas></center>
 
 <ul>
-  <li><script type="math/tex">f(w^Tx) = \phi(\sum\limits_{i=0}^n(w_i x_i))</script>  </li>
+  <li><script type="math/tex">f(x,w) = \phi(\sum\limits_{i=0}^n(w_i x_i)) = \phi(w^Tx)</script>  </li>
   <li><script type="math/tex">\phi</script> is our activation function.</li>
-  <li><script type="math/tex">x_i</script> are the elements of the input matrix x.</li>
-  <li><script type="math/tex">w_i</script> are the elements of the weight matrix y. </li>
+  <li><script type="math/tex">x_i</script> are the elements of the input vector x.</li>
+  <li><script type="math/tex">w_i</script> are the elements of the weight vector w. </li>
   <li><script type="math/tex">y</script> is the output.</li>
 </ul>
 
@@ -167,7 +168,7 @@ The artificial neuron receives one or more inputs (representing dendrites) and s
  <canvas id="tanh" width="200" height="200"></canvas>
 </center>
 
-<p>Other than linear classification, we can also perform linear regression using a single neuron. I’ll try to cover the implementation of both of them in the coming posts. Till then, enjoy!</p>
+<p>This ends the brief overview of a neuron. In the coming posts I’ll try to cover some of the things we can do with a neuron. Till then, enjoy!</p>
 
 <script language="javascript" type="text/javascript" src="/js/nn/canvas.js"></script>
 
@@ -184,7 +185,7 @@ var _anctx = _ancanvas.getContext("2d");
 var neuronIn1 = new neuron(_anctx, 50, 40, neuronRadius,"x_0");
 var neuronIn2 = new neuron(_anctx, 50, 110, neuronRadius, "x_n");
 var	hiddenLayer= new neuron(_anctx, 200, 75, neuronRadius);
-_anctx.mathText("f(w^Tx)",200,120,{"text-align": "center"});
+_anctx.mathText("f(x,w)",200,120,{"text-align": "center"});
 var neuronOut = new neuron(_anctx, 350, 75, neuronRadius,"y");
 //input to hidden layer
 connectLayers([neuronIn1, neuronIn2], [hiddenLayer]);

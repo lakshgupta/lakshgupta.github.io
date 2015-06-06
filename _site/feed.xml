@@ -5,8 +5,8 @@
     <description>A Blog for Some Stuff</description>
     <link>http://lakshgupta.github.io/</link>
     <atom:link href="http://lakshgupta.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>2015-05-31 01:01:44 -0700</pubDate>
-    <lastBuildDate>2015-05-31 01:01:44 -0700</lastBuildDate>
+    <pubDate>2015-06-06 13:13:41 -0700</pubDate>
+    <lastBuildDate>2015-06-06 13:13:41 -0700</lastBuildDate>
     <generator>Jekyll v</generator>
     
       <item>
@@ -22,13 +22,29 @@ Linear regression is the simplest form of regression.  We model our system with 
 
 
 &lt;h2 class=&quot;section-heading&quot;&gt;The Problem&lt;/h2&gt;
-&lt;p&gt;I'll use the problem used in the Andrew Ng's machine learning course. Here we will try to predict the profit for the franchise based on the
-population of the city. We'll use the previous data to prepare a model. So let us understand the data.&lt;/p&gt;
+&lt;p&gt;I'll use the problem used in the Andrew Ng's machine learning course. We will try to predict the profit for the franchise based on the population of the city. We'll use the previous data to prepare a model. So let us first understand the data.&lt;/p&gt;
 
 &lt;center&gt;&lt;canvas id=&quot;inputData&quot; width=&quot;600&quot; height=&quot;400&quot;&gt;&lt;/canvas&gt;&lt;/center&gt;
 
 &lt;p&gt;Looking at the data we can say that we don't need a complex model and linear regression is good enough for our purpose. &lt;/p&gt;
+
+&lt;h2 class=&quot;section-heading&quot;&gt;Training a model&lt;/h2&gt;
 &lt;center&gt;&lt;canvas id=&quot;artificialneuron&quot; width=&quot;500&quot; heigth=&quot;400&quot;&gt;&lt;/canvas&gt;&lt;/center&gt;
+&lt;p&gt;
+Our neuron will receive two values as an input. One of them is the actual value from the data and the other is a bias value.
+&lt;blockquote&gt;
+b is the bias, a term that shifts the decision boundary away from the origin and does not depend on any input value.
+&lt;p align=&quot;right&quot;&gt;- &lt;a href=&quot;http://en.wikipedia.org/wiki/Perceptron&quot;&gt;Wikipedia&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/p&gt;
+Since we want to linearly fit the data, we'll use the linear activation function. Hence when our neuron
+will receive the inputs, we'll calculate the weighted sum and consider that as our output from the neuron.
+$$f(x,w) = \phi(\sum\limits_{i=0}^n(w_i x_i)) = \sum\limits_{i=0}^n(w_i x_i) = w^Tx$$ &amp;nbsp;
+We then try to figure out how close our neuron output or prediction is from the actual answer, i.e. we'll apply a &lt;ahref src=&quot;http://en.wikipedia.org/wiki/Loss_function&quot;&gt;loss function over our dataset. A commonly
+used one is the least square error:
+$$L(w) = \sum\limits_{i=0}^n(f(x_i,w) - y_i)$$
+
+
 
 
 &lt;!-- ############# JAVASCRIPT ############--&gt;
@@ -45,7 +61,7 @@ population of the city. We'll use the previous data to prepare a model. So let u
   //artificial neuron: linear model
   var _ancanvas = document.getElementById(&quot;artificialneuron&quot;);
   var _anctx = _ancanvas.getContext(&quot;2d&quot;);
-  var neuronIn1 = new neuron(_anctx, 50, 40, neuronRadius,&quot;1&quot;);
+  var neuronIn1 = new neuron(_anctx, 50, 40, neuronRadius,&quot;b&quot;);
   var neuronIn2 = new neuron(_anctx, 50, 110, neuronRadius, &quot;x_i&quot;);
   var	hiddenLayer= new neuron(_anctx, 200, 75, neuronRadius);
   _anctx.mathText(&quot;f(w^Tx)&quot;,200,120,{&quot;text-align&quot;: &quot;center&quot;});
@@ -53,7 +69,8 @@ population of the city. We'll use the previous data to prepare a model. So let u
   //input to hidden layer
   connectLayers([neuronIn1, neuronIn2], [hiddenLayer]);
   //hidden to output layer
-connectLayers([hiddenLayer], [neuronOut]);
+  connectLayers([hiddenLayer], [neuronOut]);
+  
   
   function setup(){
     loadTable(&quot;/data/ex1data1.txt&quot;,&quot;CSV&quot;,linReg);
@@ -65,7 +82,8 @@ connectLayers([hiddenLayer], [neuronOut]);
     var Y = Array.matrix(rowCount, 1, 0);
     var iterations = 1500;
     var alpha = 0.01;
-    var theta = numeric.random([2,1]);
+    //var theta = numeric.random([2,1]);
+    var theta = Array.matrix(2,1,0);
     var xMax = table.getNum(0,0);
     var xMin = table.getNum(0,0);
     var yMax = table.getNum(0,1);
@@ -97,6 +115,12 @@ connectLayers([hiddenLayer], [neuronOut]);
         
     //compute initial cost
     console.log(computeCost(X,Y, theta));
+    
+    //run gradient descent
+    
+    //plot the linear fit
+    
+    //predict the values
   }
   
   function computeCost(x,y, theta){
@@ -107,7 +131,7 @@ connectLayers([hiddenLayer], [neuronOut]);
     return numeric.sum(numeric.pow(numeric.sub(numeric.dot(x, theta), y),2))/(2*m);
   };
 &lt;/script&gt;
-&lt;/ahref&gt;&lt;/p&gt;
+&lt;/ahref&gt;&lt;/ahref&gt;&lt;/p&gt;
 </description>
         <pubDate>2015-05-27 05:00:00 -0700</pubDate>
         <link>http://lakshgupta.github.io/2015/05/27/LinearRegression/</link>
@@ -148,13 +172,14 @@ The artificial neuron receives one or more inputs (representing dendrites) and s
 &lt;p align=&quot;right&quot;&gt;- &lt;a href=&quot;http://en.wikipedia.org/wiki/Artificial_neuron&quot;&gt;Wikipedia&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 
+&lt;p&gt;Considering only a single input vector:&lt;/p&gt;
 &lt;center&gt;&lt;canvas id=&quot;artificialneuron&quot; width=&quot;500&quot; heigth=&quot;400&quot;&gt;&lt;/canvas&gt;&lt;/center&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;f(w^Tx) = \phi(\sum\limits_{i=0}^n(w_i x_i))&lt;/script&gt;  &lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;f(x,w) = \phi(\sum\limits_{i=0}^n(w_i x_i)) = \phi(w^Tx)&lt;/script&gt;  &lt;/li&gt;
   &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;\phi&lt;/script&gt; is our activation function.&lt;/li&gt;
-  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;x_i&lt;/script&gt; are the elements of the input matrix x.&lt;/li&gt;
-  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;w_i&lt;/script&gt; are the elements of the weight matrix y. &lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;x_i&lt;/script&gt; are the elements of the input vector x.&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;w_i&lt;/script&gt; are the elements of the weight vector w. &lt;/li&gt;
   &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;y&lt;/script&gt; is the output.&lt;/li&gt;
 &lt;/ul&gt;
 
@@ -181,7 +206,7 @@ The artificial neuron receives one or more inputs (representing dendrites) and s
  &lt;canvas id=&quot;tanh&quot; width=&quot;200&quot; height=&quot;200&quot;&gt;&lt;/canvas&gt;
 &lt;/center&gt;
 
-&lt;p&gt;Other than linear classification, we can also perform linear regression using a single neuron. I’ll try to cover the implementation of both of them in the coming posts. Till then, enjoy!&lt;/p&gt;
+&lt;p&gt;This ends the brief overview of a neuron. In the coming posts I’ll try to cover some of the things we can do with a neuron. Till then, enjoy!&lt;/p&gt;
 
 &lt;script language=&quot;javascript&quot; type=&quot;text/javascript&quot; src=&quot;/js/nn/canvas.js&quot;&gt;&lt;/script&gt;
 
@@ -198,7 +223,7 @@ var _anctx = _ancanvas.getContext(&quot;2d&quot;);
 var neuronIn1 = new neuron(_anctx, 50, 40, neuronRadius,&quot;x_0&quot;);
 var neuronIn2 = new neuron(_anctx, 50, 110, neuronRadius, &quot;x_n&quot;);
 var	hiddenLayer= new neuron(_anctx, 200, 75, neuronRadius);
-_anctx.mathText(&quot;f(w^Tx)&quot;,200,120,{&quot;text-align&quot;: &quot;center&quot;});
+_anctx.mathText(&quot;f(x,w)&quot;,200,120,{&quot;text-align&quot;: &quot;center&quot;});
 var neuronOut = new neuron(_anctx, 350, 75, neuronRadius,&quot;y&quot;);
 //input to hidden layer
 connectLayers([neuronIn1, neuronIn2], [hiddenLayer]);

@@ -35,14 +35,14 @@ The artificial neuron receives one or more inputs (representing dendrites) and s
 <p align="right">- <a href="http://en.wikipedia.org/wiki/Artificial_neuron">Wikipedia</a></p>
 </blockquote>
 
-
+<p>Considering only a single input vector:</p>
 <center><canvas id="artificialneuron" width="500" heigth="400"></canvas></center>
 
 
-- $$f(w^Tx) = \phi(\sum\limits_{i=0}^n(w_i x_i))$$ &nbsp;
+- $$f(x,w) = \phi(\sum\limits_{i=0}^n(w_i x_i)) = \phi(w^Tx)$$ &nbsp;
 - $$\phi$$ is our activation function.
-- $$x_i$$ are the elements of the input matrix x.
-- $$w_i$$ are the elements of the weight matrix y. 
+- $$x_i$$ are the elements of the input vector x.
+- $$w_i$$ are the elements of the weight vector w. 
 - $$y$$ is the output.
 
 
@@ -86,7 +86,7 @@ var _anctx = _ancanvas.getContext("2d");
 var neuronIn1 = new neuron(_anctx, 50, 40, neuronRadius,"x_0");
 var neuronIn2 = new neuron(_anctx, 50, 110, neuronRadius, "x_n");
 var	hiddenLayer= new neuron(_anctx, 200, 75, neuronRadius);
-_anctx.mathText("f(w^Tx)",200,120,{"text-align": "center"});
+_anctx.mathText("f(x,w)",200,120,{"text-align": "center"});
 var neuronOut = new neuron(_anctx, 350, 75, neuronRadius,"y");
 //input to hidden layer
 connectLayers([neuronIn1, neuronIn2], [hiddenLayer]);

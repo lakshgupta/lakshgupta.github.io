@@ -18,13 +18,29 @@ Linear regression is the simplest form of regression.  We model our system with 
 </p>
 
 <h2 class="section-heading">The Problem</h2>
-<p>I'll use the problem used in the Andrew Ng's machine learning course. Here we will try to predict the profit for the franchise based on the
-population of the city. We'll use the previous data to prepare a model. So let us first understand the data.</p>
+<p>I'll use the problem used in the Andrew Ng's machine learning course. We will try to predict the profit for the franchise based on the population of the city. We'll use the previous data to prepare a model. So let us first understand the data.</p>
 
 </br><center><canvas id="inputData" width="600" height="400"></canvas></center></br>
 
 <p>Looking at the data we can say that we don't need a complex model and linear regression is good enough for our purpose. </p>
+
+<h2 class="section-heading">Training a model</h2>
 </br><center><canvas id="artificialneuron" width="500" heigth="400"></canvas></center></br>
+<p>
+Our neuron will receive two values as an input. One of them is the actual value from the data and the other is a bias value.
+<blockquote>
+b is the bias, a term that shifts the decision boundary away from the origin and does not depend on any input value.
+<p align="right">- <a href="http://en.wikipedia.org/wiki/Perceptron">Wikipedia</a></p>
+</blockquote>
+</p>
+Since we want to linearly fit the data, we'll use the linear activation function. Hence when our neuron
+will receive the inputs, we'll calculate the weighted sum and consider that as our output from the neuron.
+$$f(x,w) = \phi(\sum\limits_{i=0}^n(w_i x_i)) = \sum\limits_{i=0}^n(w_i x_i) = w^Tx$$ &nbsp;
+We then try to figure out how close our neuron output or prediction is from the actual answer, i.e. we'll apply a <ahref src="http://en.wikipedia.org/wiki/Loss_function">loss function</a> over our dataset. A commonly
+used one is the least square error:
+</br>$$L(w) = \sum\limits_{i=0}^n(f(x_i,w) - y_i)$$</br>
+</p>
+
 
 
 <!-- ############# JAVASCRIPT ############-->
@@ -41,7 +57,7 @@ population of the city. We'll use the previous data to prepare a model. So let u
   //artificial neuron: linear model
   var _ancanvas = document.getElementById("artificialneuron");
   var _anctx = _ancanvas.getContext("2d");
-  var neuronIn1 = new neuron(_anctx, 50, 40, neuronRadius,"1");
+  var neuronIn1 = new neuron(_anctx, 50, 40, neuronRadius,"b");
   var neuronIn2 = new neuron(_anctx, 50, 110, neuronRadius, "x_i");
   var	hiddenLayer= new neuron(_anctx, 200, 75, neuronRadius);
   _anctx.mathText("f(w^Tx)",200,120,{"text-align": "center"});
@@ -50,6 +66,7 @@ population of the city. We'll use the previous data to prepare a model. So let u
   connectLayers([neuronIn1, neuronIn2], [hiddenLayer]);
   //hidden to output layer
   connectLayers([hiddenLayer], [neuronOut]);
+  
   
   function setup(){
     loadTable("{{ site.baseurl }}/data/ex1data1.txt","CSV",linReg);
@@ -61,7 +78,8 @@ population of the city. We'll use the previous data to prepare a model. So let u
     var Y = Array.matrix(rowCount, 1, 0);
     var iterations = 1500;
     var alpha = 0.01;
-    var theta = numeric.random([2,1]);
+    //var theta = numeric.random([2,1]);
+    var theta = Array.matrix(2,1,0);
     var xMax = table.getNum(0,0);
     var xMin = table.getNum(0,0);
     var yMax = table.getNum(0,1);
@@ -93,6 +111,12 @@ population of the city. We'll use the previous data to prepare a model. So let u
         
     //compute initial cost
     console.log(computeCost(X,Y, theta));
+    
+    //run gradient descent
+    
+    //plot the linear fit
+    
+    //predict the values
   }
   
   function computeCost(x,y, theta){
