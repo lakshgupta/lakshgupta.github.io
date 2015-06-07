@@ -52,11 +52,11 @@ The other way to look at our setup is that we are trying to fit a line to the da
 </br>$$y_i = w^0x_i^0 + w^1b$$</br>
 </p>
 <p>
-We then try to figure out how close our neuron output or prediction is from the actual answer, i.e. we'll apply a <a href src="http://en.wikipedia.org/wiki/Loss_function">loss function</a> over our dataset. A commonly
+We then try to figure out how close our neuron output or prediction is from the actual answer, i.e. we'll apply a <a href="http://en.wikipedia.org/wiki/Loss_function">loss function</a> over our dataset. A commonly
 used one is the least square error:
 </br>$$L(w) = \sum\limits_{i=0}^n(f(x_i,w) - y_i)^2$$</br>
 The idea is to use this value to modify our randomly initialized weight matrix till the time we stop observing the decrease in the loss function value.
-The method we'll use to modify the weight matrix is know as <a href src="http://en.wikipedia.org/wiki/Gradient_descent">Gradient Descent</a>.
+The method we'll use to modify the weight matrix is known as <a href="http://en.wikipedia.org/wiki/Gradient_descent">Gradient Descent</a>.
 </p>
 
 
