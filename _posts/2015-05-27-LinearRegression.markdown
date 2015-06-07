@@ -7,28 +7,38 @@ author:     "Laksh Gupta"
 header-img: "img/maggie-bg.jpg"
 ---
 
-<p>
-Alright, in the last <ahref src="http://lakshgupta.github.io/2015/05/21/ArtificialNeuron/">post</a> we looked at the very basic building block of a neural network: a neuron. But what could possibly a single neuron be 
+
+Alright, in the last [post](http://lakshgupta.github.io/2015/05/21/ArtificialNeuron/) we looked at the very basic building block of a neural network: a neuron. But what could possibly a single neuron be 
 good for? Well, as I mentioned in my last post it can be used to learn very simple models. Let us try to solve a linear regression problem using a neuron. 
+
 
 <blockquote>
 Linear regression is the simplest form of regression.  We model our system with a linear combination of features to produce one output.
 <p align="right">- <a href="http://briandolhansky.com/blog/artificial-neural-networks-linear-regression-part-1">Brian Dolhansky</a></p>
 </blockquote>
-</p>
+
 
 <h2 class="section-heading">The Problem</h2>
-<p>I'll use the problem used in the Andrew Ng's machine learning course. We will try to predict the profit for the franchise based on the population of the city. We'll use the previous data to prepare a model. So let us first understand the data.</p>
 
-</br><center><canvas id="inputData" width="600" height="400"></canvas></center></br>
 
-<p>Looking at the data we can say that we don't need a complex model and linear regression is good enough for our purpose. </p>
+I'll use the problem used in the Andrew Ng's machine learning course. The dataset is located [here](https://github.com/lakshgupta/lakshgupta.github.io/blob/master/data/ex1data1.txt). We will try to predict the profit for the franchise based on the population of the city. We'll use the previous data to prepare a model. So let us first understand the data.
+
+
+<center><canvas id="inputData" width="600" height="400"></canvas></center>
+
+
+Looking at the data we can say that we don't need a complex model and linear regression is good enough for our purpose.
+
 
 <h2 class="section-heading">Training a model</h2>
-</br></br><center><canvas id="artificialneuron" width="500" heigth="400"></canvas></center></br>
-<p>
+
+
+<center><canvas id="artificialneuron" width="500" heigth="400"></canvas></center>
+
 Our neuron will receive two values as an input. One of them is the actual value from the data and the other is a bias value. We usually include the bias 
 value along with the input feature matrix x.
+
+
 <blockquote>
 b is the bias, a term that shifts the decision boundary away from the origin and does not depend on any input value.
 <p align="right">- <a href="http://en.wikipedia.org/wiki/Perceptron">Wikipedia</a></p>
@@ -36,28 +46,28 @@ b is the bias, a term that shifts the decision boundary away from the origin and
 
 Since we want to linearly fit the data, we'll use the linear activation function. When our neuron
 will receive the inputs, we'll calculate the weighted sum and consider that as our output from the neuron.
-$$f(x_i,w) = \phi(\sum\limits_{j=0}^n(w^j x_i^j)) = \sum\limits_{j=0}^n(w^j x_i^j) = w^Tx_i$$
+<center>$$f(x_i,w) = \phi(\sum\limits_{j=0}^n(w^j x_i^j)) = \sum\limits_{j=0}^n(w^j x_i^j) = w^Tx_i$$</center>
 where 
-</p>
 
-<p>
-<ul>
-<li> i represents a row of a matrix</li>
-<li> j represetns an element of a matrix</li>
-</ul>
-</p>
+- $$i$$ represents a row of a matrix
+- $$j$$ represetns an element of a matrix
 
-<p>
+
 The other way to look at our setup is that we are trying to fit a line to the data represented as
-</br>$$y_i = w^0x_i^0 + w^1b$$</br>
-</p>
-<p>
+
+
+<center>$$y_i = w^0x_i^0 + w^1b$$</center>
+
+
 We then try to figure out how close our neuron output or prediction is from the actual answer, i.e. we'll apply a <a href="http://en.wikipedia.org/wiki/Loss_function">loss function</a> over our dataset. A commonly
 used one is the least square error:
-</br>$$L(w) = \sum\limits_{i=0}^n(f(x_i,w) - y_i)^2$$</br>
+<center>$$L(w) = \sum\limits_{i=0}^n(f(x_i,w) - y_i)^2$$</center>
 The idea is to use this value to modify our randomly initialized weight matrix till the time we stop observing the decrease in the loss function value.
-The method we'll use to modify the weight matrix is known as <a href="http://en.wikipedia.org/wiki/Gradient_descent">Gradient Descent</a>.
-</p>
+The method we'll use to modify the weight matrix is known as [Gradient Descent](http://en.wikipedia.org/wiki/Gradient_descent).
+<center>$$w = w + \alpha\Delta L(w)$$</center>
+here 
+
+- $$\alpha$$ is the learning rate and $$\Delta L(w)$$ is the
 
 
 
