@@ -25,20 +25,38 @@ Linear regression is the simplest form of regression.  We model our system with 
 <p>Looking at the data we can say that we don't need a complex model and linear regression is good enough for our purpose. </p>
 
 <h2 class="section-heading">Training a model</h2>
-</br><center><canvas id="artificialneuron" width="500" heigth="400"></canvas></center></br>
+</br></br><center><canvas id="artificialneuron" width="500" heigth="400"></canvas></center></br>
 <p>
-Our neuron will receive two values as an input. One of them is the actual value from the data and the other is a bias value.
+Our neuron will receive two values as an input. One of them is the actual value from the data and the other is a bias value. We usually include the bias 
+value along with the input feature matrix x.
 <blockquote>
 b is the bias, a term that shifts the decision boundary away from the origin and does not depend on any input value.
 <p align="right">- <a href="http://en.wikipedia.org/wiki/Perceptron">Wikipedia</a></p>
 </blockquote>
-</p>
-Since we want to linearly fit the data, we'll use the linear activation function. Hence when our neuron
+
+Since we want to linearly fit the data, we'll use the linear activation function. When our neuron
 will receive the inputs, we'll calculate the weighted sum and consider that as our output from the neuron.
-$$f(x,w) = \phi(\sum\limits_{i=0}^n(w_i x_i)) = \sum\limits_{i=0}^n(w_i x_i) = w^Tx$$ &nbsp;
-We then try to figure out how close our neuron output or prediction is from the actual answer, i.e. we'll apply a <ahref src="http://en.wikipedia.org/wiki/Loss_function">loss function</a> over our dataset. A commonly
+$$f(x_i,w) = \phi(\sum\limits_{j=0}^n(w^j x_i^j)) = \sum\limits_{j=0}^n(w^j x_i^j) = w^Tx_i$$
+where 
+</p>
+
+<p>
+<ul>
+<li> i represents a row of a matrix</li>
+<li> j represetns an element of a matrix</li>
+</ul>
+</p>
+
+<p>
+The other way to look at our setup is that we are trying to fit a line to the data represented as
+</br>$$y_i = w^0x_i^0 + w^1b$$</br>
+</p>
+<p>
+We then try to figure out how close our neuron output or prediction is from the actual answer, i.e. we'll apply a <a href src="http://en.wikipedia.org/wiki/Loss_function">loss function</a> over our dataset. A commonly
 used one is the least square error:
-</br>$$L(w) = \sum\limits_{i=0}^n(f(x_i,w) - y_i)$$</br>
+</br>$$L(w) = \sum\limits_{i=0}^n(f(x_i,w) - y_i)^2$$</br>
+The idea is to use this value to modify our randomly initialized weight matrix till the time we stop observing the decrease in the loss function value.
+The method we'll use to modify the weight matrix is know as <a href src="http://en.wikipedia.org/wiki/Gradient_descent">Gradient Descent</a>.
 </p>
 
 
@@ -58,9 +76,9 @@ used one is the least square error:
   var _ancanvas = document.getElementById("artificialneuron");
   var _anctx = _ancanvas.getContext("2d");
   var neuronIn1 = new neuron(_anctx, 50, 40, neuronRadius,"b");
-  var neuronIn2 = new neuron(_anctx, 50, 110, neuronRadius, "x_i");
+  var neuronIn2 = new neuron(_anctx, 50, 110, neuronRadius, "x_i^j");
   var	hiddenLayer= new neuron(_anctx, 200, 75, neuronRadius);
-  _anctx.mathText("f(w^Tx)",200,120,{"text-align": "center"});
+  _anctx.mathText("f(x_i, w)",200,120,{"text-align": "center"});
   var neuronOut = new neuron(_anctx, 350, 75, neuronRadius,"y");
   //input to hidden layer
   connectLayers([neuronIn1, neuronIn2], [hiddenLayer]);
