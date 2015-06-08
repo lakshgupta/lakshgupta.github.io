@@ -56,22 +56,25 @@ where
 The other way to look at our setup is that we are trying to fit a line to the data represented as
 
 
-<center>$$y_i = w^0x_i^0 + w^1b$$</center>
-
-
-We then try to figure out how close our neuron output or prediction is from the actual answer, i.e. we'll apply a <a href="http://en.wikipedia.org/wiki/Loss_function">loss function</a> over our dataset. A commonly
+We then try to figure out how close our neuron output or prediction is from the actual answer, i.e. we'll apply a <a href="http://en.wikipedia.org/wiki/Loss_function">loss function</a>, also known as a cost function over our dataset. A commonly
 used one is the least square error:
-<center>$$L(w) = \sum\limits_{i=0}^n(f(x_i,w) - y_i)^2$$</center>
-The idea is to use this value to modify our randomly initialized weight matrix till the time we stop observing the decrease in the loss function value.
+<center>$$J(w) = \sum\limits_{i=0}^n(f(x_i,w) - y_i)^2$$</center>
+The idea is to use this value to modify our randomly initialized weight matrix till the time we stop observing the decrease in the cost function value.
 The method we'll use to modify the weight matrix is known as [Gradient Descent](http://en.wikipedia.org/wiki/Gradient_descent).
-<center>$$w = w + \alpha\Delta L(w)$$</center>
+<center>$$w = w + \alpha\Delta J(w)$$</center>
 here 
 
 - $$w$$ is the weight matrix
 - $$\alpha$$ is the learning rate 
-- $$\Delta L(w)$$ is the gradient of the loss function with respect to each of the weight under consideration
+- $$\Delta J(w)$$ is the gradient of the cost function with respect to each of the weight under consideration say weight for the connection between a neuron $$j$$ and a neuron $$k$$
 
 
+$$\frac{\partial}{\partial w_{jk}} J(w) = \sum\limits_{i=0}^n 2\left(f(x_i, w)-y_i\right) \frac{\partial}{\partial w_{jk}} f(x_i, w) $$
+
+So let us train the model and see how it is behaving. Make sure you see the plot of the data before you proceed with the training.
+<button onclick="train()">Click me</button>
+<center><canvas id="fitData" width="500" heigth="400"></canvas></center>
+<center><canvas id="loss" width="500" heigth="400"></canvas></center>
 
 <!-- ############# JAVASCRIPT ############-->
 <script language="javascript" type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/numeric/1.2.6/numeric.js" charset="utf-8"></script>
@@ -97,6 +100,8 @@ here
   //hidden to output layer
   connectLayers([hiddenLayer], [neuronOut]);
   
+  var iterations = 1500;
+  var alpha = 0.01;
   
   function setup(){
     loadTable("{{ site.baseurl }}/data/ex1data1.txt","CSV",linReg);
@@ -106,8 +111,7 @@ here
     var rowCount = table.rows.length - 1;
     var X = Array.matrix(rowCount, 2, 0);
     var Y = Array.matrix(rowCount, 1, 0);
-    var iterations = 1500;
-    var alpha = 0.01;
+    
     //var theta = numeric.random([2,1]);
     var theta = Array.matrix(2,1,0);
     var xMax = table.getNum(0,0);
@@ -149,6 +153,12 @@ here
     //predict the values
   }
   
+  function gradientDescent(x,y,theta,alpha,itr){
+    
+    
+  }
+  
+  //loss function
   function computeCost(x,y, theta){
     var m = 1;
     if(Array.isArray(x)){
