@@ -8,8 +8,7 @@ header-img: "img/maggie-bg.jpg"
 ---
 
 
-Alright, in the last [post](http://lakshgupta.github.io/2015/05/21/ArtificialNeuron/) we looked at the very basic building block of a neural network: a neuron. But what could possibly a single neuron be 
-good for? Well, as I mentioned in my last post it can be used to learn very simple models. Let us try to solve a linear regression problem using a neuron. 
+Alright, in the last [post](http://lakshgupta.github.io/2015/05/21/ArtificialNeuron/) we looked at the very basic building block of a neural network: a neuron. But what could possibly a single neuron be good for? Well, as I mentioned in my last post it can be used to learn very simple models. Let us try to solve a linear regression problem using a neuron. 
 
 
 <blockquote>
@@ -44,8 +43,7 @@ b is the bias, a term that shifts the decision boundary away from the origin and
 <p align="right">- <a href="http://en.wikipedia.org/wiki/Perceptron">Wikipedia</a></p>
 </blockquote>
 
-Since we want to linearly fit the data, we'll use the linear activation function. When our neuron
-will receive the inputs, we'll calculate the weighted sum and consider that as our output from the neuron.
+Since we want to linearly fit the data, we'll use the linear activation function. When our neuron will receive the inputs, we'll calculate the weighted sum and consider that as our output from the neuron.
 <center>$$f(x_i,w) = \phi(\sum\limits_{j=0}^n(w^j x_i^j)) = \sum\limits_{j=0}^n(w^j x_i^j) = w^Tx_i$$</center>
 where 
 
@@ -56,11 +54,9 @@ where
 The other way to look at our setup is that we are trying to fit a line to the data represented as
 
 
-We then try to figure out how close our neuron output or prediction is from the actual answer, i.e. we'll apply a <a href="http://en.wikipedia.org/wiki/Loss_function">loss function</a>, also known as a cost function over our dataset. A commonly
-used one is the least square error:
+We then try to figure out how close our neuron output or prediction is from the actual answer, i.e. we'll apply a <a href="http://en.wikipedia.org/wiki/Loss_function">loss function</a>, also known as a cost function over our dataset. A commonly used one is the least square error:
 <center>$$J(w) = \sum\limits_{i=0}^n(f(x_i,w) - y_i)^2$$</center>
-The idea is to use this value to modify our randomly initialized weight matrix till the time we stop observing the decrease in the cost function value.
-The method we'll use to modify the weight matrix is known as [Gradient Descent](http://en.wikipedia.org/wiki/Gradient_descent).
+The idea is to use this value to modify our randomly initialized weight matrix till the time we stop observing the decrease in the cost function value. The method we'll use to modify the weight matrix is known as [Gradient Descent](http://en.wikipedia.org/wiki/Gradient_descent).
 <center>$$w = w + \alpha\Delta J(w)$$</center>
 here 
 
@@ -71,8 +67,8 @@ here
 
 $$\frac{\partial}{\partial w_{jk}} J(w) = \sum\limits_{i=0}^n 2\left(f(x_i, w)-y_i\right) \frac{\partial}{\partial w_{jk}} f(x_i, w) $$
 
-So let us train the model and see how it is behaving. Make sure you see the plot of the data before you proceed with the training.
-<button onclick="train()">Click me</button>
+So let us train the model and see how it is behaving.
+
 <center><canvas id="fitData" width="500" heigth="400"></canvas></center>
 <center><canvas id="loss" width="500" heigth="400"></canvas></center>
 
