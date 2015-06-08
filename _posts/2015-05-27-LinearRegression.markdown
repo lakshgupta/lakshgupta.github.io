@@ -34,8 +34,7 @@ Looking at the data we can say that we don't need a complex model and linear reg
 
 <center><canvas id="artificialneuron" width="500" heigth="400"></canvas></center>
 
-Our neuron will receive two values as an input. One of them is the actual value from the data and the other is a bias value. We usually include the bias 
-value along with the input feature matrix x.
+Our neuron will receive two values as an input. One of them is the actual value from the data and the other is a bias value. We usually include the bias value along with the input feature matrix x.
 
 
 <blockquote>
@@ -52,6 +51,8 @@ where
 
 
 The other way to look at our setup is that we are trying to fit a line to the data represented as
+
+$$y_i = w^0x_i^0 + w^1b$$
 
 
 We then try to figure out how close our neuron output or prediction is from the actual answer, i.e. we'll apply a <a href="http://en.wikipedia.org/wiki/Loss_function">loss function</a>, also known as a cost function over our dataset. A commonly used one is the least square error:
@@ -107,7 +108,8 @@ So let us train the model and see how it is behaving.
     var rowCount = table.rows.length - 1;
     var X = Array.matrix(rowCount, 2, 0);
     var Y = Array.matrix(rowCount, 1, 0);
-    
+    var J_history = Array.matrix(iterations,1, 0);
+    var m = X.length;
     //var theta = numeric.random([2,1]);
     var theta = Array.matrix(2,1,0);
     var xMax = table.getNum(0,0);
@@ -143,16 +145,23 @@ So let us train the model and see how it is behaving.
     console.log(computeCost(X,Y, theta));
     
     //run gradient descent
+    for(var i=0;i<iterations;i++){
+	    var tempTheta = theta;
+	    //for each weight
+	    for (var j=0; j < theta.length; j++){
+	      //for each input row
+		    var correction = (1/m)*numeric.sub(numeric.dot(X, tempTheta), y).*X(:,i));
+		    theta[i][0] = theta[i][0] - (alpha*correction);
+      }
+      //Save the cost J in every iteration    
+      J_history[i] = computeCost(X, y, theta);
+    }
     
     //plot the linear fit
     
     //predict the values
   }
   
-  function gradientDescent(x,y,theta,alpha,itr){
-    
-    
-  }
   
   //loss function
   function computeCost(x,y, theta){
