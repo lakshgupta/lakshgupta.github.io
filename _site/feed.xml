@@ -5,8 +5,8 @@
     <description>A Blog for Some Stuff</description>
     <link>http://lakshgupta.github.io/</link>
     <atom:link href="http://lakshgupta.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>2015-06-06 20:57:46 -0700</pubDate>
-    <lastBuildDate>2015-06-06 20:57:46 -0700</lastBuildDate>
+    <pubDate>2015-06-06 21:05:51 -0700</pubDate>
+    <lastBuildDate>2015-06-06 21:05:51 -0700</lastBuildDate>
     <generator>Jekyll v</generator>
     
       <item>
@@ -62,7 +62,9 @@ The method we’ll use to modify the weight matrix is known as &lt;a href=&quot;
 &lt;p&gt;here &lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;\alpha&lt;/script&gt; is the learning rate and &lt;script type=&quot;math/tex&quot;&gt;\Delta L(w)&lt;/script&gt; is the&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;w&lt;/script&gt; is the weight matrix&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;\alpha&lt;/script&gt; is the learning rate &lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;\Delta L(w)&lt;/script&gt; is the gradient of the loss function with respect to each of the weight under consideration&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;!-- ############# JAVASCRIPT ############--&gt;

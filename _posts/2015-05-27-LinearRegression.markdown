@@ -67,7 +67,9 @@ The method we'll use to modify the weight matrix is known as [Gradient Descent](
 <center>$$w = w + \alpha\Delta L(w)$$</center>
 here 
 
-- $$\alpha$$ is the learning rate and $$\Delta L(w)$$ is the
+- $$w$$ is the weight matrix
+- $$\alpha$$ is the learning rate 
+- $$\Delta L(w)$$ is the gradient of the loss function with respect to each of the weight under consideration
 
 
 
