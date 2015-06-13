@@ -4,7 +4,7 @@ title:      "Linear Regression"
 subtitle:   "Fundamentals of Neural Network 2"
 date:       2015-05-27 12:00:00
 author:     "Laksh Gupta"
-header-img: "img/maggie-bg.jpg"
+header-img: "img/sd2-bg.jpg"
 ---
 
 
@@ -58,7 +58,7 @@ $$y_i = w^0x_i^0 + w^1b$$
 We then try to figure out how close our neuron output or prediction is from the actual answer, i.e. we'll apply a <a href="http://en.wikipedia.org/wiki/Loss_function">loss function</a>, also known as a cost function over our dataset. A commonly used one is the least square error:
 <center>$$J(w) = \sum\limits_{i=0}^n(f(x_i,w) - y_i)^2$$</center>
 The idea is to use this value to modify our randomly initialized weight matrix till the time we stop observing the decrease in the cost function value. The method we'll use to modify the weight matrix is known as [Gradient Descent](http://en.wikipedia.org/wiki/Gradient_descent).
-<center>$$w = w + \alpha\Delta J(w)$$</center>
+<center>$$w = w - \alpha\Delta J(w)$$</center>
 here 
 
 - $$w$$ is the weight matrix
@@ -150,7 +150,8 @@ So let us train the model and see how it is behaving.
 	    //for each weight
 	    for (var j=0; j < theta.length; j++){
 	      //for each input row
-		    var correction = (1/m)*numeric.sub(numeric.dot(X, tempTheta), y).*X(:,i));
+	      
+		    var correction = *numeric.sub(numeric.dot(X, tempTheta), Y).*X(:,i));
 		    theta[i][0] = theta[i][0] - (alpha*correction);
       }
       //Save the cost J in every iteration    
@@ -169,6 +170,6 @@ So let us train the model and see how it is behaving.
     if(Array.isArray(x)){
       m = x.length;
     } 
-    return numeric.sum(numeric.pow(numeric.sub(numeric.dot(x, theta), y),2))/(2*m);
+    return numeric.sum(numeric.pow(numeric.sub(numeric.dot(x, theta), y),2));///(2*m);
   };
 </script>
