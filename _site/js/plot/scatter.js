@@ -136,8 +136,30 @@ scatter.prototype.plot = function(){
     context.closePath();
     context.fill();
   }
-  
-   
 };
+
+//plot the line
+scatter.prototype.plotLine = function(theta){
+ 
+  var yDataRange = ymax - ymin;
+  var xDataRange = xmax - xmin;
+  var chartHeight = hei- CHART_PADDING*2;
+  var chartWidth = wid- CHART_PADDING*2;
+  var yPos;
+  var xPos;
+  context.fillStyle = "red";
+  
+  for(var i=0; i<x.length;i++){
+    xPos = CHART_PADDING + (x[i][0]-xmin)/
+    xDataRange * chartWidth;
+    yPos = (hei - CHART_PADDING) -(numeric.dot(x[i], theta) - ymin)/yDataRange * chartHeight;
+    //context.fillRect(xPos-4 ,yPos-4,8,8);
+    context.beginPath();
+    context.arc(xPos, yPos, 2, 0, 2 * Math.PI);
+    context.closePath();
+    context.fill();
+  }
+};
+
 
 

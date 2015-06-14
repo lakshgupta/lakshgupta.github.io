@@ -69,14 +69,19 @@ here
 
 $$\frac{\partial}{\partial w_{jk}} J(w) = \sum\limits_{i=0}^n 2\left(f(x_i, w)-y_i\right) \frac{\partial}{\partial w_{jk}} f(x_i, w) $$
 
-<!--So let us train the model and see how it is behaving.-->
 After the gradient descent step, to make a prediction we just need to use the modified weight matrix and apply the same function we used above:
 <center>$$f(x_i,w) = w^Tx_i$$</center>
 
+So let us train the model and see how it is behaving by plotting the results of the above equation in red using the weight matrix and the x-axis.
+<center>
+<canvas id="fitData" height="400px" width="600">
+This text is displayed if your browser does not support HTML5 Canvas.
+</canvas>
+</center>
 
-<!--<center><canvas id="fitData" width="500" height="400"></canvas></center>
-<center><canvas id="loss" width="500" height="400"></canvas></center>
--->
+
+
+
 
 
 <!-- ############# JAVASCRIPT ############-->
@@ -103,7 +108,7 @@ After the gradient descent step, to make a prediction we just need to use the mo
   //hidden to output layer
   connectLayers([hiddenLayer], [neuronOut]);
   
-  var iterations = 10;//1500;
+  var iterations = 500;//1500;
   var learningRate = 0.01;
   
   function setup(){
@@ -175,12 +180,12 @@ After the gradient descent step, to make a prediction we just need to use the mo
     //console.log(J_history);
     
     //plot the linear fit
-   // var fitChartInfo= { y:{min:yMin, max:yMax, steps:5,label:"cost"},
-     //                 x:{min:xMin, max:xMax, steps:5,label:"iterations"}
-    //};
-    //var fitPlot = new scatter("fitData",fitChartInfo, X, Y);
-    //var fitPlot2 = new scatter("loss",fitChartInfo, Y, X);
-    //predict the values
+    var fitChartInfo= { y:{min:yMin, max:yMax, steps:5,label:"Profit in $10,000s"},
+                      x:{min:xMin, max:xMax, steps:5,label:"Population of City in 10,000s"}
+    };
+    var fitPlot = new scatter("fitData",fitChartInfo, X, Y);
+    fitPlot.plotLine(theta);
+    
   }
   
   

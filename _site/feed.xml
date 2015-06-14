@@ -5,9 +5,20 @@
     <description>A Blog for Some Stuff</description>
     <link>http://lakshgupta.github.io/</link>
     <atom:link href="http://lakshgupta.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>2015-06-13 19:52:56 -0700</pubDate>
-    <lastBuildDate>2015-06-13 19:52:56 -0700</lastBuildDate>
+    <pubDate>2015-06-14 02:46:23 -0700</pubDate>
+    <lastBuildDate>2015-06-14 02:46:23 -0700</lastBuildDate>
     <generator>Jekyll v</generator>
+    
+      <item>
+        <title>Word Vectors</title>
+        <description>
+</description>
+        <pubDate>2015-06-12 05:00:00 -0700</pubDate>
+        <link>http://lakshgupta.github.io/2015/06/12/Word+Vectors/</link>
+        <guid isPermaLink="true">http://lakshgupta.github.io/2015/06/12/Word+Vectors/</guid>
+        
+        
+      </item>
     
       <item>
         <title>Linear Regression</title>
@@ -65,13 +76,15 @@ b is the bias, a term that shifts the decision boundary away from the origin and
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;\frac{\partial}{\partial w_{jk}} J(w) = \sum\limits_{i=0}^n 2\left(f(x_i, w)-y_i\right) \frac{\partial}{\partial w_{jk}} f(x_i, w) &lt;/script&gt;
 
-&lt;!--So let us train the model and see how it is behaving.--&gt;
 &lt;p&gt;After the gradient descent step, to make a prediction we just need to use the modified weight matrix and apply the same function we used above:&lt;/p&gt;
 &lt;center&gt;$$f(x_i,w) = w^Tx_i$$&lt;/center&gt;
 
-&lt;!--&lt;center&gt;&lt;canvas id=&quot;fitData&quot; width=&quot;500&quot; height=&quot;400&quot;&gt;&lt;/canvas&gt;&lt;/center&gt;
-&lt;center&gt;&lt;canvas id=&quot;loss&quot; width=&quot;500&quot; height=&quot;400&quot;&gt;&lt;/canvas&gt;&lt;/center&gt;
---&gt;
+&lt;p&gt;So let us train the model and see how it is behaving by plotting the results of the above equation in red using the weight matrix and the x-axis.&lt;/p&gt;
+&lt;center&gt;
+&lt;canvas id=&quot;fitData&quot; height=&quot;400px&quot; width=&quot;600&quot;&gt;
+This text is displayed if your browser does not support HTML5 Canvas.
+&lt;/canvas&gt;
+&lt;/center&gt;
 
 &lt;!-- ############# JAVASCRIPT ############--&gt;
 &lt;script language=&quot;javascript&quot; type=&quot;text/javascript&quot; src=&quot;http://cdnjs.cloudflare.com/ajax/libs/numeric/1.2.6/numeric.js&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;
@@ -103,7 +116,7 @@ b is the bias, a term that shifts the decision boundary away from the origin and
   //hidden to output layer
   connectLayers([hiddenLayer], [neuronOut]);
   
-  var iterations = 10;//1500;
+  var iterations = 500;//1500;
   var learningRate = 0.01;
   
   function setup(){
@@ -175,12 +188,12 @@ b is the bias, a term that shifts the decision boundary away from the origin and
     //console.log(J_history);
     
     //plot the linear fit
-   // var fitChartInfo= { y:{min:yMin, max:yMax, steps:5,label:&quot;cost&quot;},
-     //                 x:{min:xMin, max:xMax, steps:5,label:&quot;iterations&quot;}
-    //};
-    //var fitPlot = new scatter(&quot;fitData&quot;,fitChartInfo, X, Y);
-    //var fitPlot2 = new scatter(&quot;loss&quot;,fitChartInfo, Y, X);
-    //predict the values
+    var fitChartInfo= { y:{min:yMin, max:yMax, steps:5,label:&quot;Profit in $10,000s&quot;},
+                      x:{min:xMin, max:xMax, steps:5,label:&quot;Population of City in 10,000s&quot;}
+    };
+    var fitPlot = new scatter(&quot;fitData&quot;,fitChartInfo, X, Y);
+    fitPlot.plotLine(theta);
+    
   }
   
   

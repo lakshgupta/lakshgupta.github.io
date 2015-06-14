@@ -85,7 +85,7 @@
                 <div class="post-heading">
                     <h1>Linear Regression</h1>
                     
-                    <h2 class="subheading">Fundamentals of Neural Network 2</h2>
+                    <h2 class="subheading">what can a neuron do</h2>
                     
                     <span class="meta">Posted <!--by Laksh Gupta-->on May 27, 2015
 		     &nbsp; <a href="https://twitter.com/share" class="twitter-share-button" data-via="lakshgupta_">Tweet</a>
@@ -158,13 +158,15 @@ b is the bias, a term that shifts the decision boundary away from the origin and
 
 <script type="math/tex; mode=display">\frac{\partial}{\partial w_{jk}} J(w) = \sum\limits_{i=0}^n 2\left(f(x_i, w)-y_i\right) \frac{\partial}{\partial w_{jk}} f(x_i, w) </script>
 
-<!--So let us train the model and see how it is behaving.-->
 <p>After the gradient descent step, to make a prediction we just need to use the modified weight matrix and apply the same function we used above:</p>
 <center>$$f(x_i,w) = w^Tx_i$$</center>
 
-<!--<center><canvas id="fitData" width="500" height="400"></canvas></center>
-<center><canvas id="loss" width="500" height="400"></canvas></center>
--->
+<p>So let us train the model and see how it is behaving by plotting the results of the above equation in red using the weight matrix and the x-axis.</p>
+<center>
+<canvas id="fitData" height="400px" width="600">
+This text is displayed if your browser does not support HTML5 Canvas.
+</canvas>
+</center>
 
 <!-- ############# JAVASCRIPT ############-->
 <script language="javascript" type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/numeric/1.2.6/numeric.js" charset="utf-8"></script>
@@ -196,7 +198,7 @@ b is the bias, a term that shifts the decision boundary away from the origin and
   //hidden to output layer
   connectLayers([hiddenLayer], [neuronOut]);
   
-  var iterations = 10;//1500;
+  var iterations = 500;//1500;
   var learningRate = 0.01;
   
   function setup(){
@@ -268,12 +270,12 @@ b is the bias, a term that shifts the decision boundary away from the origin and
     //console.log(J_history);
     
     //plot the linear fit
-   // var fitChartInfo= { y:{min:yMin, max:yMax, steps:5,label:"cost"},
-     //                 x:{min:xMin, max:xMax, steps:5,label:"iterations"}
-    //};
-    //var fitPlot = new scatter("fitData",fitChartInfo, X, Y);
-    //var fitPlot2 = new scatter("loss",fitChartInfo, Y, X);
-    //predict the values
+    var fitChartInfo= { y:{min:yMin, max:yMax, steps:5,label:"Profit in $10,000s"},
+                      x:{min:xMin, max:xMax, steps:5,label:"Population of City in 10,000s"}
+    };
+    var fitPlot = new scatter("fitData",fitChartInfo, X, Y);
+    fitPlot.plotLine(theta);
+    
   }
   
   
@@ -296,6 +298,10 @@ b is the bias, a term that shifts the decision boundary away from the origin and
                         <a href="/2015/05/21/ArtificialNeuron/" data-toggle="tooltip" data-placement="top" title="Artificial Neuron">&larr; Previous Post</a>
                     </li>
                     
+                    
+                    <li class="next">
+                        <a href="/2015/06/12/Word+Vectors/" data-toggle="tooltip" data-placement="top" title="Word Vectors">Next Post &rarr;</a>
+                    </li>
                     
                 </ul>
 
