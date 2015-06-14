@@ -32,7 +32,7 @@ Looking at the data we can say that we don't need a complex model and linear reg
 <h2 class="section-heading">Training a model</h2>
 
 
-<center><canvas id="artificialneuron" width="500" heigth="400"></canvas></center>
+<center><canvas id="artificialneuron" width="500" height="150"></canvas></center>
 
 Our neuron will receive two values as an input. One of them is the actual value from the data and the other is a bias value. We usually include the bias value along with the input feature matrix x.
 
@@ -58,20 +58,26 @@ $$y_i = w^0x_i^0 + w^1b$$
 We then try to figure out how close our neuron output or prediction is from the actual answer, i.e. we'll apply a <a href="http://en.wikipedia.org/wiki/Loss_function">loss function</a>, also known as a cost function over our dataset. A commonly used one is the least square error:
 <center>$$J(w) = \sum\limits_{i=0}^n(f(x_i,w) - y_i)^2$$</center>
 The idea is to use this value to modify our randomly initialized weight matrix till the time we stop observing the decrease in the cost function value. The method we'll use to modify the weight matrix is known as [Gradient Descent](http://en.wikipedia.org/wiki/Gradient_descent).
-<center>$$w = w - \alpha\Delta J(w)$$</center>
+<center>$$w = w - \frac{\alpha}{m}\Delta J(w)$$</center>
 here 
 
 - $$w$$ is the weight matrix
-- $$\alpha$$ is the learning rate 
+- $$\alpha$$ is the learning rate
+- $$m$$ is the size of our data acting as a normalizing factor
 - $$\Delta J(w)$$ is the gradient of the cost function with respect to each of the weight under consideration say weight for the connection between a neuron $$j$$ and a neuron $$k$$
 
 
 $$\frac{\partial}{\partial w_{jk}} J(w) = \sum\limits_{i=0}^n 2\left(f(x_i, w)-y_i\right) \frac{\partial}{\partial w_{jk}} f(x_i, w) $$
 
-So let us train the model and see how it is behaving.
+<!--So let us train the model and see how it is behaving.-->
+After the gradient descent step, to make a prediction we just need to use the modified weight matrix and apply the same function we used above:
+<center>$$f(x_i,w) = w^Tx_i$$</center>
 
-<center><canvas id="fitData" width="500" heigth="400"></canvas></center>
-<center><canvas id="loss" width="500" heigth="400"></canvas></center>
+
+<!--<center><canvas id="fitData" width="500" height="400"></canvas></center>
+<center><canvas id="loss" width="500" height="400"></canvas></center>
+-->
+
 
 <!-- ############# JAVASCRIPT ############-->
 <script language="javascript" type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/numeric/1.2.6/numeric.js" charset="utf-8"></script>
@@ -97,8 +103,8 @@ So let us train the model and see how it is behaving.
   //hidden to output layer
   connectLayers([hiddenLayer], [neuronOut]);
   
-  var iterations = 1500;
-  var alpha = 0.01;
+  var iterations = 10;//1500;
+  var learningRate = 0.01;
   
   function setup(){
     loadTable("{{ site.baseurl }}/data/ex1data1.txt","CSV",linReg);
@@ -142,24 +148,38 @@ So let us train the model and see how it is behaving.
     var inputPlot = new scatter("inputData",chartInfo, X, Y);
         
     //compute initial cost
-    console.log(computeCost(X,Y, theta));
+    console.log("Initial cost: "+ computeCost(X,Y, theta));
     
     //run gradient descent
+    var itrArray = Array.matrix(iterations,1,0);
     for(var i=0;i<iterations;i++){
 	    var tempTheta = theta;
 	    //for each weight
+	    var subCorrection1 = numeric.sub(numeric.dot(X, tempTheta), Y);
 	    for (var j=0; j < theta.length; j++){
 	      //for each input row
-	      
-		    var correction = *numeric.sub(numeric.dot(X, tempTheta), Y).*X(:,i));
-		    theta[i][0] = theta[i][0] - (alpha*correction);
+	      var subCorrection = subCorrection1;
+	      for(var k=0;k<m;k++){
+		      subCorrection[k] = subCorrection[k]*X[k][j];
+	      }
+	      //console.log(subCorrection);
+	      var correction = (learningRate/m) * numeric.sum(subCorrection);
+	      subCorrection = [];
+		    //console.log(correction);
+		    theta[j][0] = theta[j][0] - correction;
       }
       //Save the cost J in every iteration    
       J_history[i] = computeCost(X, y, theta);
+      itrArray[i] = i;
     }
+    //console.log(J_history);
     
     //plot the linear fit
-    
+   // var fitChartInfo= { y:{min:yMin, max:yMax, steps:5,label:"cost"},
+     //                 x:{min:xMin, max:xMax, steps:5,label:"iterations"}
+    //};
+    //var fitPlot = new scatter("fitData",fitChartInfo, X, Y);
+    //var fitPlot2 = new scatter("loss",fitChartInfo, Y, X);
     //predict the values
   }
   
