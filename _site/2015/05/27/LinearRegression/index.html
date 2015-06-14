@@ -198,7 +198,7 @@ This text is displayed if your browser does not support HTML5 Canvas.
   //hidden to output layer
   connectLayers([hiddenLayer], [neuronOut]);
   
-  var iterations = 500;//1500;
+  var iterations = 1000;//1500;
   var learningRate = 0.01;
   
   function setup(){
@@ -209,7 +209,7 @@ This text is displayed if your browser does not support HTML5 Canvas.
     var rowCount = table.rows.length - 1;
     var X = Array.matrix(rowCount, 2, 0);
     var Y = Array.matrix(rowCount, 1, 0);
-    var J_history = Array.matrix(iterations,1, 0);
+    J_history = Array.matrix(iterations,1, 0);
     var m = X.length;
     //var theta = numeric.random([2,1]);
     var theta = Array.matrix(2,1,0);
@@ -244,36 +244,46 @@ This text is displayed if your browser does not support HTML5 Canvas.
         
     //compute initial cost
     console.log("Initial cost: "+ computeCost(X,Y, theta));
-    
+    console.log("Initial theta: "+theta);
     //run gradient descent
-    var itrArray = Array.matrix(iterations,1,0);
     for(var i=0;i<iterations;i++){
 	    var tempTheta = theta;
+	    //console.log("gradient descent theta: " +theta);
 	    //for each weight
 	    var subCorrection1 = numeric.sub(numeric.dot(X, tempTheta), Y);
-	    for (var j=0; j < theta.length; j++){
-	      //for each input row
-	      var subCorrection = subCorrection1;
-	      for(var k=0;k<m;k++){
-		      subCorrection[k] = subCorrection[k]*X[k][j];
-	      }
-	      //console.log(subCorrection);
-	      var correction = (learningRate/m) * numeric.sum(subCorrection);
-	      subCorrection = [];
-		    //console.log(correction);
-		    theta[j][0] = theta[j][0] - correction;
+	    //console.log("subCorrection1: "+subCorrection1);
+	    
+	    for (var j=0; j < theta.length; j++)
+	    {
+	        //console.log("weight: "+j);
+	        //for each input row
+	        var subCorrection2 = subCorrection1.slice(0);
+	        for(var k=0;k<m;k++)
+	        {
+	          //console.log("before subCorrection2[k]: "+ subCorrection2[k]);
+		        subCorrection2[k] = subCorrection2[k]*X[k][j];
+		        //console.log("x val: "+ X[k][j]);
+		        //console.log("after subCorrection2[k]: "+ subCorrection2[k]);
+	        }
+	        //console.log(subCorrection2);
+	        correction = (learningRate/m) * numeric.sum(subCorrection2);
+	        subCorrection2 = new Array();// = [];
+	        //console.log("after haha subcorrection2: "+subCorrection2);
+	        //console.log("after haha subcorrection1: "+subCorrection1);
+		      //console.log("correction: "+correction);
+		      theta[j] = theta[j] - correction;
       }
       //Save the cost J in every iteration    
       J_history[i] = computeCost(X, y, theta);
-      itrArray[i] = i;
     }
-    //console.log(J_history);
-    
+    console.log("Cost history: "+J_history);
+    console.log("Final theta: "+ theta);
     //plot the linear fit
     var fitChartInfo= { y:{min:yMin, max:yMax, steps:5,label:"Profit in $10,000s"},
                       x:{min:xMin, max:xMax, steps:5,label:"Population of City in 10,000s"}
     };
     var fitPlot = new scatter("fitData",fitChartInfo, X, Y);
+    //console.log(theta);
     fitPlot.plotLine(theta);
     
   }
