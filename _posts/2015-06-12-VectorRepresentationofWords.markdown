@@ -10,7 +10,7 @@ header-img: "img/sd3-bg.jpg"
 Before moving on to see how we can connect several neurons together to make a more powerful model of a brain, let us see how we can process the textual information to create a vector representation, also known as word embeddings or word vectors, which can be used as an input to a neural network. 
 
 <h2 class="section-heading">One-Hot Vector</h2>
-This is the most simplest one where for each word we create a vector of length equal to the size of the vocabulary, $$R^{\left\|V\right\|}$$. We fill the vector with $$1$$ at the index of the word, rest all $$0$$. 
+This is the most simplest one where for each word we create a vector of length equal to the size of the vocabulary, $$R^{\left\|V\right\|}$$. We fill the vector with $$1$$ at the index of the word, rest all $$0s$$. 
 
 $$W^{apple} = 
 \begin{bmatrix}
@@ -62,6 +62,11 @@ You shall know a word by the company it keeps (Firth, J. R. 1957:11)
 <h2 class="section-heading">Word-Document Matrix</h2>
 
 <h2 class="section-heading">Word-Word Matrix</h2>
+
+<h2 class="section-heading">Continuous Bag of Words Model (CBOW)</h2>
+
+<h2 class="section-heading">Skip-Gram Model</h2>
+
 
 ---
 
