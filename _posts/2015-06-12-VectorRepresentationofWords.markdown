@@ -68,7 +68,7 @@ In this approach, we create a matrix where a column represents a document and a 
 
 In this case, we build a co-occurance matrix where both columns and rows represent words from the vocabulary. The benefit of building this matrix is that the co-occurance value of the words which are highly likely to come together in a sentence will always be high as compared to the words which rarely come together. Hence we should be fine once we have a descent sized dataset or say documents. Also, the size of the matrix dependent now on the size of the vocabulary, $$R^{\left\|VxV\right\|}$$.
 
-The beauty of the last two appraoches is that we can further apply [Singular-Value-Decomposition](https://en.wikipedia.org/wiki/Singular_value_decomposition) (SVD) on the matrix and further reduce the dimentionality. Let us see an example on the Word-Word matrix. Consider our data to have the following 3 sentence:
+The beauty of the last two approaches is that we can further apply [Singular-Value-Decomposition](https://en.wikipedia.org/wiki/Singular_value_decomposition) (SVD) on the matrix and further reduce the dimentionality. Let us see an example on the Word-Word matrix. Consider our data to have the following 3 sentence:
 
 - I enjoy driving.
 - I like banana.
@@ -89,7 +89,7 @@ words & \text{I} & \text{enjoy} & \text{driving} & \text{like} & \text{banana} &
 \end{array}
 $$
 
-Applying SVD on our matrix X will give us $$USV^T$$ decomposition.
+Applying SVD on our matrix $$X$$ will give us $$USV^T$$ decomposition.
 
 
 
