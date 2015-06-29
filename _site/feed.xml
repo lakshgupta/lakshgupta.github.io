@@ -5,8 +5,8 @@
     <description>A Blog for Some Stuff</description>
     <link>http://lakshgupta.github.io/</link>
     <atom:link href="http://lakshgupta.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>2015-06-19 22:04:21 -0700</pubDate>
-    <lastBuildDate>2015-06-19 22:04:21 -0700</lastBuildDate>
+    <pubDate>2015-06-28 17:54:50 -0700</pubDate>
+    <lastBuildDate>2015-06-28 17:54:50 -0700</lastBuildDate>
     <generator>Jekyll v</generator>
     
       <item>
@@ -57,6 +57,8 @@ W^{queen} =
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;(W^{apple})^TW^{banana}=(W^{king})^TW^{queen}=0&lt;/script&gt;
 
+&lt;p&gt;Also, each vector would be very sparse. Hence this approach requires large space to encode all our words in the vector form.&lt;/p&gt;
+
 &lt;blockquote&gt;
 You shall know a word by the company it keeps (Firth, J. R. 1957:11)
 &lt;p align=&quot;right&quot;&gt;- &lt;a href=&quot;https://en.wikipedia.org/wiki/John_Rupert_Firth&quot;&gt;Wikipedia&lt;/a&gt;&lt;/p&gt;
@@ -64,7 +66,35 @@ You shall know a word by the company it keeps (Firth, J. R. 1957:11)
 
 &lt;h2 class=&quot;section-heading&quot;&gt;Word-Document Matrix&lt;/h2&gt;
 
+&lt;p&gt;In this approach, we create a matrix where a column represents a document and a row represent the frequency of a word in the document. This matrix scales with the number of documents (&lt;script type=&quot;math/tex&quot;&gt;D&lt;/script&gt;). The matrix size would be &lt;script type=&quot;math/tex&quot;&gt;D.V&lt;/script&gt; where &lt;script type=&quot;math/tex&quot;&gt;V&lt;/script&gt; is the size of the vocabulary.&lt;/p&gt;
+
 &lt;h2 class=&quot;section-heading&quot;&gt;Word-Word Matrix&lt;/h2&gt;
+
+&lt;p&gt;In this case, we build a co-occurance matrix where both columns and rows represent words from the vocabulary. The benefit of building this matrix is that the co-occurance value of the words which are highly likely to come together in a sentence will always be high as compared to the words which rarely come together. Hence we should be fine once we have a descent sized dataset or say documents. Also, the size of the matrix dependent now on the size of the vocabulary, &lt;script type=&quot;math/tex&quot;&gt;V.V&lt;/script&gt;.&lt;/p&gt;
+
+&lt;p&gt;The beauty of the last two appraoches is that we can further apply &lt;a href=&quot;https://en.wikipedia.org/wiki/Singular_value_decomposition&quot;&gt;Singular-Value-Decomposition&lt;/a&gt; (SVD)^3 on the matrix and further reduce the dimentionality. Let us see an example on the Word-Word matrix. Consider our data to have the following 3 sentence:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;I enjoy driving.&lt;/li&gt;
+  &lt;li&gt;I like banana.&lt;/li&gt;
+  &lt;li&gt;I like reading.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The co-occurance matrix will look like:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+X = 
+\begin{array}{c|lcr}
+n &amp; \text{I} &amp; \text{enjoy} &amp; \text{driving} &amp; \text{like} &amp; \text{banana} &amp; \text{reading} \\
+\hline
+\text{I} &amp; 0 &amp; 1 &amp; 0 &amp; 2 &amp; 0 &amp; 0 \\
+\text{enjoy} &amp; 1 &amp; 0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 \\
+\text{driving} &amp; 0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\
+\text{like} &amp; 2 &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 1 \\
+\text{banana} &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 \\
+\text{reading} &amp; 0 &amp; 0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 \\
+\end{array}
+ %]]&gt;&lt;/script&gt;
 
 &lt;h2 class=&quot;section-heading&quot;&gt;Continuous Bag of Words Model (CBOW)&lt;/h2&gt;
 
@@ -74,9 +104,10 @@ You shall know a word by the company it keeps (Firth, J. R. 1957:11)
 
 &lt;p&gt;References:&lt;/p&gt;
 
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;http://arxiv.org/abs/1003.1141&quot;&gt;From Frequency to Meaning: Vector Space Models of Semantics&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
+&lt;ol&gt;
+  &lt;li&gt;&lt;a href=&quot;http://arxiv.org/abs/1301.3781&quot;&gt;Efficient Estimation of Word Representations in Vector Space&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.ling.ohio-state.edu/~kbaker/pubs/Singular_Value_Decomposition_Tutorial.pdf&quot;&gt;Singular Value Decomposition Tutorial PDF&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
 
 </description>
         <pubDate>2015-06-12 05:00:00 -0700</pubDate>

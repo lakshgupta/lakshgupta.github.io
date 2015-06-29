@@ -53,6 +53,7 @@ All these vectors are independent to each other. Hence this representation doesn
 
 $$(W^{apple})^TW^{banana}=(W^{king})^TW^{queen}=0$$
 
+Also, each vector would be very sparse. Hence this approach requires large space to encode all our words in the vector form.
 
 <blockquote>
 You shall know a word by the company it keeps (Firth, J. R. 1957:11)
@@ -61,7 +62,36 @@ You shall know a word by the company it keeps (Firth, J. R. 1957:11)
 
 <h2 class="section-heading">Word-Document Matrix</h2>
 
+In this approach, we create a matrix where a column represents a document and a row represent the frequency of a word in the document. This matrix scales with the number of documents ($$D$$). The matrix size would be $$R^{\left\|DxV\right\|}$$ where $$V$$ is the size of the vocabulary.
+
 <h2 class="section-heading">Word-Word Matrix</h2>
+
+In this case, we build a co-occurance matrix where both columns and rows represent words from the vocabulary. The benefit of building this matrix is that the co-occurance value of the words which are highly likely to come together in a sentence will always be high as compared to the words which rarely come together. Hence we should be fine once we have a descent sized dataset or say documents. Also, the size of the matrix dependent now on the size of the vocabulary, $$R^{\left\|VxV\right\|}$$.
+
+The beauty of the last two appraoches is that we can further apply [Singular-Value-Decomposition](https://en.wikipedia.org/wiki/Singular_value_decomposition) (SVD) on the matrix and further reduce the dimentionality. Let us see an example on the Word-Word matrix. Consider our data to have the following 3 sentence:
+
+- I enjoy driving.
+- I like banana.
+- I like reading.
+
+The co-occurance matrix will look like:
+
+$$X = 
+\begin{array}{c|lcr}
+words & \text{I} & \text{enjoy} & \text{driving} & \text{like} & \text{banana} & \text{reading} \\
+\hline
+\text{I} & 0 & 1 & 0 & 2 & 0 & 0 \\
+\text{enjoy} & 1 & 0 & 1 & 0 & 0 & 0 \\
+\text{driving} & 0 & 1 & 0 & 0 & 0 & 0 \\
+\text{like} & 2 & 0 & 0 & 0 & 1 & 1 \\
+\text{banana} & 0 & 0 & 0 & 1 & 0 & 0 \\
+\text{reading} & 0 & 0 & 0 & 1 & 0 & 0 \\
+\end{array}
+$$
+
+Applying SVD on our matrix X will give us $$USV^T$$ decomposition.
+
+
 
 <h2 class="section-heading">Continuous Bag of Words Model (CBOW)</h2>
 
@@ -72,5 +102,10 @@ You shall know a word by the company it keeps (Firth, J. R. 1957:11)
 
 References:
 
-- [From Frequency to Meaning: Vector Space Models of Semantics](http://arxiv.org/abs/1003.1141)
+1. [From Frequency to Meaning: Vector Space Models of Semantics](http://arxiv.org/abs/1003.1141)
+2. [Efficient Estimation of Word Representations in Vector Space](http://arxiv.org/abs/1301.3781)
+3. [Singular Value Decomposition Tutorial PDF](https://www.ling.ohio-state.edu/~kbaker/pubs/Singular_Value_Decomposition_Tutorial.pdf)
 
+<script language="javascript"> 
+
+</script>
