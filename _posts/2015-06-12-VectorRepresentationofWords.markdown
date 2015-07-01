@@ -62,13 +62,13 @@ You shall know a word by the company it keeps (Firth, J. R. 1957:11)
 
 <h2 class="section-heading">Word-Document Matrix</h2>
 
-In this approach, we create a matrix where a column represents a document and a row represent the frequency of a word in the document. This matrix scales with the number of documents ($$D$$). The matrix size would be $$R^{\left\|DxV\right\|}$$ where $$V$$ is the size of the vocabulary.
+In this approach, we create a matrix where a column represents a document and a row represents the frequency of a word in the document. This matrix scales with the number of documents ($$D$$). The matrix size would be $$R^{\left\|D*V\right\|}$$ where $$V$$ is the size of the vocabulary.
 
 <h2 class="section-heading">Word-Word Matrix</h2>
 
-In this case, we build a co-occurence matrix where both columns and rows represent words from the vocabulary. The benefit of building this matrix is that the co-occurence value of the words which are highly likely to come together in a sentence will always be high as compared to the words which rarely come together. Hence we should be fine once we have a descent sized dataset or say documents. Also, the size of the matrix dependent now on the size of the vocabulary, $$R^{\left\|VxV\right\|}$$.
+In this case, we build a co-occurence matrix where both columns and rows represent words from the vocabulary. The benefit of building this matrix is that the co-occurence value of the words which are highly likely to come together in a sentence will always be high as compared to the words which rarely come together. Hence we should be fine once we have a descent sized dataset or say documents. Also, the size of the matrix dependent now on the size of the vocabulary, $$R^{\left\|V*V\right\|}$$.
 
-The beauty of the last two approaches is that we can further apply [Singular-Value-Decomposition](https://en.wikipedia.org/wiki/Singular_value_decomposition) (SVD) on the matrix and further reduce the dimentionality. Let us see an example on the Word-Word matrix. Consider our data to have the following 3 sentence:
+The beauty of the last two approaches is that we can apply [Singular-Value-Decomposition](https://en.wikipedia.org/wiki/Singular_value_decomposition) (SVD) on the matrix and further reduce the dimentionality. Let us see an example on the Word-Word matrix. Consider our data to have the following 3 sentence:
 
 - I enjoy driving.
 - I like banana.
@@ -89,9 +89,12 @@ words & \text{I} & \text{enjoy} & \text{driving} & \text{like} & \text{banana} &
 \end{array}
 $$
 
-Applying SVD on our matrix $$X$$ will give us $$USV^T$$ decomposition.
+In [Julia](http://julia.readthedocs.org/en/latest/stdlib/linalg/), applying SVD on our matrix $$X$$ will give us $$U$$, $$S$$ and $$V$$ where: 
+
+<center>$$A == U*diagm(S)*V^T$$</center>
 
 
+<iframe class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1" seamless="seamless" src="{{ site.baseurl }}/notebooks/wordVec_SVD.html"><iframe>
 
 <h2 class="section-heading">Continuous Bag of Words Model (CBOW)</h2>
 
@@ -102,9 +105,9 @@ Applying SVD on our matrix $$X$$ will give us $$USV^T$$ decomposition.
 
 References:
 
-1. [From Frequency to Meaning: Vector Space Models of Semantics](http://arxiv.org/abs/1003.1141)
-2. [Efficient Estimation of Word Representations in Vector Space](http://arxiv.org/abs/1301.3781)
-3. [Singular Value Decomposition Tutorial PDF](https://www.ling.ohio-state.edu/~kbaker/pubs/Singular_Value_Decomposition_Tutorial.pdf)
+- [From Frequency to Meaning: Vector Space Models of Semantics](http://arxiv.org/abs/1003.1141)
+- [Efficient Estimation of Word Representations in Vector Space](http://arxiv.org/abs/1301.3781)
+- [Singular Value Decomposition Tutorial PDF](https://www.ling.ohio-state.edu/~kbaker/pubs/Singular_Value_Decomposition_Tutorial.pdf)
 
 <script language="javascript"> 
 
