@@ -5,8 +5,8 @@
     <description>A Blog for Some Stuff</description>
     <link>http://lakshgupta.github.io/</link>
     <atom:link href="http://lakshgupta.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>2015-07-01 08:21:03 -0700</pubDate>
-    <lastBuildDate>2015-07-01 08:21:03 -0700</lastBuildDate>
+    <pubDate>2015-07-01 08:39:31 -0700</pubDate>
+    <lastBuildDate>2015-07-01 08:39:31 -0700</lastBuildDate>
     <generator>Jekyll v</generator>
     
       <item>
@@ -100,7 +100,11 @@ words &amp; \text{I} &amp; \text{enjoy} &amp; \text{driving} &amp; \text{like} &
 
 &lt;center&gt;$$A == U*diagm(S)*V^T$$&lt;/center&gt;
 
-&lt;iframe class=&quot;col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1&quot; seamless=&quot;seamless&quot; src=&quot;/notebooks/wordVec_SVD.html&quot;&gt;&lt;iframe&gt;
+&lt;p&gt;
+&lt;iframe seamless=&quot;seamless&quot; src=&quot;/notebooks/wordVec_SVD.html&quot;&gt;&lt;iframe&gt;
+
+
+We are mostly concerned here with the $$U$$ matrix.
 
 &lt;h2 class=&quot;section-heading&quot;&gt;Continuous Bag of Words Model (CBOW)&lt;/h2&gt;
 
@@ -118,7 +122,7 @@ References:
 &lt;script language=&quot;javascript&quot;&gt; 
 
 &lt;/script&gt;
-&lt;/iframe&gt;&lt;/iframe&gt;
+&lt;/iframe&gt;&lt;/iframe&gt;&lt;/p&gt;
 </description>
         <pubDate>2015-06-12 05:00:00 -0700</pubDate>
         <link>http://lakshgupta.github.io/2015/06/12/VectorRepresentationofWords/</link>

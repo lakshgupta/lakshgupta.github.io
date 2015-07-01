@@ -93,8 +93,11 @@ In [Julia](http://julia.readthedocs.org/en/latest/stdlib/linalg/), applying SVD 
 
 <center>$$A == U*diagm(S)*V^T$$</center>
 
+<p>
+<iframe seamless="seamless" src="{{ site.baseurl }}/notebooks/wordVec_SVD.html"><iframe></br>
+</p>
 
-<iframe class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1" seamless="seamless" src="{{ site.baseurl }}/notebooks/wordVec_SVD.html"><iframe>
+We are mostly concerned here with the $$U$$ matrix.
 
 <h2 class="section-heading">Continuous Bag of Words Model (CBOW)</h2>
 
