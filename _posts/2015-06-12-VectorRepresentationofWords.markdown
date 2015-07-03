@@ -94,7 +94,7 @@ In [Julia](http://julia.readthedocs.org/en/latest/stdlib/linalg/), applying SVD 
 <center>$$A == U*diagm(S)*V^T$$</center>
 
 <p>
-<iframe seamless="seamless" src="{{ site.baseurl }}/notebooks/wordVec_SVD.html"><iframe></br>
+<iframe height="500" src="{{ site.baseurl }}/notebooks/wordVec_SVD.html"></iframe></br>
 </p>
 
 We are mostly concerned here with the $$U$$ matrix.

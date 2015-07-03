@@ -5,8 +5,8 @@
     <description>A Blog for Some Stuff</description>
     <link>http://lakshgupta.github.io/</link>
     <atom:link href="http://lakshgupta.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>2015-07-01 08:39:31 -0700</pubDate>
-    <lastBuildDate>2015-07-01 08:39:31 -0700</lastBuildDate>
+    <pubDate>2015-07-03 11:51:35 -0700</pubDate>
+    <lastBuildDate>2015-07-03 11:51:35 -0700</lastBuildDate>
     <generator>Jekyll v</generator>
     
       <item>
@@ -101,28 +101,29 @@ words &amp; \text{I} &amp; \text{enjoy} &amp; \text{driving} &amp; \text{like} &
 &lt;center&gt;$$A == U*diagm(S)*V^T$$&lt;/center&gt;
 
 &lt;p&gt;
-&lt;iframe seamless=&quot;seamless&quot; src=&quot;/notebooks/wordVec_SVD.html&quot;&gt;&lt;iframe&gt;
+&lt;iframe height=&quot;500&quot; src=&quot;/notebooks/wordVec_SVD.html&quot;&gt;&lt;/iframe&gt;
+&lt;/p&gt;
 
-
-We are mostly concerned here with the $$U$$ matrix.
+&lt;p&gt;We are mostly concerned here with the &lt;script type=&quot;math/tex&quot;&gt;U&lt;/script&gt; matrix.&lt;/p&gt;
 
 &lt;h2 class=&quot;section-heading&quot;&gt;Continuous Bag of Words Model (CBOW)&lt;/h2&gt;
 
 &lt;h2 class=&quot;section-heading&quot;&gt;Skip-Gram Model&lt;/h2&gt;
 
+&lt;hr /&gt;
 
----
+&lt;p&gt;References:&lt;/p&gt;
 
-References:
-
-- [From Frequency to Meaning: Vector Space Models of Semantics](http://arxiv.org/abs/1003.1141)
-- [Efficient Estimation of Word Representations in Vector Space](http://arxiv.org/abs/1301.3781)
-- [Singular Value Decomposition Tutorial PDF](https://www.ling.ohio-state.edu/~kbaker/pubs/Singular_Value_Decomposition_Tutorial.pdf)
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://arxiv.org/abs/1003.1141&quot;&gt;From Frequency to Meaning: Vector Space Models of Semantics&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://arxiv.org/abs/1301.3781&quot;&gt;Efficient Estimation of Word Representations in Vector Space&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.ling.ohio-state.edu/~kbaker/pubs/Singular_Value_Decomposition_Tutorial.pdf&quot;&gt;Singular Value Decomposition Tutorial PDF&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;script language=&quot;javascript&quot;&gt; 
 
 &lt;/script&gt;
-&lt;/iframe&gt;&lt;/iframe&gt;&lt;/p&gt;
+
 </description>
         <pubDate>2015-06-12 05:00:00 -0700</pubDate>
         <link>http://lakshgupta.github.io/2015/06/12/VectorRepresentationofWords/</link>
