@@ -68,36 +68,11 @@ In this approach, we create a matrix where a column represents a document and a 
 
 In this case, we build a co-occurence matrix where both columns and rows represent words from the vocabulary. The benefit of building this matrix is that the co-occurence value of the words which are highly likely to come together in a sentence will always be high as compared to the words which rarely come together. Hence we should be fine once we have a descent sized dataset or say documents. Also, the size of the matrix dependent now on the size of the vocabulary, $$R^{\left\|V*V\right\|}$$.
 
-The beauty of the last two approaches is that we can apply [Singular-Value-Decomposition](https://en.wikipedia.org/wiki/Singular_value_decomposition) (SVD) on the matrix and further reduce the dimentionality. Let us see an example on the Word-Word matrix. Consider our data to have the following 3 sentence:
+The beauty of the last two approaches is that we can apply [Singular-Value-Decomposition](https://en.wikipedia.org/wiki/Singular_value_decomposition) (SVD) on the matrix and further reduce the dimentionality. Let us see an example on the Word-Word matrix.
 
-- I enjoy driving.
-- I like banana.
-- I like reading.
-
-The co-occurence matrix will look like:
-
-$$X = 
-\begin{array}{c|lcr}
-words & \text{I} & \text{enjoy} & \text{driving} & \text{like} & \text{banana} & \text{reading} \\
-\hline
-\text{I} & 0 & 1 & 0 & 2 & 0 & 0 \\
-\text{enjoy} & 1 & 0 & 1 & 0 & 0 & 0 \\
-\text{driving} & 0 & 1 & 0 & 0 & 0 & 0 \\
-\text{like} & 2 & 0 & 0 & 0 & 1 & 1 \\
-\text{banana} & 0 & 0 & 0 & 1 & 0 & 0 \\
-\text{reading} & 0 & 0 & 0 & 1 & 0 & 0 \\
-\end{array}
-$$
-
-In [Julia](http://julia.readthedocs.org/en/latest/stdlib/linalg/), applying SVD on our matrix $$X$$ will give us $$U$$, $$S$$ and $$V$$ where: 
-
-<center>$$A == U*diagm(S)*V^T$$</center>
-
-<p>
+<div>
 <iframe height="500" src="{{ site.baseurl }}/notebooks/wordVec_SVD.html"></iframe></br>
-</p>
-
-We are mostly concerned here with the $$U$$ matrix.
+</div>
 
 <h2 class="section-heading">Continuous Bag of Words Model (CBOW)</h2>
 
@@ -111,6 +86,7 @@ References:
 - [From Frequency to Meaning: Vector Space Models of Semantics](http://arxiv.org/abs/1003.1141)
 - [Efficient Estimation of Word Representations in Vector Space](http://arxiv.org/abs/1301.3781)
 - [Singular Value Decomposition Tutorial PDF](https://www.ling.ohio-state.edu/~kbaker/pubs/Singular_Value_Decomposition_Tutorial.pdf)
+- [Dimensionality Reduction](http://infolab.stanford.edu/~ullman/mmds/ch11.pdf)
 
 <script language="javascript"> 
 
