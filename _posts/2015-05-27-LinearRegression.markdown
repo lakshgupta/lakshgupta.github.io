@@ -69,8 +69,6 @@ here
 
 $$\frac{\partial}{\partial w_{jk}} J(w) = \sum\limits_{i=0}^n 2\left(f(x_i, w)-y_i\right) \frac{\partial}{\partial w_{jk}} f(x_i, w) $$
 
-After the gradient descent step, to make a prediction we just need to use the modified weight matrix and apply the same function we used above:
-<center>$$f(x_i,w) = w^Tx_i$$</center>
 
 So let us train the model and see how it is behaving by plotting the results of the above equation in red using the weight matrix and the x-axis.
 <center>
@@ -80,7 +78,9 @@ This text is displayed if your browser does not support HTML5 Canvas.
 </center>
 
 
-
+<h2 class="section-heading">Making a Prediction</h2>
+To make a prediction we just need to use the modified weight matrix, obtained after the gradient descent step, along with the new input values and apply the same function we used above:
+<center>$$f(x_i,w) = w^Tx_i$$</center>
 
 
 

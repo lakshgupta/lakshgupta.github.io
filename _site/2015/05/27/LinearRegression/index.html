@@ -164,15 +164,16 @@ b is the bias, a term that shifts the decision boundary away from the origin and
 
 <script type="math/tex; mode=display">\frac{\partial}{\partial w_{jk}} J(w) = \sum\limits_{i=0}^n 2\left(f(x_i, w)-y_i\right) \frac{\partial}{\partial w_{jk}} f(x_i, w) </script>
 
-<p>After the gradient descent step, to make a prediction we just need to use the modified weight matrix and apply the same function we used above:</p>
-<center>$$f(x_i,w) = w^Tx_i$$</center>
-
 <p>So let us train the model and see how it is behaving by plotting the results of the above equation in red using the weight matrix and the x-axis.</p>
 <center>
 <canvas id="fitData" height="400px" width="600">
 This text is displayed if your browser does not support HTML5 Canvas.
 </canvas>
 </center>
+
+<h2 class="section-heading">Making a Prediction</h2>
+<p>After the gradient descent step, to make a prediction we just need to use the modified weight matrix along with the new input values, and apply the same function we used above:</p>
+<center>$$f(x_i,w) = w^Tx_i$$</center>
 
 <!-- ############# JAVASCRIPT ############-->
 <script language="javascript" type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/numeric/1.2.6/numeric.js" charset="utf-8"></script>

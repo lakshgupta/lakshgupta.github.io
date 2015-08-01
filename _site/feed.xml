@@ -5,8 +5,8 @@
     <description>A Blog for Some Stuff</description>
     <link>http://lakshgupta.github.io/</link>
     <atom:link href="http://lakshgupta.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>2015-07-05 18:33:56 -0700</pubDate>
-    <lastBuildDate>2015-07-05 18:33:56 -0700</lastBuildDate>
+    <pubDate>2015-08-01 19:03:54 +0000</pubDate>
+    <lastBuildDate>2015-08-01 19:03:54 +0000</lastBuildDate>
     <generator>Jekyll v</generator>
     
       <item>
@@ -98,7 +98,7 @@ You shall know a word by the company it keeps (Firth, J. R. 1957:11)
 &lt;/script&gt;
 
 </description>
-        <pubDate>2015-06-12 05:00:00 -0700</pubDate>
+        <pubDate>2015-06-12 12:00:00 +0000</pubDate>
         <link>http://lakshgupta.github.io/2015/06/12/VectorRepresentationofWords/</link>
         <guid isPermaLink="true">http://lakshgupta.github.io/2015/06/12/VectorRepresentationofWords/</guid>
         
@@ -161,15 +161,16 @@ b is the bias, a term that shifts the decision boundary away from the origin and
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;\frac{\partial}{\partial w_{jk}} J(w) = \sum\limits_{i=0}^n 2\left(f(x_i, w)-y_i\right) \frac{\partial}{\partial w_{jk}} f(x_i, w) &lt;/script&gt;
 
-&lt;p&gt;After the gradient descent step, to make a prediction we just need to use the modified weight matrix and apply the same function we used above:&lt;/p&gt;
-&lt;center&gt;$$f(x_i,w) = w^Tx_i$$&lt;/center&gt;
-
 &lt;p&gt;So let us train the model and see how it is behaving by plotting the results of the above equation in red using the weight matrix and the x-axis.&lt;/p&gt;
 &lt;center&gt;
 &lt;canvas id=&quot;fitData&quot; height=&quot;400px&quot; width=&quot;600&quot;&gt;
 This text is displayed if your browser does not support HTML5 Canvas.
 &lt;/canvas&gt;
 &lt;/center&gt;
+
+&lt;h2 class=&quot;section-heading&quot;&gt;Making a Prediction&lt;/h2&gt;
+&lt;p&gt;After the gradient descent step, to make a prediction we just need to use the modified weight matrix along with the new input values, and apply the same function we used above:&lt;/p&gt;
+&lt;center&gt;$$f(x_i,w) = w^Tx_i$$&lt;/center&gt;
 
 &lt;!-- ############# JAVASCRIPT ############--&gt;
 &lt;script language=&quot;javascript&quot; type=&quot;text/javascript&quot; src=&quot;http://cdnjs.cloudflare.com/ajax/libs/numeric/1.2.6/numeric.js&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;
@@ -303,7 +304,7 @@ This text is displayed if your browser does not support HTML5 Canvas.
 &lt;/script&gt;
 
 </description>
-        <pubDate>2015-05-27 05:00:00 -0700</pubDate>
+        <pubDate>2015-05-27 12:00:00 +0000</pubDate>
         <link>http://lakshgupta.github.io/2015/05/27/LinearRegression/</link>
         <guid isPermaLink="true">http://lakshgupta.github.io/2015/05/27/LinearRegression/</guid>
         
@@ -439,7 +440,7 @@ tanhcontext.fillText('tanh', 10, tanhCanv.height-5);
 &lt;/script&gt;
 
 </description>
-        <pubDate>2015-05-21 05:00:00 -0700</pubDate>
+        <pubDate>2015-05-21 12:00:00 +0000</pubDate>
         <link>http://lakshgupta.github.io/2015/05/21/ArtificialNeuron/</link>
         <guid isPermaLink="true">http://lakshgupta.github.io/2015/05/21/ArtificialNeuron/</guid>
         
