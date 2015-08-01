@@ -8,7 +8,7 @@ header-img: "img/sd2-bg.jpg"
 ---
 
 
-Alright, in the last [post](http://lakshgupta.github.io/2015/05/21/ArtificialNeuron/) we looked at the very basic building block of a neural network: a neuron. But what could possibly a single neuron be good for? Well, as I mentioned in my last post it can be used to learn very simple models. Let us try to solve a linear regression problem using a neuron. 
+Alright, in the last [post](http://lakshgupta.github.io/2015/05/21/ArtificialNeuron/) we looked at the very basic building block of a neural network: a neuron. But what could possibly a single neuron be good for? Well, as I mentioned in my last post it can be used to learn very simple models. Let us try to solve a linear regression problem using a neuron.
 
 
 <blockquote>

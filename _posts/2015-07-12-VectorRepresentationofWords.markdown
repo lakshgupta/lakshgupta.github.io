@@ -2,9 +2,9 @@
 layout:     post
 title:      "Vector Representation of Words"
 subtitle:   "text data as an input"
-date:       2015-06-12 12:00:00
+date:       2015-07-12 12:00:00
 author:     "Laksh Gupta"
-header-img: "img/sd3-bg.jpg"
+header-img: "img/sd4-bg.jpg"
 ---
 
 Before moving on to see how we can connect several neurons together to make a more powerful model of a brain, let us see how we can process the textual information to create a vector representation, also known as word embeddings or word vectors, which can be used as an input to a neural network. 

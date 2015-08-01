@@ -34,10 +34,15 @@
             src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
     </script>
     
+    <!-- for embedding jupyter notebook -->
+    <!-- embed notebook in an iframe-->
     <style>
     iframe{
         width: 100%;
         }
     </style>
+    <!-- CSS from notebook HTML file-->
+    <link rel="stylesheet" href="{{ "/css/nb_staticHTML.css" | prepend: site.baseurl }}">
+    <link rel="stylesheet" href="{{ "/css/nb_format.css" | prepend: site.baseurl }}">
 
 </head>
