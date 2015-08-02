@@ -36,7 +36,25 @@
     <script type="text/javascript"
             src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
     </script>
-    
+    <!-- MathJax configuration -->
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+            processEscapes: true,
+            processEnvironments: true
+        },
+        // Center justify equations in code and markdown cells. Elsewhere
+        // we use CSS to left justify single line equations in code cells.
+        displayAlign: 'center',
+        "HTML-CSS": {
+            styles: {'.MathJax_Display': {"margin": 0}},
+            linebreaks: { automatic: true }
+        }
+    });
+    </script>
+    <!-- End of mathjax configuration -->
     <!-- for embedding jupyter notebook -->
     <!-- embed notebook in an iframe-->
     <style>
@@ -118,29 +136,27 @@
 				<div tabindex="-1" id="notebook" class="border-box-sizing">
     <div class="container" id="notebook-container">
 
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Single neuron has limited computational power and hence we need a way to build a network of neurons to make a more complex model. In this post we will look into how to construct a neural network and try to solve the handwritten digit recognition problem.</p>
+<p><img src="/img/nn/300px-Colored_neural_network.svg.png" alt="img src" />
+We'll use the <a href="http://yann.lecun.com/exdb/mnist/">MNIST dataset</a>. Luckily, <a href="https://github.com/johnmyleswhite/MNIST.jl">John Myles White</a> has already created a package to import this dataset in Julia.</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-julia"><pre><span class="c">#Pkg.update();</span>
-<span class="c">#Pkg.clone(&quot;https://github.com/johnmyleswhite/MNIST.jl.git&quot;);</span>
-<span class="c">#Pkg.add(&quot;PyPlot&quot;)</span>
+<span class="n">Pkg</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="s">&quot;https://github.com/johnmyleswhite/MNIST.jl.git&quot;</span><span class="p">);</span>
+<span class="n">Pkg</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&quot;PyPlot&quot;</span><span class="p">)</span>
 <span class="c">#Pkg.installed();</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-julia"><pre><span class="k">using</span> <span class="n">MNIST</span>
-<span class="k">using</span> <span class="n">PyPlot</span>
 </pre></div>
 
 </div>
@@ -153,7 +169,13 @@
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stderr output_text">
-<pre>INFO: Loading help data...
+<pre>INFO: Cloning MNIST from https://github.com/johnmyleswhite/MNIST.jl.git
+INFO: Computing changes...
+INFO: No packages to install, update or remove
+INFO: Package database updated
+INFO: Nothing to be done
+INFO: METADATA is out-of-date — you may not have the latest version of PyPlot
+INFO: Use &#96;Pkg.update()&#96; to get the latest versions of your packages
 </pre>
 </div>
 </div>
@@ -162,14 +184,47 @@
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>For plotting, PyPlot is a good option. It provides a Julia interface to the Matplotlib plotting library from Python.</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-julia"><pre><span class="c">###########################################</span>
-<span class="c"># computes the sigmoid of z.</span>
-<span class="c">###########################################</span>
+<div class=" highlight hl-julia"><pre><span class="k">using</span> <span class="n">MNIST</span>
+<span class="k">using</span> <span class="n">PyPlot</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 class="section-heading">Activation Function</h2><p>Using a linear activation function does not give us much advantage. Linear function applied to a linear function is itself a linear function, and hence both the functions can be replaced by a single linear function. Moreover, generally speaking, real world problems are generally more complex. A linear activation function may not be a good fit for the dataset we have. Therefore if the data we wish to model is non-linear then we need to account for that in our model. Sigmoid activation function is a reasonably good non-linear activation function which we could use in our neural network.</p>
+$$sigmoid(z) = 1/(1 + e^{-z})$$<p><img src="/img/nn/400px-SigmoidFunction.png" alt="sigmoid" /></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span class="c"># computes the sigmoid of z</span>
 <span class="k">function</span><span class="nf"> sigmoid</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
   <span class="n">g</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">./</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">z</span><span class="p">));</span>
   <span class="k">return</span> <span class="n">g</span><span class="p">;</span>
@@ -184,7 +239,7 @@
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[3]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[4]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
@@ -197,15 +252,21 @@
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 class="section-heading">Cost Function</h2>
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-julia"><pre><span class="c">########################################################################</span>
-<span class="c"># computes the gradient of the sigmoid function</span>
-<span class="c"># evaluated at z.</span>
-<span class="c">########################################################################</span>
+<div class=" highlight hl-julia"><pre><span class="c"># computes the gradient of the sigmoid function evaluated at z</span>
 <span class="k">function</span><span class="nf"> sigmoidGradient</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
   <span class="n">g</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">z</span><span class="p">));</span>
   <span class="k">return</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="o">.*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">z</span><span class="p">));</span>
@@ -327,96 +388,6 @@
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-julia"><pre><span class="c">##########################################################################</span>
-<span class="c"># outputs the predicted label of X given the</span>
-<span class="c"># trained weights of a neural network (Theta1, Theta2)</span>
-<span class="c"># Similar to feedforward process.</span>
-<span class="c">##########################################################################</span>
-<span class="k">function</span><span class="nf"> predict</span><span class="p">(</span><span class="n">Theta1</span><span class="p">,</span> <span class="n">Theta2</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
-  <span class="n">m</span> <span class="o">=</span> <span class="n">size</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
-  <span class="n">num_labels</span> <span class="o">=</span> <span class="n">size</span><span class="p">(</span><span class="n">Theta2</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
-  <span class="n">p</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
-  <span class="n">h1</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">([</span><span class="n">ones</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="n">X</span><span class="p">]</span> <span class="o">*</span> <span class="n">Theta1</span><span class="o">&#39;</span><span class="p">);</span>
-  <span class="n">h2</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">([</span><span class="n">ones</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="n">h1</span><span class="p">]</span> <span class="o">*</span> <span class="n">Theta2</span><span class="o">&#39;</span><span class="p">);</span>
-  <span class="k">for</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">:</span><span class="n">m</span>
-    <span class="c"># sub 1 from the index since we are using 1 to represent 0, 2 for 3 and so on (while calculating yInter)</span>
-    <span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">indmax</span><span class="p">(</span><span class="n">h2</span><span class="p">[</span><span class="n">i</span><span class="p">,:])</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>
-  <span class="k">end</span>
- <span class="k">return</span> <span class="n">p</span><span class="p">;</span>
-<span class="k">end</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt output_prompt">Out[6]:</div>
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>predict (generic function with 1 method)</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-julia"><pre><span class="c">###############################################</span>
-<span class="c"># calculate the accuracy of the prediction</span>
-<span class="c">###############################################</span>
-<span class="k">function</span><span class="nf"> accuracy</span><span class="p">(</span><span class="n">truth</span><span class="p">,</span> <span class="n">prediction</span><span class="p">)</span>
-  <span class="n">m</span> <span class="o">=</span> <span class="n">length</span><span class="p">(</span><span class="n">truth</span><span class="p">);</span>
-  <span class="k">if</span> <span class="n">m</span><span class="o">!=</span><span class="n">length</span><span class="p">(</span><span class="n">prediction</span><span class="p">)</span>
-    <span class="nb">error</span><span class="p">(</span><span class="s">&quot;truth and prediction length mismatch&quot;</span><span class="p">);</span>
-  <span class="k">end</span>
-
-  <span class="n">sum</span> <span class="o">=</span><span class="mi">0</span><span class="p">;</span>
-  <span class="k">for</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">:</span><span class="n">m</span>
-    <span class="k">if</span> <span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span> <span class="o">==</span> <span class="n">pred</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span>
-      <span class="n">sum</span> <span class="o">=</span> <span class="n">sum</span> <span class="o">+</span><span class="mi">1</span><span class="p">;</span>
-    <span class="k">end</span>
-  <span class="k">end</span>
-  <span class="k">return</span> <span class="p">(</span><span class="n">sum</span><span class="o">/</span><span class="n">m</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="p">;</span>
-<span class="k">end</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt output_prompt">Out[7]:</div>
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>accuracy (generic function with 1 method)</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
 <div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
@@ -526,6 +497,44 @@
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 class="section-heading">Prediction and Accuracy</h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span class="c">##########################################################################</span>
+<span class="c"># outputs the predicted label of X given the</span>
+<span class="c"># trained weights of a neural network (Theta1, Theta2)</span>
+<span class="c"># Similar to feedforward process.</span>
+<span class="c">##########################################################################</span>
+<span class="k">function</span><span class="nf"> predict</span><span class="p">(</span><span class="n">Theta1</span><span class="p">,</span> <span class="n">Theta2</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
+  <span class="n">m</span> <span class="o">=</span> <span class="n">size</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+  <span class="n">num_labels</span> <span class="o">=</span> <span class="n">size</span><span class="p">(</span><span class="n">Theta2</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+  <span class="n">p</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
+  <span class="n">h1</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">([</span><span class="n">ones</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="n">X</span><span class="p">]</span> <span class="o">*</span> <span class="n">Theta1</span><span class="o">&#39;</span><span class="p">);</span>
+  <span class="n">h2</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">([</span><span class="n">ones</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="n">h1</span><span class="p">]</span> <span class="o">*</span> <span class="n">Theta2</span><span class="o">&#39;</span><span class="p">);</span>
+  <span class="k">for</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">:</span><span class="n">m</span>
+    <span class="c"># sub 1 from the index since we are using 1 to represent 0, 2 for 3 and so on (while calculating yInter)</span>
+    <span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">indmax</span><span class="p">(</span><span class="n">h2</span><span class="p">[</span><span class="n">i</span><span class="p">,:])</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+  <span class="k">end</span>
+ <span class="k">return</span> <span class="n">p</span><span class="p">;</span>
+<span class="k">end</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[24]:</div>
@@ -533,6 +542,35 @@
     <div class="input_area">
 <div class=" highlight hl-julia"><pre><span class="c"># make prediction</span>
 <span class="n">pred</span> <span class="o">=</span> <span class="n">predict</span><span class="p">(</span><span class="n">Theta1</span><span class="p">,</span> <span class="n">Theta2</span><span class="p">,</span> <span class="n">X</span><span class="p">);</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span class="c">###############################################</span>
+<span class="c"># calculate the accuracy of the prediction</span>
+<span class="c">###############################################</span>
+<span class="k">function</span><span class="nf"> accuracy</span><span class="p">(</span><span class="n">truth</span><span class="p">,</span> <span class="n">prediction</span><span class="p">)</span>
+  <span class="n">m</span> <span class="o">=</span> <span class="n">length</span><span class="p">(</span><span class="n">truth</span><span class="p">);</span>
+  <span class="k">if</span> <span class="n">m</span><span class="o">!=</span><span class="n">length</span><span class="p">(</span><span class="n">prediction</span><span class="p">)</span>
+    <span class="nb">error</span><span class="p">(</span><span class="s">&quot;truth and prediction length mismatch&quot;</span><span class="p">);</span>
+  <span class="k">end</span>
+
+  <span class="n">sum</span> <span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+  <span class="k">for</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">:</span><span class="n">m</span>
+    <span class="k">if</span> <span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span> <span class="o">==</span> <span class="n">pred</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span>
+      <span class="n">sum</span> <span class="o">=</span> <span class="n">sum</span> <span class="o">+</span><span class="mi">1</span><span class="p">;</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+  <span class="k">return</span> <span class="p">(</span><span class="n">sum</span><span class="o">/</span><span class="n">m</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="p">;</span>
+<span class="k">end</span>
 </pre></div>
 
 </div>
@@ -576,6 +614,16 @@
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>After calculating the accuracy on the train dataset, let's check the accuracy on the test dataset to be sure that we did not overfit the data.</p>
+
+</div>
+</div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
@@ -639,18 +687,7 @@
     </div>
   </div>
 
-<hr />
-
-<p>References:</p>
-
-<ul>
-  <li></li>
-</ul>
-
-<script language="javascript"> 
-
-</script>
-
+<p>&lt;/script&gt;</p>
 
                 <hr>
 
@@ -662,7 +699,7 @@
                     
                     
                     <li class="next">
-                        <a href="/2015/07/12/VectorRepresentationofWords/" data-toggle="tooltip" data-placement="top" title="Vector Representation of Words">Next Post &rarr;</a>
+                        <a href="/2015/07/12/VectorRepresentationofWords1/" data-toggle="tooltip" data-placement="top" title="Vector Representation of Words - 1">Next Post &rarr;</a>
                     </li>
                     
                 </ul>
