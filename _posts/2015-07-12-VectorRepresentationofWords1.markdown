@@ -523,19 +523,21 @@ singular values." - Jeffrey D. Ullman</p>
 </div>
 </div>
 </div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>References:</p>
+<ul>
+<li><a href="http://arxiv.org/abs/1003.1141">From Frequency to Meaning: Vector Space Models of Semantics</a></li>
+<li><a href="http://arxiv.org/abs/1301.3781">Efficient Estimation of Word Representations in Vector Space</a></li>
+<li><a href="https://www.ling.ohio-state.edu/~kbaker/pubs/Singular_Value_Decomposition_Tutorial.pdf">Singular Value Decomposition Tutorial PDF</a></li>
+<li><a href="http://infolab.stanford.edu/~ullman/mmds/ch11.pdf">Dimensionality Reduction</a></li>
+</ul>
+
+</div>
+</div>
+</div>
     </div>
   </div>
-
-
-<!-- References -->
-
-References:
-
-- [From Frequency to Meaning: Vector Space Models of Semantics](http://arxiv.org/abs/1003.1141)
-- [Efficient Estimation of Word Representations in Vector Space](http://arxiv.org/abs/1301.3781)
-- [Singular Value Decomposition Tutorial PDF](https://www.ling.ohio-state.edu/~kbaker/pubs/Singular_Value_Decomposition_Tutorial.pdf)
-- [Dimensionality Reduction](http://infolab.stanford.edu/~ullman/mmds/ch11.pdf)
-
-<script language="javascript"> 
-
-</script>

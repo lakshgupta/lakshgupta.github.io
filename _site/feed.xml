@@ -5,8 +5,8 @@
     <description>A Blog for Some Stuff</description>
     <link>http://lakshgupta.github.io/</link>
     <atom:link href="http://lakshgupta.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>2015-08-02 09:09:04 +0000</pubDate>
-    <lastBuildDate>2015-08-02 09:09:04 +0000</lastBuildDate>
+    <pubDate>2015-08-03 03:38:04 +0000</pubDate>
+    <lastBuildDate>2015-08-03 03:38:04 +0000</lastBuildDate>
     <generator>Jekyll v</generator>
     
       <item>
@@ -525,24 +525,24 @@ singular values.&quot; - Jeffrey D. Ullman&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-    &lt;/div&gt;
-  &lt;/div&gt;
-
-&lt;!-- References --&gt;
-
+&lt;div class=&quot;cell border-box-sizing text_cell rendered&quot;&gt;
+&lt;div class=&quot;prompt input_prompt&quot;&gt;
+&lt;/div&gt;
+&lt;div class=&quot;inner_cell&quot;&gt;
+&lt;div class=&quot;text_cell_render border-box-sizing rendered_html&quot;&gt;
 &lt;p&gt;References:&lt;/p&gt;
-
 &lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;http://arxiv.org/abs/1003.1141&quot;&gt;From Frequency to Meaning: Vector Space Models of Semantics&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://arxiv.org/abs/1301.3781&quot;&gt;Efficient Estimation of Word Representations in Vector Space&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.ling.ohio-state.edu/~kbaker/pubs/Singular_Value_Decomposition_Tutorial.pdf&quot;&gt;Singular Value Decomposition Tutorial PDF&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://infolab.stanford.edu/~ullman/mmds/ch11.pdf&quot;&gt;Dimensionality Reduction&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://arxiv.org/abs/1003.1141&quot;&gt;From Frequency to Meaning: Vector Space Models of Semantics&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://arxiv.org/abs/1301.3781&quot;&gt;Efficient Estimation of Word Representations in Vector Space&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://www.ling.ohio-state.edu/~kbaker/pubs/Singular_Value_Decomposition_Tutorial.pdf&quot;&gt;Singular Value Decomposition Tutorial PDF&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://infolab.stanford.edu/~ullman/mmds/ch11.pdf&quot;&gt;Dimensionality Reduction&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;script language=&quot;javascript&quot;&gt; 
-
-&lt;/script&gt;
-
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
 </description>
         <pubDate>2015-07-12 12:00:00 +0000</pubDate>
         <link>http://lakshgupta.github.io/2015/07/12/VectorRepresentationofWords1/</link>
@@ -1106,8 +1106,6 @@ $$sigmoid(z) = 1/(1 + e^{-z})$$&lt;p&gt;&lt;img src=&quot;/img/nn/400px-SigmoidF
 &lt;/div&gt;
     &lt;/div&gt;
   &lt;/div&gt;
-
-&lt;p&gt;&amp;lt;/script&amp;gt;&lt;/p&gt;
 </description>
         <pubDate>2015-06-12 12:00:00 +0000</pubDate>
         <link>http://lakshgupta.github.io/2015/06/12/NeuralNetwork/</link>
