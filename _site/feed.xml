@@ -5,8 +5,8 @@
     <description>A Blog for Some Stuff</description>
     <link>http://lakshgupta.github.io/</link>
     <atom:link href="http://lakshgupta.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>2015-08-03 05:03:10 +0000</pubDate>
-    <lastBuildDate>2015-08-03 05:03:10 +0000</lastBuildDate>
+    <pubDate>2015-08-07 03:28:35 +0000</pubDate>
+    <lastBuildDate>2015-08-07 03:28:35 +0000</lastBuildDate>
     <generator>Jekyll v</generator>
     
       <item>
@@ -530,8 +530,7 @@ singular values.&quot; - Jeffrey D. Ullman&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;inner_cell&quot;&gt;
 &lt;div class=&quot;text_cell_render border-box-sizing rendered_html&quot;&gt;
-&lt;p&gt;References:&lt;/p&gt;
-&lt;ul&gt;
+&lt;h2 class=&quot;section-heading&quot;&gt; References: &lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;http://arxiv.org/abs/1003.1141&quot;&gt;From Frequency to Meaning: Vector Space Models of Semantics&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;http://arxiv.org/abs/1301.3781&quot;&gt;Efficient Estimation of Word Representations in Vector Space&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;https://www.ling.ohio-state.edu/~kbaker/pubs/Singular_Value_Decomposition_Tutorial.pdf&quot;&gt;Singular Value Decomposition Tutorial PDF&lt;/a&gt;&lt;/li&gt;
@@ -540,6 +539,19 @@ singular values.&quot; - Jeffrey D. Ullman&lt;/p&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;cell border-box-sizing code_cell rendered&quot;&gt;
+&lt;div class=&quot;input&quot;&gt;
+&lt;div class=&quot;prompt input_prompt&quot;&gt;In&amp;nbsp;[&amp;nbsp;]:&lt;/div&gt;
+&lt;div class=&quot;inner_cell&quot;&gt;
+    &lt;div class=&quot;input_area&quot;&gt;
+&lt;div class=&quot; highlight hl-julia&quot;&gt;&lt;pre&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
 &lt;/div&gt;
     &lt;/div&gt;
   &lt;/div&gt;

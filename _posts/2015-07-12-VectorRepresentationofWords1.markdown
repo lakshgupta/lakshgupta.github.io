@@ -7,7 +7,7 @@ author:     "Laksh Gupta"
 header-img: "img/sd4-bg.jpg"
 ---
 
-<div tabindex="-1" id="notebook" class="border-box-sizing">
+ <div tabindex="-1" id="notebook" class="border-box-sizing">
     <div class="container" id="notebook-container">
 
 <div class="cell border-box-sizing text_cell rendered">
@@ -528,8 +528,7 @@ singular values." - Jeffrey D. Ullman</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>References:</p>
-<ul>
+<h2 class="section-heading"> References: </h2><ul>
 <li><a href="http://arxiv.org/abs/1003.1141">From Frequency to Meaning: Vector Space Models of Semantics</a></li>
 <li><a href="http://arxiv.org/abs/1301.3781">Efficient Estimation of Word Representations in Vector Space</a></li>
 <li><a href="https://www.ling.ohio-state.edu/~kbaker/pubs/Singular_Value_Decomposition_Tutorial.pdf">Singular Value Decomposition Tutorial PDF</a></li>
@@ -538,6 +537,19 @@ singular values." - Jeffrey D. Ullman</p>
 
 </div>
 </div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre>
+</pre></div>
+
+</div>
+</div>
+</div>
+
 </div>
     </div>
   </div>
