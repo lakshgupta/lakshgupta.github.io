@@ -6,7 +6,6 @@ date:       2015-07-12 12:00:00
 author:     "Laksh Gupta"
 header-img: "img/sd4-bg.jpg"
 ---
-
  <div tabindex="-1" id="notebook" class="border-box-sizing">
     <div class="container" id="notebook-container">
 
@@ -537,19 +536,6 @@ singular values." - Jeffrey D. Ullman</p>
 
 </div>
 </div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-julia"><pre>
-</pre></div>
-
-</div>
-</div>
-</div>
-
 </div>
     </div>
   </div>
