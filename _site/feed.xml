@@ -5,8 +5,8 @@
     <description>A Blog for Some Stuff</description>
     <link>http://lakshgupta.github.io/</link>
     <atom:link href="http://lakshgupta.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>2015-08-07 03:28:35 +0000</pubDate>
-    <lastBuildDate>2015-08-07 03:28:35 +0000</lastBuildDate>
+    <pubDate>2015-08-11 02:50:34 +0000</pubDate>
+    <lastBuildDate>2015-08-11 02:50:34 +0000</lastBuildDate>
     <generator>Jekyll v</generator>
     
       <item>
@@ -539,19 +539,6 @@ singular values.&quot; - Jeffrey D. Ullman&lt;/p&gt;
 
 &lt;/div&gt;
 &lt;/div&gt;
-&lt;/div&gt;
-&lt;div class=&quot;cell border-box-sizing code_cell rendered&quot;&gt;
-&lt;div class=&quot;input&quot;&gt;
-&lt;div class=&quot;prompt input_prompt&quot;&gt;In&amp;nbsp;[&amp;nbsp;]:&lt;/div&gt;
-&lt;div class=&quot;inner_cell&quot;&gt;
-    &lt;div class=&quot;input_area&quot;&gt;
-&lt;div class=&quot; highlight hl-julia&quot;&gt;&lt;pre&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
 &lt;/div&gt;
     &lt;/div&gt;
   &lt;/div&gt;
