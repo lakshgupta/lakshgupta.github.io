@@ -7,7 +7,7 @@ author:     "Laksh Gupta"
 header-img: "img/sd3-bg.jpg"
 ---
 
-<div tabindex="-1" id="notebook" class="border-box-sizing">
+  <div tabindex="-1" id="notebook" class="border-box-sizing">
     <div class="container" id="notebook-container">
 
 <div class="cell border-box-sizing text_cell rendered">
@@ -15,9 +15,21 @@ header-img: "img/sd3-bg.jpg"
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Single neuron has limited computational power and hence we need a way to build a network of neurons to make a more complex model. In this post we will look into how to construct a neural network and try to solve the handwritten digit recognition problem.</p>
-<p><img src="/img/nn/300px-Colored_neural_network.svg.png" alt="img src">
-We'll use the <a href="http://yann.lecun.com/exdb/mnist/">MNIST dataset</a>. Luckily, <a href="https://github.com/johnmyleswhite/MNIST.jl">John Myles White</a> has already created a package to import this dataset in Julia.</p>
+<h2 class="section-heading">The Problem</h2>
+
+<p>Single neuron has limited computational power and hence we need a way to build a network of neurons to make a more complex model. In this post we will look into how to construct a neural network and try to solve the handwritten digit recognition problem. The goal is to decide which digit it represents when given a new image.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 class="section-heading">Understanding the Data</h2>
+
+<p>We'll use the <a href="http://yann.lecun.com/exdb/mnist/">MNIST dataset</a>. Luckily, <a href="https://github.com/johnmyleswhite/MNIST.jl">John Myles White</a> has already created a package to import this dataset in Julia. The MNIST dataset provides a training set of 60,000 handwritten digits and a test set of 10,000 handwritten digits. Each of the image has a size of 28×28 pixels. <img src="{{ site.baseurl }}/img/nn/MNIST_digits.png" alt="MNIST"></p>
 
 </div>
 </div>
@@ -28,32 +40,12 @@ We'll use the <a href="http://yann.lecun.com/exdb/mnist/">MNIST dataset</a>. Luc
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-julia"><pre><span class="c">#Pkg.update();</span>
-<span class="n">Pkg</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="s">&quot;https://github.com/johnmyleswhite/MNIST.jl.git&quot;</span><span class="p">);</span>
+<span class="n">Pkg</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&quot;MNIST&quot;</span><span class="p">);</span>
 <span class="n">Pkg</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&quot;PyPlot&quot;</span><span class="p">)</span>
 <span class="c">#Pkg.installed();</span>
 </pre></div>
 
 </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>INFO: Cloning MNIST from https://github.com/johnmyleswhite/MNIST.jl.git
-INFO: Computing changes...
-INFO: No packages to install, update or remove
-INFO: Package database updated
-INFO: Nothing to be done
-INFO: METADATA is out-of-date — you may not have the latest version of PyPlot
-INFO: Use &#96;Pkg.update()&#96; to get the latest versions of your packages
-</pre>
-</div>
-</div>
-
 </div>
 </div>
 
@@ -70,7 +62,7 @@ INFO: Use &#96;Pkg.update()&#96; to get the latest versions of your packages
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-julia"><pre><span class="k">using</span> <span class="n">MNIST</span>
@@ -81,28 +73,32 @@ INFO: Use &#96;Pkg.update()&#96; to get the latest versions of your packages
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>Qt: Untested Windows version 10.0 detected!
+INFO: Loading help data...
+</pre>
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
 </div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h2 class="section-heading">Activation Function</h2><p>Using a linear activation function does not give us much advantage. Linear function applied to a linear function is itself a linear function, and hence both the functions can be replaced by a single linear function. Moreover, generally speaking, real world problems are generally more complex. A linear activation function may not be a good fit for the dataset we have. Therefore if the data we wish to model is non-linear then we need to account for that in our model. Sigmoid activation function is a reasonably good non-linear activation function which we could use in our neural network.</p>
-$$sigmoid(z) = 1/(1 + e^{-z})$$<p><img src="/img/nn/400px-SigmoidFunction.png" alt="sigmoid"></p>
 
 </div>
 </div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-julia"><pre><span class="c"># computes the sigmoid of z</span>
-<span class="k">function</span><span class="nf"> sigmoid</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
-  <span class="n">g</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">./</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">z</span><span class="p">));</span>
-  <span class="k">return</span> <span class="n">g</span><span class="p">;</span>
-<span class="k">end</span>
+<div class=" highlight hl-julia"><pre><span class="c"># ===================</span>
+<span class="c"># load training data</span>
+<span class="c"># ===================</span>
+<span class="n">X</span><span class="p">,</span><span class="n">y</span> <span class="o">=</span> <span class="n">traindata</span><span class="p">();</span> <span class="c">#X:(784x60000), y:(60000x1)</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">size</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span> <span class="c"># number of inputs</span>
 </pre></div>
 
 </div>
@@ -113,11 +109,11 @@ $$sigmoid(z) = 1/(1 + e^{-z})$$<p><img src="/img/nn/400px-SigmoidFunction.png" a
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[4]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[3]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>sigmoid (generic function with 1 method)</pre>
+<pre>60000</pre>
 </div>
 
 </div>
@@ -131,7 +127,11 @@ $$sigmoid(z) = 1/(1 + e^{-z})$$<p><img src="/img/nn/400px-SigmoidFunction.png" a
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 class="section-heading">Cost Function</h2>
+<h2 class="section-heading">Training a model</h2>
+
+<p>We want to train a neural network with one input layer, one hidden layer and one output layer to recognize handwritten digits. Since the dataset contains 28×28 pixel images, our neural network will have $28*28=784$ input neurons, a variable number of hidden neurons and $10$ output neurons.</p>
+<p><img src="{{ site.baseurl }}/img/nn/nn_basic.png" alt="2-layer-neuralNetwork"></p>
+
 </div>
 </div>
 </div>
@@ -140,10 +140,17 @@ $$sigmoid(z) = 1/(1 + e^{-z})$$<p><img src="/img/nn/400px-SigmoidFunction.png" a
 <div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-julia"><pre><span class="c"># computes the gradient of the sigmoid function evaluated at z</span>
-<span class="k">function</span><span class="nf"> sigmoidGradient</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
-  <span class="n">g</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">z</span><span class="p">));</span>
-  <span class="k">return</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="o">.*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">z</span><span class="p">));</span>
+<div class=" highlight hl-julia"><pre><span class="c"># ======================</span>
+<span class="c"># network setup</span>
+<span class="c"># ======================</span>
+<span class="n">inputLayerSize</span> <span class="o">=</span> <span class="n">size</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span> <span class="c"># number of input features: 784</span>
+<span class="n">hiddenLayerSize</span> <span class="o">=</span> <span class="mi">25</span><span class="p">;</span> <span class="c"># variable</span>
+<span class="n">outputLayerSize</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span> <span class="c"># number of output classes</span>
+<span class="c"># since we are doing multiclass classification: more than one output neurons</span>
+<span class="c"># representing each output as an array of size of the output layer</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">outputLayerSize</span><span class="p">,</span> <span class="n">m</span><span class="p">);</span> <span class="c">#Y:(10,60000)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">:</span><span class="n">m</span>
+    <span class="n">Y</span><span class="p">[</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
 <span class="k">end</span>
 </pre></div>
 
@@ -151,91 +158,54 @@ $$sigmoid(z) = 1/(1 + e^{-z})$$<p><img src="/img/nn/400px-SigmoidFunction.png" a
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt output_prompt">Out[4]:</div>
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>sigmoidGradient (generic function with 1 method)</pre>
 </div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The appraoch to train a neural network is similar to what we have discussed in the <a href="http://lakshgupta.github.io/2015/05/21/ArtificialNeuron/">neuron post</a>.  But since now we have a network of neurons, the way we follow the steps is a bit different. We'll use the <a href="http://www.cs.toronto.edu/~hinton/absps/naturebp.pdf">backpropagation algorithm</a>.</p>
+<blockquote><p>Backpropagation works by approximating the non-linear relationship between the input and the output by adjusting the weight values internally. 
+The operations of the Backpropagation neural networks can be divided into two steps: feedforward and Backpropagation. In the feedforward step, an input pattern is applied to the input layer and its effect propagates, layer by layer, through the network until an output is produced. The network's actual output value is then compared to the expected output, and an error signal is computed for each of the output nodes. Since all the hidden nodes have, to some degree, contributed to the errors evident in the output layer, the output error signals are transmitted backwards from the output layer to each node in the hidden layer that immediately contributed to the output layer. This process is then repeated, layer by layer, until each node in the network has received an error signal that describes its relative contribution to the overall error.
+Once the error signal for each node has been determined, the errors are then used by the nodes to update the values for each connection weights until the network converges to a state that allows all the training patterns to be encoded.</p>
+<p align="right">- <a href="http://www.cse.unsw.edu.au/~cs9417ml/MLP2/BackPropagation.html">www.cse.unsw.edu.au</a></p>
+</blockquote>
+
+<p>We'll discuss more about the backpropagation algorithm later but first let's collect the simple tools which are required for training a neural network.</p>
 
 </div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 class="section-heading">Activation Function: $g$</h4>
+
+<p>The activation function of artificial neurons have to be differentiable and their derivative has to be non-zero so that the gradient descent learning algorithm can be applied. Considering <a href="http://lakshgupta.github.io/2015/05/27/LinearRegression/">linear regression</a>, using a linear activation function does not give us much advantage here. Linear function applied to a linear function is itself a linear function, and hence both the functions can be replaced by a single linear function. Moreover real world problems are generally more complex. A linear activation function may not be a good fit for the dataset we have. Therefore if the data we wish to model is non-linear then we need to account for that in our model. Sigmoid activation function is one of the reasonably good non-linear activation functions which we could use in our neural network.</p>
+$$sigmoid(z) = 1/(1 + e^{-z})$$<p><img src="{{ site.baseurl }}/img/nn/sigmoidGraph.png" alt="sigmoid"></p>
 
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-julia"><pre><span class="c">#############################################################</span>
-<span class="c"># computes the cost and gradient of the neural network. The</span>
-<span class="c"># parameters for the neural network are &quot;unrolled&quot; into the vector</span>
-<span class="c"># nn_params and need to be converted back into the weight matrices.</span>
-<span class="c">#</span>
-<span class="c"># The returned parameter grad should be a &quot;unrolled&quot; vector of the</span>
-<span class="c"># partial derivatives of the neural network.</span>
-<span class="c">#############################################################</span>
-<span class="k">function</span><span class="nf"> costFunction</span><span class="p">(</span><span class="n">input_layer_size</span><span class="p">,</span> <span class="n">hidden_layer_size</span><span class="p">,</span> <span class="n">output_layer_size</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">Theta1</span><span class="p">,</span> <span class="n">Theta2</span><span class="p">,</span> <span class="n">lambda</span><span class="p">)</span>
-  <span class="c"># ===================</span>
-  <span class="c"># Feedforward process</span>
-  <span class="c"># ===================</span>
-  <span class="c"># input layer</span>
-  <span class="c"># add one bias element</span>
-  <span class="n">activation1</span> <span class="o">=</span> <span class="p">[</span><span class="n">ones</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="mi">1</span><span class="p">)</span> <span class="n">X</span><span class="p">];</span>
+<div class=" highlight hl-julia"><pre><span class="c"># ==============================================</span>
+<span class="c"># activation function: computes the sigmoid of z </span>
+<span class="c"># z is the weighted sum of inputs</span>
+<span class="c"># ==============================================</span>
+<span class="k">function</span><span class="nf"> sigmoid</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">./</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">z</span><span class="p">));</span>
+    <span class="k">return</span> <span class="n">g</span><span class="p">;</span>
+<span class="k">end</span>
 
-  <span class="c"># hidden layer</span>
-  <span class="n">z2</span> <span class="o">=</span> <span class="n">activation1</span><span class="o">*</span><span class="n">Theta1</span><span class="o">&#39;</span><span class="p">;</span>
-  <span class="n">activation2</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">z2</span><span class="p">);</span>
-  <span class="c"># add one bias element</span>
-  <span class="n">activation2</span> <span class="o">=</span> <span class="p">[</span><span class="n">ones</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">activation2</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="mi">1</span><span class="p">)</span> <span class="n">activation2</span><span class="p">];</span>
-
-  <span class="c"># output layer</span>
-  <span class="n">z3</span> <span class="o">=</span> <span class="n">activation2</span><span class="o">*</span><span class="n">Theta2</span><span class="o">&#39;</span><span class="p">;</span>
-  <span class="n">activation3</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">z3</span><span class="p">);</span>
-  <span class="n">h</span><span class="o">=</span><span class="n">activation3</span><span class="p">;</span>
-
-  <span class="c"># ==========</span>
-  <span class="c"># find cost</span>
-  <span class="c"># ==========</span>
-  <span class="n">J</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
-  <span class="n">JInter</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
-  <span class="k">for</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">:</span><span class="n">m</span>
-    <span class="n">JInter</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">yInter</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span><span class="o">*</span><span class="n">log</span><span class="p">(</span><span class="n">h</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span><span class="o">&#39;</span><span class="p">))</span> <span class="o">-</span> <span class="p">((</span><span class="mi">1</span><span class="o">-</span><span class="n">yInter</span><span class="p">[</span><span class="n">i</span><span class="p">,:])</span><span class="o">*</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">h</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span><span class="o">&#39;</span><span class="p">));</span>
-  <span class="k">end</span>
-
-  <span class="c"># regularization term</span>
-  <span class="n">reg</span> <span class="o">=</span> <span class="p">(</span><span class="n">lambda</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">m</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="n">sum</span><span class="p">(</span><span class="n">sum</span><span class="p">(</span><span class="n">Theta1</span><span class="p">[:,</span><span class="mi">2</span><span class="p">:</span><span class="k">end</span><span class="p">]</span><span class="o">.^</span><span class="mi">2</span><span class="p">))</span> <span class="o">+</span> <span class="n">sum</span><span class="p">(</span><span class="n">sum</span><span class="p">(</span><span class="n">Theta2</span><span class="p">[:,</span><span class="mi">2</span><span class="p">:</span><span class="k">end</span><span class="p">]</span><span class="o">.^</span><span class="mi">2</span><span class="p">)));</span>
-
-  <span class="n">J</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">m</span><span class="p">)</span><span class="o">*</span><span class="n">sum</span><span class="p">(</span><span class="n">JInter</span><span class="p">)</span> <span class="o">+</span> <span class="n">reg</span><span class="p">;</span>
-
-  <span class="c"># ========================</span>
-  <span class="c"># Backpropagation process</span>
-  <span class="c"># ========================</span>
-  <span class="n">Theta1_grad</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">Theta1</span><span class="p">));</span>
-  <span class="n">Theta2_grad</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">Theta2</span><span class="p">));</span>
-
-  <span class="n">delta3</span> <span class="o">=</span> <span class="n">activation3</span> <span class="o">-</span> <span class="n">yInter</span><span class="p">;</span>
-  <span class="n">delta2</span> <span class="o">=</span> <span class="p">(</span><span class="n">delta3</span><span class="o">*</span><span class="n">Theta2</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">:</span><span class="k">end</span><span class="p">])</span><span class="o">.*</span><span class="n">sigmoidGradient</span><span class="p">(</span><span class="n">z2</span><span class="p">)</span> <span class="p">;</span>
-
-  <span class="n">grad2</span> <span class="o">=</span> <span class="n">delta3</span><span class="o">&#39;*</span><span class="n">activation2</span><span class="p">;</span>
-  <span class="n">grad1</span> <span class="o">=</span> <span class="n">delta2</span><span class="o">&#39;*</span><span class="n">activation1</span><span class="p">;</span>
-
-  <span class="n">reg_theta1</span> <span class="o">=</span> <span class="p">((</span><span class="n">lambda</span><span class="o">/</span><span class="n">m</span><span class="p">)</span><span class="o">*</span><span class="n">Theta1</span><span class="p">);</span>
-  <span class="n">reg_theta1</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-  <span class="n">Theta1_grad</span> <span class="o">=</span> <span class="n">grad1</span><span class="o">/</span><span class="n">m</span> <span class="o">+</span> <span class="n">reg_theta1</span><span class="p">;</span>
-
-  <span class="n">reg_theta2</span> <span class="o">=</span> <span class="p">((</span><span class="n">lambda</span><span class="o">/</span><span class="n">m</span><span class="p">)</span><span class="o">*</span><span class="n">Theta2</span><span class="p">);</span>
-  <span class="n">reg_theta2</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-  <span class="n">Theta2_grad</span> <span class="o">=</span> <span class="n">grad2</span><span class="o">/</span><span class="n">m</span> <span class="o">+</span> <span class="n">reg_theta2</span><span class="p">;</span>
-
-  <span class="c"># return</span>
-  <span class="k">return</span> <span class="n">J</span><span class="p">,</span> <span class="n">Theta1_grad</span><span class="p">,</span> <span class="n">Theta2_grad</span><span class="p">;</span>
+<span class="c"># computes the gradient of the sigmoid function evaluated at z</span>
+<span class="k">function</span><span class="nf"> sigmoidGradient</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="o">.*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">z</span><span class="p">));</span>
 <span class="k">end</span>
 </pre></div>
 
@@ -251,6 +221,103 @@ $$sigmoid(z) = 1/(1 + e^{-z})$$<p><img src="/img/nn/400px-SigmoidFunction.png" a
 
 
 <div class="output_text output_subarea output_execute_result">
+<pre>sigmoidGradient (generic function with 1 method)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 class="section-heading">Cost Function: $J$</h4>
+
+<p>The “squared error” cost function used for linear regression is not suitable for neural networks, because the non-linear nature of activation function is said to produce a non-convex plot of the cost function, i.e. with many local minima. For further explanation refer to this <a href="https://class.coursera.org/ml-005/forum/thread?thread_id=2773">thread</a>. Take a look at this <a href="https://www-i6.informatik.rwth-aachen.de/publications/download/861/GolikPavelDoetschPatrickNeyHermann--Cross-Entropyvs.SquaredErrorTrainingaTheoreticalExperimentalComparison--2013.pdf">paper</a> to have a comparison between cross entropy cost function and squared error cost function. So considering:</p>
+$$J(\theta) = \frac{1}{m}(\sum_{i=1}^{m}cost(h_{\theta}(x^{(i)}),y^{(i)}))$$<p>where:</p>
+<ul>
+<li>$h_{\theta}(x^{(i)})$ is the predicted value (hypothesis)</li>
+<li>$y^{(i)}$ is the actual value (truth), and
+$$\begin{eqnarray}
+cost(h_{\theta}(x^{(i)}),y^{(i)})&=&\left\{
+\begin{array}{l l}      
+  -\log(h_{\theta}(x^{(i)}))   &   \mathrm{if} \: y=1 \\
+  -\log(1-h_{\theta}(x^{(i)})) &  \mathrm{if}  \: y=0
+\end{array}\right.,  \: h_{\theta}(x^{(i)})\in(0,1) \\ \nonumber
+&=& - y^{(i)}\log{h_{\theta}(x^{(i)})} - (1-y^{(i)})\log(1-h_{\theta}(x^{(i)}))
+\end{eqnarray}$$</li>
+</ul>
+<p>Hence our cost function becomes:
+$$J(\theta) = -\frac{1}{m}[\sum_{i=1}^{m} ( y^{(i)}\log{h_{\theta}(x^{(i)})} + (1-y^{(i)})\log({1-h_{\theta}(x^{(i)}))})]$$</p>
+<p>We don't sum over the bias terms hence starting at 1 for the summation. The above equation for the cost function will work if we have a single neuron in the output layer. Let's generalize this cost function so that we could use it for $k$ neurons in the output layer. 
+$$J(\theta) = -\frac{1}{m}\sum_{i=1}^{m} \sum_{i=1}^{k}[ y^{(i)}_k\log{(h_{\theta}(x^{(i)})_k)} + (1-y^{(i)}_k)\log({1-(h_{\theta}(x^{(i)}))_k)}]$$</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 class="section-heading">Regularization: $L^2$</h4>
+
+<p>Regularization helps us in handling the problem of overfitting. Most regularization approaches add a parameter norm penalty $\Omega(\theta)$ to the loss function $J$ to achieve better generalization of the model. In case of $L^2$ regularization, also known as weight decay, the penalty is equal to the sum of the square of all of the weight vectors.</p>
+$$\Omega(\theta) = \frac{\lambda}{2m}\sum_{l=1}^{L-1}\sum_{i=1}^{s_l}\sum_{j=1}^{s_{l+1}}((\theta_{ji}^l)^2)$$<p></p>
+<p>where</p>
+<ul>
+<li>$\lambda>0$, is known as the regularization parameter</li>
+<li>$m$ is the size of our training set</li>
+<li>$L$ in the equation is the layer number</li>
+<li>$s$ is the neuron unit in the corresponding layer</li>
+</ul>
+<blockquote><p>Regularizers work by trading increased bias for reduced variance. An effective regularizer is one that makes a proﬁtable trade, that is it reduces variance signiﬁcantly while not overly increasing the bias.</p>
+<p align="right">- <a href="http://www.iro.umontreal.ca/~bengioy/dlbook/regularization.html">Yoshua Bengio, Ian Goodfellow and Aaron Courville</a></p>
+</blockquote>
+<p>The Wikipedia has a descent article on the <a href="https://en.wikipedia.org/wiki/Bias%E2%80%93variance_tradeoff">bias-variance tradeoff</a>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span class="c"># weight regularization parameter</span>
+<span class="n">lambda</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span> 
+
+<span class="c"># ===============================================</span>
+<span class="c"># cross entropy cost function with regularizarion</span>
+<span class="c"># ===============================================</span>
+<span class="k">function</span><span class="nf"> costFunction</span><span class="p">(</span><span class="n">truth</span><span class="p">,</span> <span class="n">prediction</span><span class="p">)</span>
+    <span class="n">cost</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+    <span class="k">for</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">:</span><span class="n">m</span>
+        <span class="n">cost</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">Y</span><span class="p">[:,</span><span class="n">i</span><span class="p">]</span><span class="o">&#39;*</span><span class="n">log</span><span class="p">(</span><span class="n">prediction</span><span class="p">[:,</span><span class="n">i</span><span class="p">]))</span> <span class="o">-</span> <span class="p">((</span><span class="mi">1</span><span class="o">-</span><span class="n">Y</span><span class="p">[:,</span><span class="n">i</span><span class="p">]</span><span class="o">&#39;</span><span class="p">)</span><span class="o">*</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">prediction</span><span class="p">[:,</span><span class="n">i</span><span class="p">]));</span>
+    <span class="k">end</span>
+    <span class="c"># regularization term</span>
+    <span class="n">regularization</span> <span class="o">=</span> <span class="p">(</span><span class="n">lambda</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">m</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="n">sum</span><span class="p">(</span><span class="n">sum</span><span class="p">(</span><span class="n">Theta1</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="k">end</span><span class="p">,:]</span><span class="o">.^</span><span class="mi">2</span><span class="p">))</span> <span class="o">+</span> <span class="n">sum</span><span class="p">(</span><span class="n">sum</span><span class="p">(</span><span class="n">Theta2</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="k">end</span><span class="p">,:]</span><span class="o">.^</span><span class="mi">2</span><span class="p">)));</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">m</span><span class="p">)</span><span class="o">*</span><span class="n">sum</span><span class="p">(</span><span class="n">cost</span><span class="p">)</span> <span class="o">+</span> <span class="n">regularization</span><span class="p">;</span> <span class="c"># regularized cost</span>
+<span class="k">end</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[6]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
 <pre>costFunction (generic function with 1 method)</pre>
 </div>
 
@@ -260,76 +327,142 @@ $$sigmoid(z) = 1/(1 + e^{-z})$$<p><img src="/img/nn/400px-SigmoidFunction.png" a
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 class="section-heading">Backpropagation</h4>
+
+<p>Despite the name, <a href="http://ufldl.stanford.edu/wiki/index.php/Backpropagation_Algorithm">backpropagation algorithm</a> consist of two phases:</p>
+<ul>
+<li>Feedforward </li>
+<li>Backpropagation</li>
+</ul>
+<p>The feedforward process is the same process we have been following in the previous posts. Using the feedforward process we calculate the weighted sum of inputs and apply the activation function to get an output as we move from layer to layer. In the end we come up with a output activation which could have some error as compared to the actual values. To have the output as close as possible to the actual values we use the backpropagation process to tune the weights.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img src="{{ site.baseurl }}/img/nn/ff_mnist.png" alt="2-layer-neuralNetwork-feedforward"></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Backpropagation is a way of computing gradients of expressions through recursive application of chain rule. We start from the output layer and go backwards calulating the gradient on the activations for each layer till the first hidden layer.</p>
+<blockquote><p>From these gradients, which can be interpreted as an indication of how each layer’s output should change to reduce error, one can obtain the gradient on the parameters of each layer. The gradients on weights and biases can be immediately used as part of a stochastic gradient update (performing the update right after the gradients havebeen computed) or used with other gradient-based optimization methods.</p>
+<p align="right">- <a href="http://www.iro.umontreal.ca/~bengioy/dlbook/regularization.html">Yoshua Bengio, Ian Goodfellow and Aaron Courville</a></p>
+</blockquote>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img src="{{ site.baseurl }}/img/nn/bp_mnist.png" alt="2-layer-neuralNetwork-backpropagation"></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Since we are learning/tuning weights ($\theta$), we want to evaluate: $\dfrac{\partial J}{\partial \theta^{(l)}}$, with $l$ as the layer number. Using the chain rule, we can solve the above partial derivative as:
+$$\dfrac{\partial J}{\partial \theta^{(l)}} = \underbrace{\dfrac{\partial J}{\partial z^{(l+1)}}}_{1} \underbrace{\dfrac{\partial z^{(l+1)}}{\partial \theta^{(l)}}}_{2}$$</p>
+<p>here, $z$ represents the input signal to a neuron which is the weighted sum of the outputs from the previous layer's neurons. Hence $(2)$ becomes:</p>
+$$\dfrac{\partial z^{(l+1)}}{\partial \theta^{(l)}} = a^{(l)}$$<p>where, $a$ is the value from applying activation function $g$ to $z$. Now let's look at $(1)$ and represent it as $\delta$. Since we start backpropagation from the last output layer, we can calculate the change in cost w.r.t weights as:
+$$ \dfrac{\partial J}{\partial \theta^{(2)}} = \underbrace{\dfrac{\partial J}{\partial z^{(3)}}}_{\delta^{(3)}} \underbrace{\dfrac{\partial z^{(3)}}{\partial \theta^{(2)}}}_{a^{(2)}}$$</p>
+<p>where,
+$$ \begin{eqnarray}
+\delta^{(3)} &=& \dfrac{\partial J}{\partial z^{(3)}} \\
+&=& -[\frac{yg'(z^{(3)})}{g(z^{(3)})} + \frac{(1-y)(-g'(z^{(3)}))}{1-g(z^{(3)})}] \\
+&=& g(z^{(3)}) - y \\ \\
+&&(\text{for sigmoid, $g'(z) = g(z)(1-g(z))$})
+\end{eqnarray}$$</p>
+<p>In the squared error cost function, $\delta^{(3)}$ would have a factor of $g'(z^{(3)})$. This means that for a large difference between the truth and the hypothesis, the sigmoid gradient would become very low (sigmoid curve is flat at the top) and hence the learning of our model would be slow. Using the cross entropy cost function also saves us from that problem. In the current case the larger the error, the faster the neuron will learn.</p>
+<p>Similarly for the hidden layer we have:
+$$ \dfrac{\partial J}{\partial \theta^{(1)}} = \underbrace{\dfrac{\partial J}{\partial z^{(2)}}}_{\delta^{(2)}} \underbrace{\dfrac{\partial z^{(2)}}{\partial \theta^{(1)}}}_{a^{(1)}}$$</p>
+<p>where,
+$$ \begin{eqnarray}
+\delta^{(2)} &=& \dfrac{\partial J}{\partial z^{(2)}} \\
+&=& \dfrac{\partial J}{\partial z^{(3)}} \dfrac{\partial z^{(3)}}{\partial g(z^{(2)})} \dfrac{\partial g(z^{(2)})}{\partial z^{(2)}} \\
+&=& \delta^{(3)} \theta^{(2)} g'(z^{(2)})
+\end{eqnarray}$$</p>
+<p>The equations above may require special handling in order to perform matrix operations but basically we saw how the chain rule can be applied for the backpropagation algorithm.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We now have all the components for $\dfrac{\partial J}{\partial \theta^{l}}$, hence we can update the weights as:</p>
+$$\theta^{(l)} \leftarrow \theta^{(l)} - \frac{\alpha}{m} \dfrac{\partial J}{\partial \theta^{l}}$$<p>If the original cost function included a regularization term then we need to take it into account as well while taking the derivatives. Hence $\dfrac{\partial J}{\partial \theta^{l}}$ would also include the derivative of the regularization term, $\frac{\lambda}{m}\theta^{(l)}$.</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-julia"><pre><span class="c"># ===================</span>
-<span class="c"># Load training data</span>
-<span class="c"># ===================</span>
-<span class="n">X</span><span class="p">,</span><span class="n">y</span> <span class="o">=</span> <span class="n">traindata</span><span class="p">();</span>
-<span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="o">&#39;</span><span class="p">;</span>
-<span class="n">m</span> <span class="o">=</span> <span class="n">size</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-julia"><pre><span class="c"># ======================</span>
-<span class="c"># Initialize parameters</span>
-<span class="c"># ======================</span>
-<span class="n">inputLayerSize</span> <span class="o">=</span> <span class="n">size</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span>
-<span class="n">hiddenLayerSize</span> <span class="o">=</span> <span class="mi">25</span><span class="p">;</span>
-<span class="n">outputLayerSize</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
-
-<span class="c"># since we are doing multiclass classification</span>
-<span class="n">eyeY</span> <span class="o">=</span> <span class="n">eye</span><span class="p">(</span><span class="n">outputLayerSize</span><span class="p">);</span>
-<span class="n">intY</span> <span class="o">=</span> <span class="p">[</span><span class="nb">convert</span><span class="p">(</span><span class="kt">Int64</span><span class="p">,</span><span class="n">i</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="n">y</span><span class="p">];</span>
-<span class="n">yInter</span> <span class="o">=</span> <span class="n">Array</span><span class="p">(</span><span class="kt">Int64</span><span class="p">,</span><span class="n">length</span><span class="p">(</span><span class="n">y</span><span class="p">),</span><span class="n">outputLayerSize</span><span class="p">);</span>
-<span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">:</span><span class="n">m</span>
-  <span class="n">yInter</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">eyeY</span><span class="p">[</span><span class="n">intY</span><span class="p">[</span><span class="n">i</span><span class="p">],:];</span>
-<span class="k">end</span>
-
-<span class="n">epsilon_init</span> <span class="o">=</span> <span class="mf">0.12</span><span class="p">;</span>
-<span class="c"># including one bias neuron in input layer</span>
+<div class=" highlight hl-julia"><pre><span class="c"># including one bias neuron in input layer</span>
 <span class="c"># weights for the links connecting input layer to the hidden layer</span>
-<span class="n">Theta1</span> <span class="o">=</span> <span class="n">rand</span><span class="p">(</span><span class="n">hiddenLayerSize</span><span class="p">,</span> <span class="n">inputLayerSize</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">epsilon_init</span> <span class="o">-</span> <span class="n">epsilon_init</span><span class="p">;</span>
+<span class="n">Theta1</span> <span class="o">=</span> <span class="n">randn</span><span class="p">(</span><span class="n">inputLayerSize</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">hiddenLayerSize</span><span class="p">);</span> <span class="c">#(785x25)</span>
 <span class="c"># including one bias neuron in hidden layer</span>
 <span class="c"># weights for the links connecting hidden layer to the output layer</span>
-<span class="n">Theta2</span> <span class="o">=</span> <span class="n">rand</span><span class="p">(</span><span class="n">outputLayerSize</span><span class="p">,</span> <span class="n">hiddenLayerSize</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">epsilon_init</span> <span class="o">-</span> <span class="n">epsilon_init</span><span class="p">;</span>
-
-<span class="c"># Weight regularization parameter</span>
-<span class="n">lambda</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+<span class="n">Theta2</span> <span class="o">=</span> <span class="n">randn</span><span class="p">(</span><span class="n">hiddenLayerSize</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">outputLayerSize</span><span class="p">);</span> <span class="c">#(26x10)</span>
 <span class="c"># learning rate</span>
-<span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">;</span>
+<span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.9</span><span class="p">;</span>
 <span class="c"># number of iterations</span>
-<span class="n">epoch</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">;</span>
+<span class="n">epoch</span> <span class="o">=</span> <span class="mi">1500</span><span class="p">;</span>
 <span class="c"># cost per epoch</span>
 <span class="n">J</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">epoch</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-julia"><pre><span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">:</span><span class="n">epoch</span>
-  <span class="n">J</span><span class="p">[</span><span class="n">i</span><span class="p">,:],</span> <span class="n">Theta_grad1</span><span class="p">,</span> <span class="n">Theta_grad2</span> <span class="o">=</span> <span class="n">costFunction</span><span class="p">(</span><span class="n">inputLayerSize</span><span class="p">,</span> <span class="n">hiddenLayerSize</span><span class="p">,</span> <span class="n">outputLayerSize</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">yInter</span><span class="p">,</span> <span class="n">Theta1</span><span class="p">,</span> <span class="n">Theta2</span><span class="p">,</span> <span class="n">lambda</span><span class="p">);</span>
-  <span class="n">Theta1</span> <span class="o">=</span> <span class="n">Theta1</span> <span class="o">-</span> <span class="n">alpha</span><span class="o">*</span> <span class="n">Theta_grad1</span><span class="p">;</span>
-  <span class="n">Theta2</span> <span class="o">=</span> <span class="n">Theta2</span> <span class="o">-</span> <span class="n">alpha</span><span class="o">*</span> <span class="n">Theta_grad2</span><span class="p">;</span>
+<span class="c"># ====================================================================</span>
+<span class="c"># Train the neural network using feedforward-backpropagation algorithm</span>
+<span class="c"># ====================================================================</span>
+<span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">:</span><span class="n">epoch</span>
+    <span class="c"># Feedforward #</span>
+    <span class="n">a1</span> <span class="o">=</span> <span class="p">[</span><span class="n">ones</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">m</span><span class="p">),</span> <span class="n">X</span><span class="p">];</span> <span class="c"># add one bias element (785x60000)</span>
+    <span class="n">z2</span> <span class="o">=</span> <span class="n">Theta1</span><span class="o">&#39;*</span><span class="n">a1</span><span class="p">;</span> <span class="c">#(25x60000)</span>
+    <span class="n">a2</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">z2</span><span class="p">);</span>
+    <span class="n">a2</span> <span class="o">=</span> <span class="p">[</span><span class="n">ones</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">size</span><span class="p">(</span><span class="n">a2</span><span class="p">,</span><span class="mi">2</span><span class="p">)),</span> <span class="n">a2</span><span class="p">];</span> <span class="c"># add one bias element (26x60000)</span>
+    <span class="n">z3</span> <span class="o">=</span> <span class="n">Theta2</span><span class="o">&#39;*</span><span class="n">a2</span><span class="p">;</span> <span class="c">#(10x60000)</span>
+    <span class="n">a3</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">z3</span><span class="p">);</span>
+    
+    <span class="c"># cost </span>
+    <span class="n">J</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">costFunction</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">a3</span><span class="p">);</span>
+    
+    <span class="c"># Backpropagation process #</span>
+    <span class="n">delta3</span> <span class="o">=</span> <span class="p">(</span><span class="n">a3</span> <span class="o">-</span> <span class="n">Y</span><span class="p">);</span> <span class="c">#(10x60000)</span>
+    <span class="n">delta2</span> <span class="o">=</span> <span class="p">(</span><span class="n">Theta2</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="k">end</span><span class="p">,:]</span><span class="o">*</span><span class="n">delta3</span><span class="p">)</span><span class="o">.*</span><span class="n">sigmoidGradient</span><span class="p">(</span><span class="n">z2</span><span class="p">)</span> <span class="p">;</span> <span class="c">#(25x10)*(10x60000).*(25x60000)</span>
+        
+    <span class="c">#update weights</span>
+    <span class="n">reg_theta2</span> <span class="o">=</span> <span class="p">(</span><span class="n">lambda</span><span class="o">*</span><span class="n">Theta2</span><span class="p">);</span>
+    <span class="n">reg_theta2</span><span class="p">[</span><span class="mi">1</span><span class="p">,:]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">Theta2</span> <span class="o">=</span> <span class="n">Theta2</span> <span class="o">-</span> <span class="n">alpha</span><span class="o">*</span><span class="p">(</span><span class="n">a2</span><span class="o">*</span><span class="n">delta3</span><span class="o">&#39;</span> <span class="o">+</span> <span class="n">reg_theta2</span><span class="p">)</span><span class="o">/</span><span class="n">m</span><span class="p">;</span> 
+    
+    <span class="n">reg_theta1</span> <span class="o">=</span> <span class="p">(</span><span class="n">lambda</span><span class="o">*</span><span class="n">Theta1</span><span class="p">);</span>
+    <span class="n">reg_theta1</span><span class="p">[</span><span class="mi">1</span><span class="p">,:]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">Theta1</span> <span class="o">=</span> <span class="n">Theta1</span> <span class="o">-</span> <span class="n">alpha</span><span class="o">*</span><span class="p">(</span><span class="n">a1</span><span class="o">*</span><span class="n">delta2</span><span class="o">&#39;</span> <span class="o">+</span> <span class="n">reg_theta1</span><span class="p">)</span><span class="o">/</span><span class="n">m</span><span class="p">;</span>
 <span class="k">end</span>
 </pre></div>
 
@@ -338,9 +471,19 @@ $$sigmoid(z) = 1/(1 + e^{-z})$$<p><img src="/img/nn/400px-SigmoidFunction.png" a
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>If our implementation is correct, the cost of the predicted output after each iteration should drop. I'll cover another method (gradient check) in another post to validate our implementation. But for now let's check by plotting the cost per iteration.</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-julia"><pre><span class="c"># plot the cost per iteration</span>
@@ -362,7 +505,7 @@ $$sigmoid(z) = 1/(1 + e^{-z})$$<p><img src="/img/nn/400px-SigmoidFunction.png" a
 
 
 <div class="output_png output_subarea ">
-<img src="data:image/png;base64,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AEAZycmmzE6cWPl7e9une+qp0q23msJadnV2yxaznWHDBnN0WunNdG+/Lb3xhimvJ54odexoPkSXlCS99ppZGe7Z0/x1cbFZ+f3yS/M7O3Y0rzNkiPn7TZv2fJ100p5TKJ5+2pTg5GSzBzkx0XxIb+tWs9rcuPH+/zPYutXM/9NP5ueBoKHgIhByc3M1aNAg12PAEvL2SzzkvbdzfY84wvx59NHSRReV/95PP5lV1oqnOEyZsvffv327uZBj+XJzAsWsWab0btliim1aminGxx1nzizu2HHPc9u2lXbtMivKktkm0auXmevww80+43r1zCry1q2mgOfnm0KekCDNnm32Hn/zjfmZL780H/qbP9/83vC7Q6kAABkPSURBVH/+01wOUlXxkDdiHwUXgRCJRPgfRI+Qt198zLu6e20PP9wc1da8uTn94dZbzeN7O+pszRpzg11RkflQ3gcfmALbubNZ3X3+eVNe8/LMnz//bErv5s3m9/XsabZBXHqp9L//a/484ghTpkuFQuZIuH//e88pFc2ambL91VfmexddZArw5s1m7mXLSs9Tjqh//0E6/HCzB/nll83KePPmld/3v/9tVqGPOcbMtmOH+c9i61ZT9M84Y8+HFSXpxRfNa3fuXL3/fBF/+JAZAACeKikxH8I78kiz13fXLlNSS23bZo5fe+89s22jYUNzukWnTmbl98UXzZnEpUV2+XJTot97z2yJkEwZLikxq8H165vtFJ06mWIajZqfadzY/N5TTjGPJyVJn30mzZtntlrcdZf097+bEzSefNKcVPHZZ1K/fuY85eJi6dlnpcxM8/smTDCr2OecY4p36f8jsHGjKcj72sP844/m50pX33FoXPY1Ci4AAKhRJSVmtfbrr82JEps2mWKZnGz2I992mynIHTqY0hyJmG0eRUWmLK9ebVZhBw82R68984zZz7x9u/n9LVuafcj7uiCkVJ065jW3bzfH0C1fbkr20KFmD3SXLma1etgw8/fz50tNmkiTJpnS36+fKd8JCeV/74YNpvgXF5vi37mzKcVli/HPP5uiXtFXX5n37sOJGZyiAAAA4kYoZArjUUeZvy+7R/e008yZwmWVPdVib3JyTFncvNlsq2jXzhTQXr1M8X3/fbNyfOONZivFp5+aYvqnP5nzki+/3JyOcdFFZuX3hRfM75FMCS49Fq7070eO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"
+<img src="data:image/png;base64,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dtu3b58WLlyoyZMnq2fPnkpJSdHDDz/c5GNbos8XX3yhSy+9VL1791ZGRobOOOMMbdq0qdmeX0s5mm6e52nZsmWKRqMaOHCgMjIyNHLkSN1yyy1NXhNAatvdTP6uxRw4cEDDhw9XSkqK7rrrriYf05abSWbdamtrdd9992n06NFKT09Xr1699L3vfU9vv/12o8e2ajevjTvvvPO81NRULycnx3vwwQe9iRMneqmpqd7atWuDHq1VTZ8+3evfv7935ZVXenl5ed7NN9/sHXPMMV5GRob37rvv1j3u008/9Xr16uV9/etf9+69917v1ltv9Xr27OmNHj3aq66ujvua999/vxeJRLyZM2d6f/jDH7w5c+Z4kUjEy83Nbe2n1yo+/fRTLz093cvIyPBGjhzZ6GN0q/f88897HTp08CZMmODdc8893h/+8Afvl7/8pbdgwYK6x9As3ttvv+2lpaV5Q4YM8XJzc70HH3zQy8rK8iKRiDdt2rS6x4W12z//+U8vEol4gwcP9k4//XQvEol4Dz/8cKPHtUSfmpoab+LEiV5GRoZ30003eb/97W+9ESNGeF27dvW2bNnSos/7qzqabuXl5V4kEvEmTpzo3Xrrrd4f/vAHb+7cuV67du28008/vdHXbOvdjvbv2qHuuusuLyMjw4tEIt5dd93V6ONtvZnnmXW76KKLvNTUVO+nP/2pl5eX5/3617/2srKyvNWrV8c9rrW7temleMOGDY3+glZVVXnHHXecN3HixAAna31vvPGGd+DAgbj7tmzZ4nXs2NGbPXt23X0///nPvc6dO3uffvpp3X2rV6/2IpGI98ADD9TdV1FR4WVmZnpTp06N+5qzZ8/2MjIyvD179rTQMwnOrFmzvO9///veaaed5n3jG9+I+xjd6n355Zde3759venTpx/xcTSLd/3113uRSMR7//334+6/6KKLvEgk4n3xxRee54W32/79+72dO3d6nud5b7311mH/D7cl+qxcudKLRCLeE088UXffrl27vB49engXXHBBsz3HlnA03aqrq71169Y1+tybbrrJi0QicYtKGLod7d+1mJ07d3rdu3f3br755iaX4jA087yj7xZ7jgUFBUf8ekF0a9NL8fz5873U1FSvvLw87v7bbrvNi0Qi3rZt2wKaLHmMHTvWO/nkk+t+3adPH2/WrFmNHjds2DDv+9//ft2v/+d//seLRCLes88+G/e4devWeZFIxHv00UdbbugAvPrqq1779u29d9991/vud7/b6JViutW77777vEgk4hUXF3ue53l79+71ampqGj2OZvEWL17sRSIRr7S0NO7+BQsWeO3bt/cqKio8z6Ob53nem2++edj/w22JPjNnzvT69evX6GtedtllXufOnRu9Ap2sjtStKW+//bYXiUS8pUuX1t0Xtm5H0ywrK8sbP3583SulDZfisDXzvCN3O/XUU73x48d7nue/wrt3794mv0YQ3dr0McWbNm3S8ccfr4yMjLj7x40bJ0n629/+FsRYScPzPO3cuVO9evWSJH322WfatWuXTj755EaPHTduXNyxObGfN3zs2LFjlZKS0qba1tTUaN68ebrkkks0YsSIRh+nW7zVq1era9eu+vTTTzVs2DB16dJF3bp10y9+8Yu64xNp1tjcuXPVt29f/eQnP9HmzZv16aefauXKlbr//vt1xRVXqFOnTnRLoKX6bNq0SWPHjm3ya1ZUVOgf//hHcz2FpLJjxw5Jqvv/CIluDW3cuFGPPPKI7rnnnsM+hmb1ysrK9Oabb+rkk0/W9ddfr27duqlLly4aOnSoVq1aFffYILq16aW4pKRE/fr1a3R/7L7t27e39khJZfny5dq+fbtmzZolye8l6bDNdu/erQMHDtQ9tl27dnH/YylJHTp0UGZmZptqe//992vr1q1avHhxkx+nW7wtW7bo4MGD+sEPfqApU6boySef1Ny5c3X//fcrKytLEs2a0r9/f73++usqLi7WmDFjNGjQIJ1//vm64oor6t64Q7cja6k+Yf3/kiVLlqhbt26aMmVK3X10q+d5nubNm6fzzjtPp5566mEfR7N6//u//yvP87RixQotW7ZMd955p5YvX67evXvrvPPO0/PPP1/32CC6OXlFu6NVWVmptLS0Rvd37Nix7uNhVVxcrMsvv1wTJ07URRddJKm+R6JmqampqqysVIcOHZr82mlpaW2m7eeff67/+q//0n/9138pMzOzycfQLd7evXtVUVGhn//853WvnvzgBz9QdXW1fv/73+umm26iWRN27txZt3w8+OCDyszM1DPPPKNbbrlFffv21eWXX063BFqqT1VVVej+v+TWW2/VSy+9pPvuu09du3atu59u9ZYtW6Z3331XTz755BEfR7N6e/fulSTt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"
 >
 </div>
 
@@ -378,12 +521,15 @@ $$sigmoid(z) = 1/(1 + e^{-z})$$<p><img src="/img/nn/400px-SigmoidFunction.png" a
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 class="section-heading">Prediction and Accuracy</h2>
+
+<p>After training the model we'll check how well our model has learned all the weights to make a prediction. So we'll evaluate the performance on the train dataset first. We do it by following a way similar to the feedforward process. Consider that we now do not have randonly initialized weights but rather obtained after going through the backpropagation algorithm.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-julia"><pre><span class="c">##########################################################################</span>
@@ -391,17 +537,18 @@ $$sigmoid(z) = 1/(1 + e^{-z})$$<p><img src="/img/nn/400px-SigmoidFunction.png" a
 <span class="c"># trained weights of a neural network (Theta1, Theta2)</span>
 <span class="c"># Similar to feedforward process.</span>
 <span class="c">##########################################################################</span>
-<span class="k">function</span><span class="nf"> predict</span><span class="p">(</span><span class="n">Theta1</span><span class="p">,</span> <span class="n">Theta2</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
-  <span class="n">m</span> <span class="o">=</span> <span class="n">size</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
-  <span class="n">num_labels</span> <span class="o">=</span> <span class="n">size</span><span class="p">(</span><span class="n">Theta2</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
-  <span class="n">p</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="mi">1</span><span class="p">);</span>
-  <span class="n">h1</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">([</span><span class="n">ones</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="n">X</span><span class="p">]</span> <span class="o">*</span> <span class="n">Theta1</span><span class="o">&#39;</span><span class="p">);</span>
-  <span class="n">h2</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">([</span><span class="n">ones</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="n">h1</span><span class="p">]</span> <span class="o">*</span> <span class="n">Theta2</span><span class="o">&#39;</span><span class="p">);</span>
-  <span class="k">for</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">:</span><span class="n">m</span>
-    <span class="c"># sub 1 from the index since we are using 1 to represent 0, 2 for 3 and so on (while calculating yInter)</span>
-    <span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">indmax</span><span class="p">(</span><span class="n">h2</span><span class="p">[</span><span class="n">i</span><span class="p">,:])</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>
-  <span class="k">end</span>
- <span class="k">return</span> <span class="n">p</span><span class="p">;</span>
+<span class="k">function</span><span class="nf"> predict</span><span class="p">(</span><span class="n">Theta1</span><span class="p">,</span> <span class="n">Theta2</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="n">dataSz</span> <span class="o">=</span> <span class="n">size</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span> <span class="c"># size of the data</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="n">dataSz</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span> <span class="c"># to save our prediction</span>
+    <span class="n">h1</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">Theta1</span><span class="o">&#39;*</span><span class="p">[</span><span class="n">ones</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">dataSz</span><span class="p">),</span> <span class="n">data</span><span class="p">]);</span> <span class="c"># hidded layer output</span>
+    <span class="n">h2</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">Theta2</span><span class="o">&#39;*</span><span class="p">[</span><span class="n">ones</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">size</span><span class="p">(</span><span class="n">h1</span><span class="p">,</span><span class="mi">2</span><span class="p">)),</span> <span class="n">h1</span><span class="p">]);</span> <span class="c"># output layer</span>
+    <span class="c"># find the index with the max value in the array of size 10</span>
+    <span class="c"># subtract 1 from the index since we are using 1 to </span>
+    <span class="c"># represent 0, 2 for 1 and so on (while calculating Y)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">:</span><span class="n">dataSz</span>
+        <span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">indmax</span><span class="p">(</span><span class="n">h2</span><span class="p">[:,</span><span class="n">i</span><span class="p">])</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="k">end</span>
+    <span class="k">return</span> <span class="n">p</span><span class="p">;</span>
 <span class="k">end</span>
 </pre></div>
 
@@ -409,10 +556,26 @@ $$sigmoid(z) = 1/(1 + e^{-z})$$<p><img src="/img/nn/400px-SigmoidFunction.png" a
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[10]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>predict (generic function with 1 method)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-julia"><pre><span class="c"># make prediction</span>
@@ -426,25 +589,23 @@ $$sigmoid(z) = 1/(1 + e^{-z})$$<p><img src="/img/nn/400px-SigmoidFunction.png" a
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-julia"><pre><span class="c">###############################################</span>
 <span class="c"># calculate the accuracy of the prediction</span>
 <span class="c">###############################################</span>
 <span class="k">function</span><span class="nf"> accuracy</span><span class="p">(</span><span class="n">truth</span><span class="p">,</span> <span class="n">prediction</span><span class="p">)</span>
-  <span class="n">m</span> <span class="o">=</span> <span class="n">length</span><span class="p">(</span><span class="n">truth</span><span class="p">);</span>
-  <span class="k">if</span> <span class="n">m</span><span class="o">!=</span><span class="n">length</span><span class="p">(</span><span class="n">prediction</span><span class="p">)</span>
-    <span class="nb">error</span><span class="p">(</span><span class="s">&quot;truth and prediction length mismatch&quot;</span><span class="p">);</span>
-  <span class="k">end</span>
-
-  <span class="n">sum</span> <span class="o">=</span><span class="mi">0</span><span class="p">;</span>
-  <span class="k">for</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">:</span><span class="n">m</span>
-    <span class="k">if</span> <span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span> <span class="o">==</span> <span class="n">pred</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span>
-      <span class="n">sum</span> <span class="o">=</span> <span class="n">sum</span> <span class="o">+</span><span class="mi">1</span><span class="p">;</span>
+    <span class="c"># calculate the % of predicted values</span>
+    <span class="c"># matching the actual values</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">length</span><span class="p">(</span><span class="n">truth</span><span class="p">);</span>
+    <span class="n">sum</span> <span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span>
+        <span class="k">if</span> <span class="n">truth</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span> <span class="o">==</span> <span class="n">prediction</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span>
+            <span class="n">sum</span> <span class="o">=</span> <span class="n">sum</span> <span class="o">+</span><span class="mi">1</span><span class="p">;</span>
+        <span class="k">end</span>
     <span class="k">end</span>
-  <span class="k">end</span>
-  <span class="k">return</span> <span class="p">(</span><span class="n">sum</span><span class="o">/</span><span class="n">m</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="p">;</span>
+  <span class="k">return</span> <span class="p">(</span><span class="n">sum</span><span class="o">/</span><span class="n">n</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="p">;</span>
 <span class="k">end</span>
 </pre></div>
 
@@ -452,10 +613,26 @@ $$sigmoid(z) = 1/(1 + e^{-z})$$<p><img src="/img/nn/400px-SigmoidFunction.png" a
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[12]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>accuracy (generic function with 1 method)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-julia"><pre><span class="c"># calculate accuracy</span>
@@ -472,18 +649,9 @@ $$sigmoid(z) = 1/(1 + e^{-z})$$<p><img src="/img/nn/400px-SigmoidFunction.png" a
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>train accuracy: 90.86999999999999
+<pre>train accuracy: 87.01333333333334
 </pre>
 </div>
-</div>
-
-<div class="output_area"><div class="prompt output_prompt">Out[18]:</div>
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>90.86999999999999</pre>
-</div>
-
 </div>
 
 </div>
@@ -495,7 +663,7 @@ $$sigmoid(z) = 1/(1 + e^{-z})$$<p><img src="/img/nn/400px-SigmoidFunction.png" a
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>After calculating the accuracy on the train dataset, let's check the accuracy on the test dataset to be sure that we did not overfit the data.</p>
+<p>After calculating the accuracy on the train dataset, let's check the accuracy on the test dataset to be sure that we did not overfit the data. If there is too much difference then we might have to tune some parameters.</p>
 
 </div>
 </div>
@@ -509,7 +677,6 @@ $$sigmoid(z) = 1/(1 + e^{-z})$$<p><img src="/img/nn/400px-SigmoidFunction.png" a
 <span class="c"># load test data</span>
 <span class="c"># ===============</span>
 <span class="n">XTest</span><span class="p">,</span><span class="n">yTest</span> <span class="o">=</span> <span class="n">testdata</span><span class="p">();</span>
-<span class="n">XTest</span><span class="o">=</span><span class="n">XTest</span><span class="o">&#39;</span><span class="p">;</span>
 </pre></div>
 
 </div>
@@ -519,7 +686,7 @@ $$sigmoid(z) = 1/(1 + e^{-z})$$<p><img src="/img/nn/400px-SigmoidFunction.png" a
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-julia"><pre><span class="c"># make prediction</span>
@@ -533,7 +700,7 @@ $$sigmoid(z) = 1/(1 + e^{-z})$$<p><img src="/img/nn/400px-SigmoidFunction.png" a
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-julia"><pre><span class="c"># calculate accuracy</span>
@@ -550,7 +717,7 @@ $$sigmoid(z) = 1/(1 + e^{-z})$$<p><img src="/img/nn/400px-SigmoidFunction.png" a
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>test accuracy: 91.75
+<pre>test accuracy: 86.18
 </pre>
 </div>
 </div>
@@ -558,6 +725,37 @@ $$sigmoid(z) = 1/(1 + e^{-z})$$<p><img src="/img/nn/400px-SigmoidFunction.png" a
 </div>
 </div>
 
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>That's all folks! Now our model can make the prediction on any new handwritten digit in a similar way as we made the prediction on the test dataset. There are different ways to improve the performance of the model or to make it run faster but I'll leave them for the coming posts.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 class="section-heading">References:</h2>
+
+<ul>
+<li><a href="http://arxiv.org/abs/1404.7828">Deep Learning in Neural Networks: An Overview</a></li>
+<li><a href="http://www.cs.toronto.edu/~hinton/absps/naturebp.pdf">Learning representations by back-propagating errors</a></li>
+<li><a href="http://arxiv.org/abs/1206.5533">Practical recommendations for gradient-based training of deep architectures</a></li>
+<li><a href="https://class.coursera.org/ml-005">Coursera Machine Learning</a></li>
+<li><a href="http://cs231n.github.io/optimization-2/">CS 231n</a></li>
+<li><a href="http://www.iro.umontreal.ca/~bengioy/dlbook/mlp.html">Deep Learning</a></li>
+<li><a href="http://ufldl.stanford.edu/wiki/index.php/Backpropagation_Algorithm">UDFL</a></li>
+<li><a href="http://work.caltech.edu/slides/slides10.pdf">Learning from Data</a></li>
+</ul>
+
+</div>
+</div>
 </div>
     </div>
   </div>
