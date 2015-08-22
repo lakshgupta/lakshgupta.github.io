@@ -1,12 +1,3 @@
----
-layout:     post
-title:      "Neural Network"
-subtitle:   "digit decognition using MNIST dataset"
-date:       2015-06-12 12:00:00
-author:     "Laksh Gupta"
-header-img: "img/sd3-bg.jpg"
----
-
   <div tabindex="-1" id="notebook" class="border-box-sizing">
     <div class="container" id="notebook-container">
 
@@ -168,7 +159,7 @@ INFO: Loading help data...
 <blockquote><p>Backpropagation works by approximating the non-linear relationship between the input and the output by adjusting the weight values internally. 
 The operations of the Backpropagation neural networks can be divided into two steps: feedforward and Backpropagation. In the feedforward step, an input pattern is applied to the input layer and its effect propagates, layer by layer, through the network until an output is produced. The network's actual output value is then compared to the expected output, and an error signal is computed for each of the output nodes. Since all the hidden nodes have, to some degree, contributed to the errors evident in the output layer, the output error signals are transmitted backwards from the output layer to each node in the hidden layer that immediately contributed to the output layer. This process is then repeated, layer by layer, until each node in the network has received an error signal that describes its relative contribution to the overall error.
 Once the error signal for each node has been determined, the errors are then used by the nodes to update the values for each connection weights until the network converges to a state that allows all the training patterns to be encoded.</p>
-<p align="right">- [www.cse.unsw.edu.au](http://www.cse.unsw.edu.au/~cs9417ml/MLP2/BackPropagation.html)</p>
+<p>- <a href="http://www.cse.unsw.edu.au/~cs9417ml/MLP2/BackPropagation.html">www.cse.unsw.edu.au</a></p>
 </blockquote>
 <p>We'll discuss more about the backpropagation algorithm later but first let's collect the simple tools which are required for training a neural network.</p>
 
@@ -238,7 +229,7 @@ $$sigmoid(z) = 1/(1 + e^{-z})$$<p><img src="{{ site.baseurl }}/img/nn/sigmoidGra
 
 <p>We used squared error (SE) cost function for performing <a href="http://lakshgupta.github.io/2015/05/27/LinearRegression/">linear regression</a>. But for training the neural network we'll use cross entropy (CE) cost function instead.</p>
 <blockquote><p>The experimental results have shown that, in a comparable environment and with randomly initialized weights, the CE criterion allows to find a better local optimum than the SE criterion. The training of the SE system quickly got stuck in a worse local optimum where the gradient vanished and no further reduction of the classification errors was possible.</p>
-<p align="right">- <a href="https://www-i6.informatik.rwth-aachen.de/publications/download/861/GolikPavelDoetschPatrickNeyHermann--Cross-Entropyvs.SquaredErrorTrainingaTheoreticalExperimentalComparison--2013.pdf">P. Golik, P. Doetsch, and H. Ney</a></p>
+<p>- <a href="https://www-i6.informatik.rwth-aachen.de/publications/download/861/GolikPavelDoetschPatrickNeyHermann--Cross-Entropyvs.SquaredErrorTrainingaTheoreticalExperimentalComparison--2013.pdf">P. Golik, P. Doetsch, and H. Ney</a></p>
 </blockquote>
 <p>So considering:</p>
 $$J(\theta) = \frac{1}{m}(\sum_{i=1}^{m}cost(h_{\theta}(x^{(i)}),y^{(i)}))$$<p>where:</p>
@@ -279,7 +270,7 @@ $$\Omega(\theta) = \frac{\lambda}{2m}\sum_{l=1}^{L-1}\sum_{i=1}^{s_l}\sum_{j=1}^
 <li>$s$ is the neuron unit in the corresponding layer</li>
 </ul>
 <blockquote><p>Regularizers work by trading increased bias for reduced variance. An effective regularizer is one that makes a proﬁtable trade, that is it reduces variance signiﬁcantly while not overly increasing the bias.</p>
-<p align="right">- [Yoshua Bengio, Ian Goodfellow and Aaron Courville](http://www.iro.umontreal.ca/~bengioy/dlbook/regularization.html)</p>
+<p>- <a href="http://www.iro.umontreal.ca/~bengioy/dlbook/regularization.html">Yoshua Bengio, Ian Goodfellow and Aaron Courville</a></p>
 </blockquote>
 <p>The Wikipedia has a descent article on the <a href="https://en.wikipedia.org/wiki/Bias%E2%80%93variance_tradeoff">bias-variance tradeoff</a>.</p>
 
@@ -761,4 +752,3 @@ $$\theta^{(l)} \leftarrow \theta^{(l)} - \frac{\alpha}{m} \dfrac{\partial J}{\pa
 </div>
     </div>
   </div>
-
