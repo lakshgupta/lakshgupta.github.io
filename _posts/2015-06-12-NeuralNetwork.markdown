@@ -168,9 +168,8 @@ INFO: Loading help data...
 <blockquote><p>Backpropagation works by approximating the non-linear relationship between the input and the output by adjusting the weight values internally. 
 The operations of the Backpropagation neural networks can be divided into two steps: feedforward and Backpropagation. In the feedforward step, an input pattern is applied to the input layer and its effect propagates, layer by layer, through the network until an output is produced. The network's actual output value is then compared to the expected output, and an error signal is computed for each of the output nodes. Since all the hidden nodes have, to some degree, contributed to the errors evident in the output layer, the output error signals are transmitted backwards from the output layer to each node in the hidden layer that immediately contributed to the output layer. This process is then repeated, layer by layer, until each node in the network has received an error signal that describes its relative contribution to the overall error.
 Once the error signal for each node has been determined, the errors are then used by the nodes to update the values for each connection weights until the network converges to a state that allows all the training patterns to be encoded.</p>
-<p align="right">- <a href="http://www.cse.unsw.edu.au/~cs9417ml/MLP2/BackPropagation.html">www.cse.unsw.edu.au</a></p>
+<p align="right">- [www.cse.unsw.edu.au](http://www.cse.unsw.edu.au/~cs9417ml/MLP2/BackPropagation.html)</p>
 </blockquote>
-
 <p>We'll discuss more about the backpropagation algorithm later but first let's collect the simple tools which are required for training a neural network.</p>
 
 </div>
@@ -237,7 +236,11 @@ $$sigmoid(z) = 1/(1 + e^{-z})$$<p><img src="{{ site.baseurl }}/img/nn/sigmoidGra
 <div class="text_cell_render border-box-sizing rendered_html">
 <h4 class="section-heading">Cost Function: $J$</h4>
 
-<p>The “squared error” cost function used for linear regression is not suitable for neural networks, because the non-linear nature of activation function is said to produce a non-convex plot of the cost function, i.e. with many local minima. For further explanation refer to this <a href="https://class.coursera.org/ml-005/forum/thread?thread_id=2773">thread</a>. Take a look at this <a href="https://www-i6.informatik.rwth-aachen.de/publications/download/861/GolikPavelDoetschPatrickNeyHermann--Cross-Entropyvs.SquaredErrorTrainingaTheoreticalExperimentalComparison--2013.pdf">paper</a> to have a comparison between cross entropy cost function and squared error cost function. So considering:</p>
+<p>We used squared error (SE) cost function for performing <a href="http://lakshgupta.github.io/2015/05/27/LinearRegression/">linear regression</a>. But for training the neural network we'll use cross entropy (CE) cost function instead.</p>
+<blockquote><p>The experimental results have shown that, in a comparable environment and with randomly initialized weights, the CE criterion allows to find a better local optimum than the SE criterion. The training of the SE system quickly got stuck in a worse local optimum where the gradient vanished and no further reduction of the classification errors was possible.</p>
+<p align="right">- <a href="https://www-i6.informatik.rwth-aachen.de/publications/download/861/GolikPavelDoetschPatrickNeyHermann--Cross-Entropyvs.SquaredErrorTrainingaTheoreticalExperimentalComparison--2013.pdf">P. Golik, P. Doetsch, and H. Ney</a></p>
+</blockquote>
+<p>So considering:</p>
 $$J(\theta) = \frac{1}{m}(\sum_{i=1}^{m}cost(h_{\theta}(x^{(i)}),y^{(i)}))$$<p>where:</p>
 <ul>
 <li>$h_{\theta}(x^{(i)})$ is the predicted value (hypothesis)</li>
@@ -276,7 +279,7 @@ $$\Omega(\theta) = \frac{\lambda}{2m}\sum_{l=1}^{L-1}\sum_{i=1}^{s_l}\sum_{j=1}^
 <li>$s$ is the neuron unit in the corresponding layer</li>
 </ul>
 <blockquote><p>Regularizers work by trading increased bias for reduced variance. An effective regularizer is one that makes a proﬁtable trade, that is it reduces variance signiﬁcantly while not overly increasing the bias.</p>
-<p align="right">- <a href="http://www.iro.umontreal.ca/~bengioy/dlbook/regularization.html">Yoshua Bengio, Ian Goodfellow and Aaron Courville</a></p>
+<p align="right">- [Yoshua Bengio, Ian Goodfellow and Aaron Courville](http://www.iro.umontreal.ca/~bengioy/dlbook/regularization.html)</p>
 </blockquote>
 <p>The Wikipedia has a descent article on the <a href="https://en.wikipedia.org/wiki/Bias%E2%80%93variance_tradeoff">bias-variance tradeoff</a>.</p>
 
@@ -361,7 +364,7 @@ $$\Omega(\theta) = \frac{\lambda}{2m}\sum_{l=1}^{L-1}\sum_{i=1}^{s_l}\sum_{j=1}^
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Backpropagation is a way of computing gradients of expressions through recursive application of chain rule. We start from the output layer and go backwards calulating the gradient on the activations for each layer till the first hidden layer.</p>
 <blockquote><p>From these gradients, which can be interpreted as an indication of how each layer’s output should change to reduce error, one can obtain the gradient on the parameters of each layer. The gradients on weights and biases can be immediately used as part of a stochastic gradient update (performing the update right after the gradients havebeen computed) or used with other gradient-based optimization methods.</p>
-<p align="right">- <a href="http://www.iro.umontreal.ca/~bengioy/dlbook/regularization.html">Yoshua Bengio, Ian Goodfellow and Aaron Courville</a></p>
+<p align="right">- [Yoshua Bengio, Ian Goodfellow and Aaron Courville](http://www.iro.umontreal.ca/~bengioy/dlbook/regularization.html)</p>
 </blockquote>
 
 </div>
@@ -414,7 +417,7 @@ $$ \begin{eqnarray}
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>We now have all the components for $\dfrac{\partial J}{\partial \theta^{l}}$, hence we can update the weights as:</p>
-$$\theta^{(l)} \leftarrow \theta^{(l)} - \frac{\alpha}{m} \dfrac{\partial J}{\partial \theta^{l}}$$<p>If the original cost function included a regularization term then we need to take it into account as well while taking the derivatives. Hence $\dfrac{\partial J}{\partial \theta^{l}}$ would also include the derivative of the regularization term, $\frac{\lambda}{m}\theta^{(l)}$.</p>
+$$\theta^{(l)} \leftarrow \theta^{(l)} - \frac{\alpha}{m} \dfrac{\partial J}{\partial \theta^{l}}$$<p>If the original cost function included a regularization term then we need to take it into account as well while taking the derivatives. Hence $\dfrac{\partial J}{\partial \theta^{l}}$ would also include the derivative of the regularization term, i.e. $\frac{\lambda}{m}\theta^{(l)}$.</p>
 
 </div>
 </div>
@@ -522,7 +525,7 @@ $$\theta^{(l)} \leftarrow \theta^{(l)} - \frac{\alpha}{m} \dfrac{\partial J}{\pa
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 class="section-heading">Prediction and Accuracy</h2>
 
-<p>After training the model we'll check how well our model has learned all the weights to make a prediction. So we'll evaluate the performance on the train dataset first. We do it by following a way similar to the feedforward process. Consider that we now do not have randonly initialized weights but rather obtained after going through the backpropagation algorithm.</p>
+<p>After training the model we'll check how well our model has learned all the weights to make a prediction. So we'll evaluate the performance on the train dataset first. We do it by following a way similar to the feedforward process. Consider that we now do not have randomly initialized weights but rather obtained after going through the backpropagation algorithm.</p>
 
 </div>
 </div>
@@ -731,7 +734,7 @@ $$\theta^{(l)} \leftarrow \theta^{(l)} - \frac{\alpha}{m} \dfrac{\partial J}{\pa
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>That's all folks! Now our model can make the prediction on any new handwritten digit in a similar way as we made the prediction on the test dataset. There are different ways to improve the performance of the model or to make it run faster but I'll leave them for the coming posts.</p>
+<p>That's all folks! Now our model can make the prediction on any new handwritten digit in a similar way as we made the prediction on the test dataset. If we had let the training go on for longer iteration the accuracy would have been better, and there are other different ways as well to further improve the performance of the model or to make it run faster. I'll leave them for the coming posts.</p>
 
 </div>
 </div>
@@ -747,10 +750,9 @@ $$\theta^{(l)} \leftarrow \theta^{(l)} - \frac{\alpha}{m} \dfrac{\partial J}{\pa
 <li><a href="http://arxiv.org/abs/1404.7828">Deep Learning in Neural Networks: An Overview</a></li>
 <li><a href="http://www.cs.toronto.edu/~hinton/absps/naturebp.pdf">Learning representations by back-propagating errors</a></li>
 <li><a href="http://arxiv.org/abs/1206.5533">Practical recommendations for gradient-based training of deep architectures</a></li>
+<li><a href="http://yann.lecun.com/exdb/publis/pdf/lecun-98b.pdf">Efficient BackProp</a></li>
 <li><a href="https://class.coursera.org/ml-005">Coursera Machine Learning</a></li>
-<li><a href="http://cs231n.github.io/optimization-2/">CS 231n</a></li>
 <li><a href="http://www.iro.umontreal.ca/~bengioy/dlbook/mlp.html">Deep Learning</a></li>
-<li><a href="http://ufldl.stanford.edu/wiki/index.php/Backpropagation_Algorithm">UDFL</a></li>
 <li><a href="http://work.caltech.edu/slides/slides10.pdf">Learning from Data</a></li>
 </ul>
 
@@ -759,3 +761,4 @@ $$\theta^{(l)} \leftarrow \theta^{(l)} - \frac{\alpha}{m} \dfrac{\partial J}{\pa
 </div>
     </div>
   </div>
+
