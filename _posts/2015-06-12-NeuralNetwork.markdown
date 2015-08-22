@@ -1,3 +1,12 @@
+---
+layout:     post
+title:      "Neural Network"
+subtitle:   "handwritten digit recognition"
+date:       2015-06-12 12:00:00
+author:     "Laksh Gupta"
+header-img: "img/sd3-bg.jpg"
+---
+
   <div tabindex="-1" id="notebook" class="border-box-sizing">
     <div class="container" id="notebook-container">
 
