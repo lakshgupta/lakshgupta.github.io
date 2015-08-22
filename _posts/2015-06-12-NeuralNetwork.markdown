@@ -6,7 +6,6 @@ date:       2015-06-12 12:00:00
 author:     "Laksh Gupta"
 header-img: "img/sd3-bg.jpg"
 ---
-
   <div tabindex="-1" id="notebook" class="border-box-sizing">
     <div class="container" id="notebook-container">
 
@@ -29,7 +28,7 @@ header-img: "img/sd3-bg.jpg"
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 class="section-heading">Understanding the Data</h2>
 
-<p>We'll use the <a href="http://yann.lecun.com/exdb/mnist/">MNIST dataset</a>. Luckily, <a href="https://github.com/johnmyleswhite/MNIST.jl">John Myles White</a> has already created a package to import this dataset in Julia. The MNIST dataset provides a training set of 60,000 handwritten digits and a test set of 10,000 handwritten digits. Each of the image has a size of 28×28 pixels. <img src="{{ site.baseurl }}/img/nn/MNIST_digits.png" alt="MNIST"></p>
+<p>We'll use the <a href="http://yann.lecun.com/exdb/mnist/">MNIST dataset</a>. Luckily, <a href="https://github.com/johnmyleswhite/MNIST.jl">John Myles White</a> has already created a package to import this dataset in Julia. The MNIST dataset provides a training set of 60,000 handwritten digits and a test set of 10,000 handwritten digits. Each of the image has a size of 28×28 pixels. <img src="img/nn/MNIST_digits.png" alt="MNIST"></p>
 
 </div>
 </div>
@@ -130,7 +129,7 @@ INFO: Loading help data...
 <h2 class="section-heading">Training a model</h2>
 
 <p>We want to train a neural network with one input layer, one hidden layer and one output layer to recognize handwritten digits. Since the dataset contains 28×28 pixel images, our neural network will have $28*28=784$ input neurons, a variable number of hidden neurons and $10$ output neurons.</p>
-<p><img src="{{ site.baseurl }}/img/nn/nn_basic.png" alt="2-layer-neuralNetwork"></p>
+<p><img src="img/nn/nn_basic.png" alt="2-layer-neuralNetwork"></p>
 
 </div>
 </div>
@@ -183,7 +182,7 @@ Once the error signal for each node has been determined, the errors are then use
 <h4 class="section-heading">Activation Function: $g$</h4>
 
 <p>The activation function of artificial neurons have to be differentiable and their derivative has to be non-zero so that the gradient descent learning algorithm can be applied. Considering <a href="http://lakshgupta.github.io/2015/05/27/LinearRegression/">linear regression</a>, using a linear activation function does not give us much advantage here. Linear function applied to a linear function is itself a linear function, and hence both the functions can be replaced by a single linear function. Moreover real world problems are generally more complex. A linear activation function may not be a good fit for the dataset we have. Therefore if the data we wish to model is non-linear then we need to account for that in our model. Sigmoid activation function is one of the reasonably good non-linear activation functions which we could use in our neural network.</p>
-$$sigmoid(z) = 1/(1 + e^{-z})$$<p><img src="{{ site.baseurl }}/img/nn/sigmoidGraph.png" alt="sigmoid"></p>
+$$sigmoid(z) = 1/(1 + e^{-z})$$<p><img src="img/nn/sigmoidGraph.png" alt="sigmoid"></p>
 
 </div>
 </div>
@@ -352,7 +351,7 @@ $$\Omega(\theta) = \frac{\lambda}{2m}\sum_{l=1}^{L-1}\sum_{i=1}^{s_l}\sum_{j=1}^
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><img src="{{ site.baseurl }}/img/nn/ff_mnist.png" alt="2-layer-neuralNetwork-feedforward"></p>
+<p><img src="img/nn/ff_mnist.png" alt="2-layer-neuralNetwork-feedforward"></p>
 
 </div>
 </div>
@@ -364,7 +363,7 @@ $$\Omega(\theta) = \frac{\lambda}{2m}\sum_{l=1}^{L-1}\sum_{i=1}^{s_l}\sum_{j=1}^
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Backpropagation is a way of computing gradients of expressions through recursive application of chain rule. We start from the output layer and go backwards calulating the gradient on the activations for each layer till the first hidden layer.</p>
 <blockquote><p>From these gradients, which can be interpreted as an indication of how each layer’s output should change to reduce error, one can obtain the gradient on the parameters of each layer. The gradients on weights and biases can be immediately used as part of a stochastic gradient update (performing the update right after the gradients havebeen computed) or used with other gradient-based optimization methods.</p>
-<p align="right">- [Yoshua Bengio, Ian Goodfellow and Aaron Courville](http://www.iro.umontreal.ca/~bengioy/dlbook/regularization.html)</p>
+<p>- <a href="http://www.iro.umontreal.ca/~bengioy/dlbook/regularization.html">Yoshua Bengio, Ian Goodfellow and Aaron Courville</a></p>
 </blockquote>
 
 </div>
@@ -375,7 +374,7 @@ $$\Omega(\theta) = \frac{\lambda}{2m}\sum_{l=1}^{L-1}\sum_{i=1}^{s_l}\sum_{j=1}^
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><img src="{{ site.baseurl }}/img/nn/bp_mnist.png" alt="2-layer-neuralNetwork-backpropagation"></p>
+<p><img src="img/nn/bp_mnist.png" alt="2-layer-neuralNetwork-backpropagation"></p>
 
 </div>
 </div>
@@ -761,3 +760,4 @@ $$\theta^{(l)} \leftarrow \theta^{(l)} - \frac{\alpha}{m} \dfrac{\partial J}{\pa
 </div>
     </div>
   </div>
+
