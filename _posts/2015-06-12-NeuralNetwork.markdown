@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      "Neural Network"
-subtitle:   "handwritten digit recognition"
+subtitle:   "computational model of a brain"
 date:       2015-06-12 12:00:00
 author:     "Laksh Gupta"
 header-img: "img/sd3-bg.jpg"

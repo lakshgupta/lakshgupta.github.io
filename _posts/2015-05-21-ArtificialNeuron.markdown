@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      "Artificial Neuron"
-subtitle:   "computational model of a brain"
+subtitle:   "how brain learns"
 date:       2015-05-21 12:00:00
 author:     "Laksh Gupta"
 header-img: "img/sd1-bg.jpg"
