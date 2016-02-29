@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      "Neural Network"
-subtitle:   "computational model of a brain"
+subtitle:   "computational model of a brain, controversially"
 date:       2015-06-12 12:00:00
 author:     "Laksh Gupta"
 header-img: "img/sd3-bg.jpg"
