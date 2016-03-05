@@ -1,0 +1,848 @@
+---
+layout:     post
+title:      "Neural Network 2"
+subtitle:   "improve accuracy, ReLU, softmax"
+date:       2016-01-16 12:00:00
+author:     "Laksh Gupta"
+header-img: "img/sd4-bg.jpg"
+---
+  <div tabindex="-1" id="notebook" class="border-box-sizing">
+    <div class="container" id="notebook-container">
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This post is a continuation of the <a href="http://lakshgupta.github.io/2015/06/12/NeuralNetwork/">Neural Network</a> post where we learned about the basics of a neural network and applied it on the handwritten digit recognition problem. Here we'll cover the following topics which can help our neural network to perform better in terms of the accuracy of the model.</p>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Rectifier_(neural_networks">Rectified linear unit (ReLU) function</a>)</li>
+<li><a href="https://en.wikipedia.org/wiki/Softmax_function">Softmax function</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Stochastic_gradient_descent">Mini-batch gradient descent</a></li>
+</ul>
+<p>So let's get started!</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span class="k">using</span> <span class="n">MNIST</span>
+<span class="k">using</span> <span class="n">PyPlot</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Our main algorithm for learning will be the same, i.e. backpropagation. I have re-structured the program to have replaceable components to make the experiment easy. There is a small change in the architecture of the neural network:</p>
+<ul>
+<li>output layer will always be using the Softmax activation function</li>
+<li>rest of all the layers we'll either use Sigmoid or ReLU activation function</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img src="{{ site.baseurl }}/notebooks/img/nn/softmax_nn.jpg" alt="sigmoid"></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 class="section-heading">ReLU Activation Function : $$f(x) = max(0, x)$$</h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img src="{{ site.baseurl }}/notebooks/img/nn/sigmoid_relu.png" alt="sigmoid_relu"></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We have already seen the sigmoid function instead of which we'll use ReLU activation function for the input and hidden layers in the current neural network architecture because it is faster and does not suffer from the <a href="https://en.wikipedia.org/wiki/Vanishing_gradient_problem">vanishing gradient problem</a>.</p>
+<blockquote><ul>
+<li>Biological plausibility: One-sided, compared to the antisymmetry of <a href="https://en.wikipedia.org/wiki/Hyperbolic_function#Tanh">tanh</a>.</li>
+<li>Sparse activation: For example, in a randomly initialized network, only about 50% of hidden units are activated (having a non-zero output).</li>
+<li>Efficient gradient propagation: No <a href="https://en.wikipedia.org/wiki/Vanishing_gradient_problem">vanishing gradient problem</a> or exploding effect.</li>
+<li>Efficient computation: Only comparison, addition and multiplication.</li>
+</ul>
+<p>For the first time in 2011, the use of the rectifier as a non-linearity has been shown to enable training deep supervised neural networks without requiring unsupervised pre-training. Rectified linear units, compared to <a href="https://en.wikipedia.org/wiki/Sigmoid_function">sigmoid</a> function or similar activation functions, allow for faster and effective training of deep neural architectures on large and complex datasets.</p>
+<p>Potential problems:
+Non-differentiable at zero: however it is differentiable at any point arbitrarily close to 0.</p>
+<p>- <a href="https://en.wikipedia.org/wiki/Rectifier_(neural_networks)">Wikipedia</a></p><p>"What neuron type should I use?" Use the ReLU non-linearity, be careful with your learning rates and possibly monitor the fraction of "dead" units in a network. If this concerns you, give Leaky ReLU or Maxout a try. Never use sigmoid. Try tanh, but expect it to work worse than ReLU/Maxout.</p>
+<p>- <a href="http://cs231n.github.io/neural-networks-1/">Andrej Karpathy</a></p>
+</blockquote>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span class="c"># ReLU function</span>
+<span class="k">function</span><span class="nf"> relu</span><span class="p">(</span><span class="n">z</span><span class="p">::</span><span class="n">Matrix</span><span class="p">{</span><span class="kt">Float64</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">max</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">z</span><span class="p">);</span>
+<span class="k">end</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[2]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>relu (generic function with 1 method)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span class="c"># sigmoid function</span>
+<span class="k">function</span><span class="nf"> sigmoid</span><span class="p">(</span><span class="n">z</span><span class="p">::</span><span class="n">Matrix</span><span class="p">{</span><span class="kt">Float64</span><span class="p">})</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">./</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">z</span><span class="p">));</span>
+    <span class="k">return</span> <span class="n">g</span><span class="p">;</span>
+<span class="k">end</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[3]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>sigmoid (generic function with 1 method)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 class="section-heading">Softmax Activation Function : $$f_i(x) = \frac{e^{x_i}}{\sum_k e^{x_k}}$$</h4><p>Using softmax function gives us normalized class probabilities. Softmax activation function takes the input, exponentiating the input gives us unnormalized probabilities and then it uses a normalization factor to result in normalized probabilities. Hence the output for each class lies between $0$ and $1$, and the sum of all the class probabilities is equal to $1$.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span class="k">function</span><span class="nf"> forwardNN</span><span class="p">(</span><span class="n">activationFn</span><span class="p">::</span><span class="n">Function</span><span class="p">,</span> <span class="n">x</span><span class="p">::</span><span class="n">Matrix</span><span class="p">{</span><span class="kt">Float64</span><span class="p">})</span>
+    <span class="kd">global</span> <span class="n">network</span><span class="p">;</span>
+    <span class="c"># collect input for each layer</span>
+    <span class="c"># the last element will be the output from the neural network</span>
+    <span class="n">inputs</span> <span class="o">=</span> <span class="n">Matrix</span><span class="p">{</span><span class="kt">Float64</span><span class="p">}[];</span>
+    <span class="c"># initialize input vector with the actual data</span>
+    <span class="n">push</span><span class="o">!</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">x</span><span class="p">);</span>
+    <span class="k">for</span> <span class="n">layer</span> <span class="k">in</span> <span class="mi">1</span><span class="p">:</span><span class="n">length</span><span class="p">(</span><span class="n">network</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span>
+        <span class="n">push</span><span class="o">!</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">activationFn</span><span class="p">((</span><span class="n">inputs</span><span class="p">[</span><span class="n">layer</span><span class="p">]</span><span class="o">*</span><span class="n">network</span><span class="p">[</span><span class="n">layer</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span> <span class="o">.+</span> <span class="n">network</span><span class="p">[</span><span class="n">layer</span><span class="p">][</span><span class="mi">2</span><span class="p">]))</span>
+    <span class="k">end</span>
+    <span class="c"># softmax on last layer</span>
+    <span class="n">score</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="n">length</span><span class="p">(</span><span class="n">network</span><span class="p">)]</span><span class="o">*</span><span class="n">network</span><span class="p">[</span><span class="n">length</span><span class="p">(</span><span class="n">network</span><span class="p">)][</span><span class="mi">1</span><span class="p">]</span> <span class="o">.+</span> <span class="n">network</span><span class="p">[</span><span class="n">length</span><span class="p">(</span><span class="n">network</span><span class="p">)][</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">exp_scores</span> <span class="o">=</span> <span class="n">exp</span><span class="p">(</span><span class="n">score</span><span class="p">);</span>
+    <span class="n">probs</span> <span class="o">=</span> <span class="n">exp_scores</span> <span class="o">./</span> <span class="n">sum</span><span class="p">(</span><span class="n">exp_scores</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span> 
+
+    <span class="k">return</span> <span class="n">inputs</span><span class="p">,</span><span class="n">probs</span><span class="p">;</span>
+<span class="k">end</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[4]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>forwardNN (generic function with 1 method)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 class="section-heading">Cost Function: $J$</h4><p>The last time we converted each output to an array of size $10$ with $1$ on the index representing the actual output and $0$ on the rest of the indices. Because of this we used a special case of the cross-entropy cost function where number of classes is equal to 2 assuming all of the output classes are independent of each other:</p>
+$$J(\theta) = -\frac{1}{m}\sum_{i=1}^{m} \sum_{i=1}^{k}[ y^{(i)}_k\log{(h_{\theta}(x^{(i)})_k)} + (1-y^{(i)}_k)\log({1-(h_{\theta}(x^{(i)}))_k)}]$$<blockquote><p>If we have multiple independent binary attributes by which to classify the data, we can use a network with multiple logistic outputs and cross-entropy error. For multinomial classification problems (1-of-n, where n &gt; 2) we use a network with n outputs, one corresponding to each class, and target values of 1 for the correct class, and 0 otherwise. Since these targets are not independent of each other, however, it is no longer appropriate to use logistic output units. The corect generalization of the logistic sigmoid to the multinomial case is the softmax activation function.</p>
+<p>- <a href="https://www.willamette.edu/~gorr/classes/cs449/classify.html">Genevieve (Jenny) B. Orr</a></p>
+</blockquote>
+<p>Now since we are using softmax in the output layer, the probability for one class is divided by the sum of probabilities for all the classes. Hence we will used the generalized cross entropy cost function:</p>
+\begin{align}
+J(\theta) = - \left[ \sum_{i=1}^{m} \sum_{k=1}^{K}  1\left\{y^{(i)} = k\right\} \log \frac{\exp(\theta^{(k)\top} h_{W,b}(x^{(i)}))}{\sum_{j=1}^K \exp(\theta^{(j)\top} h_{W,b}(x)^{(i)}))}\right].
+\end{align}<p>where $h_{W,b}(x)$ is the input from the last hidden layer. In the code, you'll see that I have also applied $L^2$ regularization.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span class="k">function</span><span class="nf"> costFunction</span><span class="p">(</span><span class="n">truth</span><span class="p">::</span><span class="n">Vector</span><span class="p">{</span><span class="kt">Float64</span><span class="p">},</span> <span class="n">probability</span><span class="p">::</span><span class="n">Matrix</span><span class="p">{</span><span class="kt">Float64</span><span class="p">})</span>
+    <span class="kd">global</span> <span class="n">network</span><span class="p">;</span>
+    <span class="c"># compute the loss: average cross-entropy loss and regularization</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">size</span><span class="p">(</span><span class="n">truth</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+    
+    <span class="n">corect_logprobs</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="n">log</span><span class="p">(</span><span class="n">probability</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="nb">convert</span><span class="p">(</span><span class="kt">Int32</span><span class="p">,</span> <span class="n">truth</span><span class="p">[</span><span class="n">j</span><span class="p">])])</span> <span class="k">for</span> <span class="n">j</span> <span class="k">in</span> <span class="mi">1</span><span class="p">:</span><span class="n">m</span><span class="p">];</span>
+    <span class="n">data_loss</span> <span class="o">=</span> <span class="n">sum</span><span class="p">(</span><span class="n">corect_logprobs</span><span class="p">)</span><span class="o">/</span><span class="n">m</span><span class="p">;</span>
+    
+    <span class="n">reg_loss</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="k">in</span> <span class="mi">1</span><span class="p">:</span><span class="n">length</span><span class="p">(</span><span class="n">network</span><span class="p">)</span>
+        <span class="n">reg_loss</span> <span class="o">=</span> <span class="n">reg_loss</span> <span class="o">+</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">lambda</span><span class="o">*</span><span class="n">sum</span><span class="p">(</span><span class="n">network</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.^</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="n">m</span><span class="p">;</span>
+    <span class="k">end</span>
+    
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">data_loss</span> <span class="o">+</span> <span class="n">reg_loss</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">loss</span><span class="p">;</span>
+<span class="k">end</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[5]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>costFunction (generic function with 1 method)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span class="c"># gradient of the sigmoid function evaluated at a</span>
+<span class="k">function</span><span class="nf"> sigmoidGradient</span><span class="p">(</span><span class="n">a</span><span class="p">::</span><span class="n">Matrix</span><span class="p">{</span><span class="kt">Float64</span><span class="p">})</span>
+  <span class="k">return</span> <span class="n">a</span><span class="o">.*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">a</span><span class="p">);</span>
+<span class="k">end</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[6]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>sigmoidGradient (generic function with 1 method)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span class="c"># gradient of the ReLU function evaluated at a</span>
+<span class="k">function</span><span class="nf"> reluGradient</span><span class="p">(</span><span class="n">a</span><span class="p">::</span><span class="n">Matrix</span><span class="p">{</span><span class="kt">Float64</span><span class="p">})</span>
+    <span class="n">grad</span> <span class="o">=</span> <span class="n">ones</span><span class="p">(</span><span class="n">a</span><span class="p">);</span>
+    <span class="n">grad</span><span class="p">[</span><span class="n">a</span><span class="o">.&lt;=</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">grad</span><span class="p">;</span>
+<span class="k">end</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[7]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>reluGradient (generic function with 1 method)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The algorithm to learn the parameters is still the same, backpropagation. The previous post has a detailed explanation of how the backpropagation algorithm works, the use of chain rule to backpropagate the error. The derivation of the cost function hence can be similarly computed. This write-up from Tambet Matiisen's is also a nice reference: <a href="https://courses.cs.ut.ee/MTAT.03.277/2015_fall/uploads/Main/word2vec.pdf">word2vec gradients</a></p>
+<blockquote><p>In the probabilistic interpretation, we are therefore minimizing the negative log likelihood of the correct class, which can be interpreted as performing Maximum Likelihood Estimation (MLE).</p>
+<p>- <a href="http://cs231n.github.io/linear-classify/">Andrej Karpathy</a></p>
+</blockquote>
+<p>The last layer, as before, computes the error by taking the difference between the estimated prediction and the actual prediction. The change here is that the actual prediction is always $1$ otherwise $0$ since we are now dealing with the normalized class probabilities.</p>
+<blockquote><p>Note that this loss function can be
+understood as a special case of the cross-entropy measurement between two probabilistic
+distributions.
+Let us now derive the update equation of the weights between hidden and output layers.
+Take the derivative of $E$ with regard to $j$-th unit’s net input $u_j$ , we obtain</p>
+$$\dfrac{\partial E}{\partial u_j} = y_j − t_j := e_j \tag{8}$$<p>where $t_j = 1(j = j∗)$, i.e., $t_j$ will only be $1$ when the $j$-th unit is the actual output word,
+otherwise $t_j$ = 0. Note that this derivative is simply the prediction error $e_j$ of the output
+layer.</p>
+<p>- <a href="http://arxiv.org/abs/1411.2738">Xin Rong</a></p>
+</blockquote>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span class="k">function</span><span class="nf"> backwardNN</span><span class="p">(</span><span class="n">activationFnGrad</span><span class="p">::</span><span class="n">Function</span><span class="p">,</span> <span class="n">a</span><span class="p">::</span><span class="n">Vector</span><span class="p">{</span><span class="n">Matrix</span><span class="p">{</span><span class="kt">Float64</span><span class="p">}},</span> <span class="n">y</span><span class="p">::</span><span class="n">Vector</span><span class="p">{</span><span class="kt">Float64</span><span class="p">},</span> <span class="n">dscores</span><span class="p">::</span><span class="n">Matrix</span><span class="p">{</span><span class="kt">Float64</span><span class="p">})</span>
+    <span class="kd">global</span> <span class="n">network</span><span class="p">;</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">size</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
+    <span class="n">delta</span> <span class="o">=</span> <span class="n">Array</span><span class="p">(</span><span class="n">Matrix</span><span class="p">{</span><span class="kt">Float64</span><span class="p">},</span> <span class="mi">1</span><span class="p">,</span><span class="n">length</span><span class="p">(</span><span class="n">network</span><span class="p">));</span>
+    <span class="c"># start from the last layer to backpropagate the error</span>
+    <span class="c"># compute the gradient on scores</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="k">in</span> <span class="mi">1</span><span class="p">:</span><span class="n">size</span><span class="p">(</span><span class="n">dscores</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">dscores</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="nb">convert</span><span class="p">(</span><span class="kt">Int32</span><span class="p">,</span> <span class="n">y</span><span class="p">[</span><span class="n">j</span><span class="p">])]</span> <span class="o">-=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">end</span>
+    <span class="n">delta</span><span class="p">[</span><span class="n">length</span><span class="p">(</span><span class="n">network</span><span class="p">)]</span> <span class="o">=</span> <span class="n">dscores</span><span class="o">/</span><span class="n">m</span><span class="p">;</span> <span class="c"># normalization factor</span>
+    <span class="c"># backpropagate</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="k">in</span> <span class="n">length</span><span class="p">(</span><span class="n">network</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span><span class="mi">1</span>
+        <span class="n">delta</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">delta</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">network</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">&#39;.*</span><span class="n">activationFnGrad</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">]);</span>
+    <span class="k">end</span>
+    <span class="k">return</span> <span class="n">delta</span><span class="p">;</span>
+<span class="k">end</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[8]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>backwardNN (generic function with 1 method)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span class="k">function</span><span class="nf"> updateThetas</span><span class="p">(</span><span class="n">a</span><span class="p">::</span><span class="n">Vector</span><span class="p">{</span><span class="n">Matrix</span><span class="p">{</span><span class="kt">Float64</span><span class="p">}},</span> <span class="n">delta</span><span class="p">::</span><span class="n">Matrix</span><span class="p">{</span><span class="n">Matrix</span><span class="p">{</span><span class="kt">Float64</span><span class="p">}})</span>
+    <span class="kd">global</span> <span class="n">network</span><span class="p">;</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="k">in</span> <span class="mi">1</span><span class="p">:</span><span class="n">length</span><span class="p">(</span><span class="n">network</span><span class="p">)</span>
+        <span class="c"># update theta</span>
+        <span class="n">network</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">network</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">alpha</span><span class="o">*</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">&#39;*</span><span class="n">delta</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">+</span> <span class="n">lambda</span><span class="o">*</span><span class="n">network</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+        <span class="c"># update bias</span>
+        <span class="n">network</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span>  <span class="n">network</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">alpha</span><span class="o">*</span><span class="n">sum</span><span class="p">(</span><span class="n">delta</span><span class="p">[</span><span class="n">j</span><span class="p">],</span><span class="mi">1</span><span class="p">);</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[9]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>updateThetas (generic function with 1 method)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span class="k">function</span><span class="nf"> predict</span><span class="p">(</span><span class="n">activationFn</span><span class="p">,</span> <span class="n">data</span><span class="p">::</span><span class="n">Matrix</span><span class="p">{</span><span class="kt">Float64</span><span class="p">})</span>
+    <span class="n">activation</span><span class="p">,</span> <span class="n">probs</span> <span class="o">=</span> <span class="n">forwardNN</span><span class="p">(</span><span class="n">activationFn</span><span class="p">,</span> <span class="n">data</span><span class="p">);</span>
+    <span class="n">predicted_class</span> <span class="o">=</span> <span class="p">[</span><span class="n">indmax</span><span class="p">(</span><span class="n">probs</span><span class="p">[</span><span class="n">i</span><span class="p">,:])</span> <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="mi">1</span><span class="p">:</span><span class="n">size</span><span class="p">(</span><span class="n">probs</span><span class="p">,</span><span class="mi">1</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="n">predicted_class</span><span class="p">;</span>
+<span class="k">end</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[10]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>predict (generic function with 1 method)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span class="k">function</span><span class="nf"> accuracy</span><span class="p">(</span><span class="n">truth</span><span class="p">,</span> <span class="n">prediction</span><span class="p">)</span>
+    <span class="n">correct</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="mi">1</span><span class="p">:</span><span class="n">length</span><span class="p">(</span><span class="n">truth</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">truth</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">prediction</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">correct</span> <span class="o">=</span> <span class="n">correct</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="k">end</span>
+    <span class="k">end</span>
+    <span class="n">println</span><span class="p">(</span><span class="s">&quot;training accuracy: &quot;</span><span class="p">,</span> <span class="n">correct</span><span class="o">/</span><span class="n">length</span><span class="p">(</span><span class="n">truth</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="p">);</span>
+<span class="k">end</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[11]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>accuracy (generic function with 1 method)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 class="section-heading">Training a model</h2><p>Based on the new structure of the program, we'll build up our neural network and train our model.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 class="section-heading">Load Data</h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span class="c"># ===================</span>
+<span class="c"># load training data</span>
+<span class="c"># ===================</span>
+<span class="n">X</span><span class="p">,</span><span class="n">Y</span> <span class="o">=</span> <span class="n">traindata</span><span class="p">();</span> <span class="c">#X:(784x60000), y:(60000x1)</span>
+<span class="n">X</span> <span class="o">/=</span> <span class="mf">255.0</span><span class="p">;</span> <span class="c"># scale the input between 0 and 1</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="o">&#39;</span><span class="p">;</span> <span class="c">#X:(60000X784)</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="n">Y</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span> <span class="c"># adding 1 to handle index, hence value 1 represent digit 0 now</span>
+<span class="c"># number of instances</span>
+<span class="n">println</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span><span class="mi">1</span><span class="p">));</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>60000
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 class="section-heading">Define Network</h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span class="n">inputLayerSize</span> <span class="o">=</span> <span class="n">size</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span>
+<span class="n">hiddenLayerSize</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
+<span class="n">outputLayerSize</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span class="c"># define a network</span>
+<span class="n">network</span> <span class="o">=</span> <span class="p">[];</span>
+
+<span class="c"># add first layer to the network</span>
+<span class="n">layer1</span> <span class="o">=</span> <span class="n">Array</span><span class="p">(</span><span class="n">Matrix</span><span class="p">{</span><span class="kt">Float64</span><span class="p">},</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="c">#theta1</span>
+<span class="n">layer1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.01</span><span class="o">*</span><span class="n">randn</span><span class="p">(</span><span class="n">inputLayerSize</span><span class="p">,</span> <span class="n">hiddenLayerSize</span><span class="p">);</span> 
+<span class="c">#bias1</span>
+<span class="n">layer1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">hiddenLayerSize</span><span class="p">);</span> 
+<span class="n">push</span><span class="o">!</span><span class="p">(</span><span class="n">network</span><span class="p">,</span><span class="n">layer1</span><span class="p">);</span>
+
+<span class="c"># add second layer to the network</span>
+<span class="n">layer2</span> <span class="o">=</span> <span class="n">Array</span><span class="p">(</span><span class="n">Matrix</span><span class="p">{</span><span class="kt">Float64</span><span class="p">},</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="c">#theta2</span>
+<span class="n">layer2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.01</span><span class="o">*</span><span class="n">randn</span><span class="p">(</span><span class="n">hiddenLayerSize</span><span class="p">,</span> <span class="n">outputLayerSize</span><span class="p">);</span> 
+<span class="c">#bias2</span>
+<span class="n">layer2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">outputLayerSize</span><span class="p">);</span> 
+<span class="n">push</span><span class="o">!</span><span class="p">(</span><span class="n">network</span><span class="p">,</span><span class="n">layer2</span><span class="p">);</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 class="section-heading">Training: Mini-batch gradient descent</h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The last time we used gradient descent to train our model. In this implementation we'll switch to Mini-Batch gradient descent algorithm which is not much different from regular gradient descent. It's just that instead of working on the whole dataset we'll work on a smaller dataset in each iteration. Because of this change our training algorithm will become computationally faster since large datasets are difficult to handle in memory which makes vectorization much less efficient.</p>
+<blockquote><p>In particular, suppose that our error function is particularly pernicious and has a bunch of little valleys. If we used the entire training set to compute each gradient, our model would get stuck in the first valley it fell into (since it would register a gradient of 0 at this point). If we use smaller mini-batches, on the other hand, we'll get more noise in our estimate of the gradient. This noise might be enough to push us out of some of the shallow valleys in the error function.</p>
+<p>- <a href="https://www.quora.com/Intuitively-how-does-mini-batch-size-affect-the-performance-of-gradient-descent">Quora</a></p>
+</blockquote>
+<p>One thing to take care in the while training is that mini-batches need to be balanced for classes. Otherwise the estimation of the gradient using mini-batch gradient descent would be way off then the gradient calculated using the whole dataset.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span class="n">alpha</span> <span class="o">=</span> <span class="mf">1e-0</span><span class="p">;</span> <span class="c"># step size</span>
+<span class="n">lambda</span> <span class="o">=</span> <span class="mf">1e-3</span><span class="p">;</span> <span class="c"># regularization factor</span>
+<span class="n">numItr</span> <span class="o">=</span> <span class="mi">1500</span><span class="p">;</span>
+<span class="n">costSamplingItr</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+<span class="n">batchSize</span> <span class="o">=</span> <span class="nb">convert</span><span class="p">(</span><span class="kt">Int32</span><span class="p">,</span><span class="n">floor</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="mi">10</span><span class="p">));</span>
+<span class="n">J</span> <span class="o">=</span> <span class="p">[];</span>
+<span class="k">for</span> <span class="n">itr</span> <span class="k">in</span> <span class="mi">1</span><span class="p">:</span><span class="n">numItr</span>
+    <span class="c"># take next batch of random instances </span>
+    <span class="n">minibatch</span> <span class="o">=</span> <span class="n">collect</span><span class="p">(</span><span class="n">rand</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="n">size</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">batchSize</span><span class="p">));</span>
+    <span class="c"># feedforward</span>
+    <span class="n">activations</span><span class="p">,</span> <span class="n">probs</span> <span class="o">=</span> <span class="n">forwardNN</span><span class="p">(</span><span class="n">relu</span><span class="p">,</span> <span class="n">X</span><span class="p">[</span><span class="n">minibatch</span><span class="p">,:]);</span> 
+    <span class="c"># cost</span>
+    <span class="k">if</span> <span class="n">itr</span><span class="o">%</span><span class="n">costSamplingItr</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="n">activationsX</span><span class="p">,</span> <span class="n">probsX</span> <span class="o">=</span> <span class="n">forwardNN</span><span class="p">(</span><span class="n">relu</span><span class="p">,</span> <span class="n">X</span><span class="p">);</span> 
+        <span class="n">push</span><span class="o">!</span><span class="p">(</span><span class="n">J</span><span class="p">,</span> <span class="n">costFunction</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">probsX</span><span class="p">));</span>
+    <span class="k">end</span>
+    <span class="c"># backpropagation</span>
+    <span class="n">newThetas</span> <span class="o">=</span> <span class="n">backwardNN</span><span class="p">(</span><span class="n">reluGradient</span><span class="p">,</span> <span class="n">activations</span><span class="p">,</span> <span class="n">Y</span><span class="p">[</span><span class="n">minibatch</span><span class="p">],</span> <span class="n">probs</span><span class="p">);</span>
+    <span class="c"># update parameters</span>
+    <span class="n">updateThetas</span><span class="p">(</span><span class="n">activations</span><span class="p">,</span> <span class="n">newThetas</span><span class="p">);</span>
+<span class="k">end</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The code above is using ReLU activation function for the hidden layers but the program is modular enough to let us experiment with different activation functions, for example sigmoid.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 class="section-heading">Prediction and Accuracy</h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span class="n">accuracy</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">predict</span><span class="p">(</span><span class="n">relu</span><span class="p">,</span> <span class="n">X</span><span class="p">));</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>training accuracy: 97.81166666666667
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This is around 10% improvement over our previous implementation.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span class="c"># plot the cost per iteration</span>
+<span class="n">plot</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="n">length</span><span class="p">(</span><span class="n">J</span><span class="p">),</span> <span class="n">J</span><span class="p">)</span>
+<span class="n">xlabel</span><span class="p">(</span><span class="s">&quot;Sampled Iterations&quot;</span><span class="p">)</span>
+<span class="n">ylabel</span><span class="p">(</span><span class="s">&quot;Cost&quot;</span><span class="p">)</span>
+<span class="n">grid</span><span class="p">(</span><span class="s">&quot;on&quot;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAsUAAAItCAYAAADR3Af3AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAPYQAAD2EBqD+naQAAIABJREFUeJzs3Xt4VOW59/HfQE6AokUEoYpGrFt9W6VBLCqeUNGNOm48NNIqBSy434Io7h1AawUUW4O6UcBz0wDWBqiF1Nq+ShFPWKzbRNtqGw8IokJEBIoajmHeP1Ynk8lMJut5clhrzfp+rosrujIz3OuXp+X25llrRWKxWEwAAABAiHXyugAAAADAazTFAAAACD2aYgAAAIQeTTEAAABCj6YYAAAAoUdTDAAAgNCjKQYAAEDo0RQDAAAg9GiKAQAAEHo0xQAAAAg93zXFX331laZPn64LL7xQPXr0UKdOnbRw4UKjz1i5cqWGDh2qgw8+WN27d9fJJ5+spUuXtlPFAAAACDrfNcWfffaZ7rjjDr3zzjsaMGCAJCkSibh+f3l5uS644ALl5+frZz/7me655x6deeaZ+vjjj9urZAAAAARcjtcFNNW3b1/V1taqV69eqqqq0qBBg1y/d/369ZowYYImTZqkOXPmtGOVAAAAyCa+mxTn5eWpV69ekqRYLGb03ocfflixWEy33367JOnLL780/gwAAACEj++a4tZYuXKljjvuOD399NM6/PDD1b17d/Xs2VO33XYbzTEAAACa5bvtE63x3nvvKScnR2PHjtXUqVN10kkn6Te/+Y1mzZqlffv26ac//anXJQIAAMCHsqopjm+XKC0tVUlJiSRpxIgR2rp1q+6//37dcsstOuCAAzyuEgAAAH6TVU1xly5dtHPnTo0cOTLp+FVXXaVnnnlGb775poYMGZL0vS1btujZZ5/VUUcdpS5dunRkuQAAAHBh586dWr9+vS644AL17NmzXX6PrGqK+/btq7Vr16p3795Jx+MX7m3bti3lPc8++6yuvvrqDqkPAAAA9n75y1/q+9//frt8dlY1xSeffLLef/99ffzxxyosLGw4vnHjRknSoYcemvKeo446SpIT8vHHH98hdWaDK664Qk8++aTXZQQOuZkjMzvkZo7M7JCbOTIz949//ENXX311Q9/WHgLbFNfW1mr79u065phjlJPjnEZxcbEWL16ssrIyzZo1S5K0f/9+lZeX65BDDtHAgQNTPie+ZeL4449XUVFRx51AwOXm5pKXBXIz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aNKvU089VZWVlUmvW7lyhSKRaEpTPGHCBJWVlSUdq66uVjQa1ZYtW5KOT58+XaWlpUnHNmzYoGg0qpqamqTj8+bNU0lJSdKxuro6RaPRlKtXKyoq0j46sri4OOU8VqxYoWg0mvJat+dRUlKSFechdezPo6SkJCvOQ+q4n0dJSUlWnIfUsT+PkpKSjOfx61875xFvhtetq5YU1ebN/joPqeN+HvHag34ecR11HvHfI+jnEdcR5xH/GvTziGvr86ioqGjoxQoLCzVgwABNnjw55XPaXMzCLbfcEotEIrGSkpJYbW1tw/Ha2trYlClTYpFIJPbjH//Y+HNLSkpiOTk5sR07diQdv/POO2ORSCT28ccfN/ve/Pz82MiRI1OOl5aWxiKRSOydd95J+76qqqqYpFhVVZXrOrt3j8Xuucf1y7PS3LlzvS4hkMjNHJnZaSm3v/41FpNisVdfdf799793/v2TTzqgOJ9irdkhN3NkZs6mXzMVicViMdNGurCwUGeddVaz9/8dPXq0XnjhBa1fv97oc1977TUNHjxYd999t/7rv/5LkvOEu29+85s69NBD9ac//UmS8/CQ7du365hjjlFOjrMD5MQTT9TGjRv17rvvqkePHpKk+vp6fec739H777+vzz//PO32ierqag0cOFBVVVUqKipyVWfv3tKkSdKPf2x0egDgG3/5izRggPTaa9KgQdKzz0oXXiht2CAdcYTX1QFAMpt+zZTVnuJNmzZp8ODBzX7/lFNOUUVFhfHnnnLKKbryyit18803a/Pmzerfv78WLlyoDRs2qLy8vOF106ZN06JFi7R+/Xr169ev4djVV1+t73znOxo/frwKCgpUUVHRcC/ltthPHFdQwJ5iAMHW9OEd7CkGEHZWe4q//vWv6/nnn2/2+y+99JIOP/xwq4IWLVqkG2+8UY8//rhuuOEG1dfX6+mnn9aQIUMaXhOJRBSJRJLe973vfU/PPPOMDj/8cN19990qKSlRXV2dHnnkkTa9T7FEUwwg+Jo+vIO7TwAIO6umePTo0fr1r3+t6667Tu+8847q6+u1f/9+1dTU6D//8z+1dOlSjR492qqg/Px8zZ49Wxs3btTOnTv16quv6vzzz096TXl5uerr6xumxHHDhg3T888/r82bN2vXrl168803NW7cOKs6MqEpVsrGe7hDbubIzE5LuTW9JRuT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Szr00OzdQsHtZOyQmzkys2NzS7awT4pZa3bIzRyZ+RNNcTvJyZGGD5eef97rSgAgGZNiAEhFU9yOvvENad06r6sAgGRMigEgFU1xOyoslD7/XPriC68raXulpaVelxBI5GaOzOxkyo1JcXqsNTvkZo7M/Ml3TfHu3bs1depU9e3bV127dtXgwYO1cuVK488ZN26cOnXqpEsuuaQdqnSnsND5mo3T4rq6Oq9LCCRyM0dmdjLlxqQ4PdaaHXIzR2b+5LumePTo0ZozZ46uueYazZ07V507d9bw4cP1yiuvuP6M119/XQsXLlRBQYEikUg7VptZNjfFM2fO9LqEQCI3c2RmJ1NuPNEuPdaaHXIzR2b+5AJo2QoAACAASURBVKum+LXXXtOSJUt01113qbS0VD/84Q+1atUqHXnkka7v6ReLxTRp0iT94Ac/UO/evdu54sx695a6dMnOphhAcDW3fSLsk2IA4earpvjJJ59UTk6Oxo8f33AsPz9f1157rdasWaNPPvmkxc94/PHH9fe//12zZs1SzOMnZ0Qi0lFH0RQD8BcmxQCQyldN8RtvvKFjjz1WBxxwQNLxQYMGSZLefPPNjO//4osvNHXqVN1yyy2eT4njCguzsynesmWL1yUEErmZIzM7mXJjUpwea80OuZkjM3/yVVO8adMm9enTJ+V4/NjGjRszvv/2229Xt27dNHny5Hapz0a2NsVjx471uoRAIjdzZGYnU25MitNjrdkhN3Nk5k++aop37typ/Pz8lOMFBQUN32/Ou+++q7lz5+ruu+9Wbm5uu9VoKr59wuOdHG1uxowZXpcQSORmjszsZMqNSXF6rDU75GaOzPzJV01xly5dtHv37pTju3btavh+c2644QadfvrpGjFiRLvVZ6OwUPrqKynb/qakqKjI6xICidzMkZmdTLkxKU6PtWaH3MyRmT/5qinu06dP2i0SmzZtkiT17ds37ftWrVqlZ599VpMmTdL69esbfu3bt091dXX68MMP9UULT9AYPny4otFo0q9TTz1VlZWVSa9bsWKFotFoyvsnTJigsrKypGPV1dWaOzcqaUvSForp06en3Lh7w4YNikajqqmpSTo+b948lZSUJB2rq6tTNBrV6tWrk45XVFRozJgxKbUVFxe3+jyi0WjKHijOg/PgPIJ5Hg8+OEFSWVJTXF1drfHjnf+/ajwp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"
+>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The spikes in the graph are due to the use of mini-batch gradient descent, which estimates the cost over the whole dataset hence sometimes moves away from the minima but in the end converges satisfactorily.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-julia"><pre><span class="c"># test data</span>
+<span class="n">XTest</span><span class="p">,</span><span class="n">YTest</span> <span class="o">=</span> <span class="n">testdata</span><span class="p">();</span>
+<span class="n">XTest</span> <span class="o">/=</span> <span class="mf">255.0</span><span class="p">;</span>
+<span class="n">XTest</span> <span class="o">=</span> <span class="n">XTest</span><span class="o">&#39;</span><span class="p">;</span>
+<span class="n">YTest</span> <span class="o">=</span> <span class="n">YTest</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span>
+<span class="n">accuracy</span><span class="p">(</span><span class="n">YTest</span><span class="p">,</span> <span class="n">predict</span><span class="p">(</span><span class="n">relu</span><span class="p">,</span> <span class="n">XTest</span><span class="p">));</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>training accuracy: 97.05
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 class="section-heading">References:</h2><ul>
+<li><a href="https://en.wikipedia.org/wiki/Rectifier_(neural_networks">Rectified linear unit (ReLU)</a>)</li>
+<li><a href="http://www.cs.toronto.edu/~hinton/absps/naturebp.pdf">Learning representations by back-propagating errors</a></li>
+<li><a href="http://www.ics.uci.edu/~pjsadows/notes.pdf">Notes on Backpropagation</a></li>
+<li><a href="http://arxiv.org/abs/1206.5533">Practical recommendations for gradient-based training of deep architectures</a></li>
+<li><a href="http://yann.lecun.com/exdb/publis/pdf/lecun-98b.pdf">Efficient BackProp</a></li>
+<li><a href="http://www.iro.umontreal.ca/~bengioy/dlbook/mlp.html">Deep Learning</a></li>
+<li><a href="http://arxiv.org/abs/1411.2738">word2vec Parameter Learning Explained</a></li>
+<li><a href="https://www.reddit.com/r/cs231n/comments/45u13l/binary_cross_entropy_cost_function_with_softmax/">binary cross entropy cost function with softmax?</a></li>
+<li><a href="http://arxiv.org/abs/cond-mat/0512017">Combinatorial Information Theory: I. Philosophical Basis of Cross-Entropy and Entropy</a></li>
+<li><a href="https://courses.cs.ut.ee/MTAT.03.277/2015_fall/uploads/Main/word2vec.pdf">word2vec gradients</a></li>
+<li><a href="http://ufldl.stanford.edu/tutorial/supervised/SoftmaxRegression/">Softmax Regression</a></li>
+</ul>
+
+</div>
+</div>
+</div>
+    </div>
+  </div>
