@@ -1,0 +1,8 @@
+---
+layout:     post
+title:      "Recurrent Neural Network"
+subtitle:   "sequence to sequence learning"
+date:       2016-03-05 12:00:00
+author:     "Laksh Gupta"
+header-img: "img/yellowstone1-bg.jpg"
+---
