@@ -174,7 +174,7 @@ Non-differentiable at zero: however it is differentiable at any point arbitraril
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 class="section-heading">Softmax Activation Function : $$f_i(x) = \frac{e^{x_i}}{\sum_k e^{x_k}}$$</h4><p>Using softmax function gives us normalized class probabilities. Softmax activation function takes the input, exponentiating the input gives us unnormalized probabilities and then it uses a normalization factor to result in normalized probabilities. Hence the output for each class lies between $0$ and $1$, and the sum of all the class probabilities is equal to $1$.</p>
+<h4 class="section-heading">Softmax Function : $$f_i(x) = \frac{e^{x_i}}{\sum_k e^{x_k}}$$</h4><p>Softmax function gives us normalized class probabilities. It takes the input, exponentiates it to generate unnormalized probabilities and then it uses a normalization factor to result in normalized probabilities. The output for each class lies between $0$ and $1$, and the sum of all the class probabilities is equal to $1$.</p>
 
 </div>
 </div>
@@ -229,11 +229,11 @@ Non-differentiable at zero: however it is differentiable at any point arbitraril
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 class="section-heading">Cost Function: $J$</h4><p>The last time we converted each output to an array of size $10$ with $1$ on the index representing the actual output and $0$ on the rest of the indices. Because of this we used a special case of the cross-entropy cost function where number of classes is equal to 2 assuming all of the output classes are independent of each other:</p>
+<h4 class="section-heading">Cost Function: $J$</h4><p>The last time we converted each output to an array of size $10$ with $1$ on the index representing the actual output and $0$ on the rest of the indices. Therefore we used a special case of the cross-entropy cost function where number of classes is equal to 2, assuming all of the output classes are independent of each other:</p>
 $$J(\theta) = -\frac{1}{m}\sum_{i=1}^{m} \sum_{i=1}^{k}[ y^{(i)}_k\log{(h_{\theta}(x^{(i)})_k)} + (1-y^{(i)}_k)\log({1-(h_{\theta}(x^{(i)}))_k)}]$$<blockquote><p>If we have multiple independent binary attributes by which to classify the data, we can use a network with multiple logistic outputs and cross-entropy error. For multinomial classification problems (1-of-n, where n &gt; 2) we use a network with n outputs, one corresponding to each class, and target values of 1 for the correct class, and 0 otherwise. Since these targets are not independent of each other, however, it is no longer appropriate to use logistic output units. The corect generalization of the logistic sigmoid to the multinomial case is the softmax activation function.</p>
 <p>- <a href="https://www.willamette.edu/~gorr/classes/cs449/classify.html">Genevieve (Jenny) B. Orr</a></p>
 </blockquote>
-<p>Now since we are using softmax in the output layer, the probability for one class is divided by the sum of probabilities for all the classes. Hence we will used the generalized cross entropy cost function:</p>
+<p>Since we are using softmax in the output layer, the probability for one class is divided by the sum of probabilities for all the classes. As a result, we will be using the generalized cross entropy cost function:</p>
 \begin{align}
 J(\theta) = - \left[ \sum_{i=1}^{m} \sum_{k=1}^{K}  1\left\{y^{(i)} = k\right\} \log \frac{\exp(\theta^{(k)\top} h_{W,b}(x^{(i)}))}{\sum_{j=1}^K \exp(\theta^{(j)\top} h_{W,b}(x)^{(i)}))}\right].
 \end{align}<p>where $h_{W,b}(x)$ is the input from the last hidden layer. In the code, you'll see that I have also applied $L^2$ regularization.</p>
@@ -356,11 +356,11 @@ J(\theta) = - \left[ \sum_{i=1}^{m} \sum_{k=1}^{K}  1\left\{y^{(i)} = k\right\} 
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The algorithm to learn the parameters is still the same, backpropagation. The previous post has a detailed explanation of how the backpropagation algorithm works, the use of chain rule to backpropagate the error. The derivation of the cost function hence can be similarly computed. This write-up from Tambet Matiisen's is also a nice reference: <a href="https://courses.cs.ut.ee/MTAT.03.277/2015_fall/uploads/Main/word2vec.pdf">word2vec gradients</a></p>
+<p>The algorithm to learn the parameters is still the same, backpropagation. The previous post has a detailed explanation of how the backpropagation algorithm works and the use of chain rule to backpropagate the error. The derivation of the cost function hence can be similarly computed. This write-up from Tambet Matiisen is also a good reference: <a href="https://courses.cs.ut.ee/MTAT.03.277/2015_fall/uploads/Main/word2vec.pdf">word2vec gradients</a></p>
 <blockquote><p>In the probabilistic interpretation, we are therefore minimizing the negative log likelihood of the correct class, which can be interpreted as performing Maximum Likelihood Estimation (MLE).</p>
 <p>- <a href="http://cs231n.github.io/linear-classify/">Andrej Karpathy</a></p>
 </blockquote>
-<p>The last layer, as before, computes the error by taking the difference between the estimated prediction and the actual prediction. The change here is that the actual prediction is always $1$ otherwise $0$ since we are now dealing with the normalized class probabilities.</p>
+<p>The last layer, as before, computes the error by taking the difference between the estimated prediction and the actual prediction. The change here is that the correct output value is always $1$ else $0$ since we are now dealing with the normalized class probabilities.</p>
 <blockquote><p>Note that this loss function can be
 understood as a special case of the cross-entropy measurement between two probabilistic
 distributions.
@@ -652,7 +652,7 @@ layer.</p>
 <blockquote><p>In particular, suppose that our error function is particularly pernicious and has a bunch of little valleys. If we used the entire training set to compute each gradient, our model would get stuck in the first valley it fell into (since it would register a gradient of 0 at this point). If we use smaller mini-batches, on the other hand, we'll get more noise in our estimate of the gradient. This noise might be enough to push us out of some of the shallow valleys in the error function.</p>
 <p>- <a href="https://www.quora.com/Intuitively-how-does-mini-batch-size-affect-the-performance-of-gradient-descent">Quora</a></p>
 </blockquote>
-<p>One thing to take care in the while training is that mini-batches need to be balanced for classes. Otherwise the estimation of the gradient using mini-batch gradient descent would be way off then the gradient calculated using the whole dataset.</p>
+<p>One thing to take care in the while training is that mini-batches need to be balanced for classes otherwise the estimation of the gradient using mini-batch gradient descent would be way off then the gradient calculated using the whole dataset.</p>
 
 </div>
 </div>
@@ -741,7 +741,7 @@ layer.</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>This is around 10% improvement over our previous implementation.</p>
+<p>This is approximately 10% improvement over our previous implementation.</p>
 
 </div>
 </div>
