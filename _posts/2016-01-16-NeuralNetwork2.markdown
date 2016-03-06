@@ -4,7 +4,7 @@ title:      "Neural Network 2"
 subtitle:   "improve accuracy, ReLU, softmax, mini-batch gradient descent"
 date:       2016-01-16 12:00:00
 author:     "Laksh Gupta"
-header-img: "img/sd4-bg.jpg"
+header-img: "img/sd5-bg.jpg"
 ---
   <div tabindex="-1" id="notebook" class="border-box-sizing">
     <div class="container" id="notebook-container">
