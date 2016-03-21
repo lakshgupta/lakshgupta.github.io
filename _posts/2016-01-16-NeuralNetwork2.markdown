@@ -6,7 +6,7 @@ date:       2016-01-16 12:00:00
 author:     "Laksh Gupta"
 header-img: "img/sd5-bg.jpg"
 ---
-  <div tabindex="-1" id="notebook" class="border-box-sizing">
+ <div tabindex="-1" id="notebook" class="border-box-sizing">
     <div class="container" id="notebook-container">
 
 <div class="cell border-box-sizing text_cell rendered">
@@ -393,25 +393,22 @@ J(\theta) &= - \left[ \sum_{k=1}^{K} y_k* \log (\hat y_k) \right]
 \end{align}<p>where,</p>
 $$\hat y_k = softmax(z^3_k) = \frac{\exp(z^3_k)}{\sum_{j=1}^K \exp(z^3_j) }$$<p>and $y_k$ is either $0$ or $1$ as per the probability of the correct class.</p>
 <p>therefore, 
-$$
-\frac{\partial J}{\partial \hat y_k} = − \frac{y_k}{\hat y_k} \\[2ex]
-\frac{\partial \hat y_k}{\partial z^{(3)}_i} = \begin{cases} 
+$$ \frac{\partial J}{\partial \hat y_k} = − \frac{y_k}{\hat y_k} $$
+$$ \frac{\partial \hat y_k}{\partial z^{(3)}_i} = \begin{cases} 
 \hat y_k(1-\hat y_k),  & \text{i = k} \\[2ex]
--\hat y_i \hat y_k, & \text{i $\neq$ k}
-\end{cases} \[2ex]
-\begin{eqnarray}
-\frac{\partial J}{\partial z^{(3)}<em>i}
-&amp;=&amp;\sum</em>{k = 1}^{K}\frac{\partial J}{\partial \hat y<em>k}\frac{\partial \hat y_k}{\partial z^{(3)}_i} \ \nonumber
-&amp;=&amp; \underbrace{\frac{\partial J}{\partial \hat y_i}\frac{\partial \hat y_i}{\partial x_i}}</em>{i = k}</p>
-<ul>
-<li>\underbrace{\sum<em>{k \neq i}\frac{\partial J(\theta)}{\partial \hat y_k}\frac{\partial \hat y_k}{\partial x_i}}</em>{i \neq k} \ \nonumber
-&amp;=&amp;-y<em>i(1 - \hat y_i) + \sum</em>{k \neq i} y<em>k \hat y_k \ \nonumber
-&amp;=&amp;-y_i + \sum</em>{k} y_k \hat y_k \ \nonumber
-&amp;=&amp; \hat y_i - y_i \
+-\hat y_i \hat y_k, & \text{i $\neq$ k} \\
+\end{cases} \\
+$$</p>
+$$\begin{eqnarray}
+\frac{\partial J}{\partial z^{(3)}_i}
+&=&\sum_{k = 1}^{K}\frac{\partial J}{\partial \hat y_k}\frac{\partial \hat y_k}{\partial z^{(3)}_i} \\ \nonumber
+&=& \underbrace{\frac{\partial J}{\partial \hat y_i}\frac{\partial \hat y_i}{\partial x_i}}_{i = k}
++ \underbrace{\sum_{k \neq i}\frac{\partial J(\theta)}{\partial \hat y_k}\frac{\partial \hat y_k}{\partial x_i}}_{i \neq k} \\ \nonumber
+&=&-y_i(1 - \hat y_i) + \sum_{k \neq i} y_k \hat y_k \\ \nonumber
+&=&-y_i + \sum_{k} y_k \hat y_k \\ \nonumber
+&=& \hat y_i - y_i \\
 \end{eqnarray}
-$$</li>
-</ul>
-<p>The correct output element in the vector $y$ is always $1$ else $0$ since we are now dealing with the normalized class probabilities.</p>
+$$<p>The correct output element in the vector $y$ is always $1$ else $0$ since we are now dealing with the normalized class probabilities.</p>
 <p>For the softmax output layer:</p>
 $$ 
 \begin{eqnarray}
