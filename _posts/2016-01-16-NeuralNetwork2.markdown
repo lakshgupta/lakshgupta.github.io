@@ -44,30 +44,6 @@ header-img: "img/sd5-bg.jpg"
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Our main algorithm for learning will be the same, i.e. backpropagation. I have re-structured the program to have replaceable components to make the experiment easy. There is a small change in the architecture of the neural network:</p>
-<ul>
-<li>output layer will always be using the Softmax activation function</li>
-<li>rest of all the layers we'll either use Sigmoid or ReLU activation function</li>
-</ul>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<p><img src="{{ site.baseurl }}/notebooks/img/nn/softmax_nn.jpg" alt="sigmoid"></p>
-
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
 <h4 class="section-heading">ReLU Activation Function : $$f(x) = max(0, x)$$</h4>
 </div>
 </div>
@@ -179,6 +155,57 @@ Non-differentiable at zero: however it is differentiable at any point arbitraril
 </div>
 </div>
 </div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 class="section-heading">Forward Process</h4><p>I have re-structured the program to have replaceable components to make the experiment easy. There is a small change in the architecture of the neural network:</p>
+<ul>
+<li>output layer will always be using the Softmax activation function</li>
+<li>rest of all the layers we'll either use ReLU activation function</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img src="{{ site.baseurl }}/notebooks/img/nn/softmax_nn.jpg" alt="sigmoid"></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>With the introduction of the ReLU and Softmax function we can look at our forward step. 
+At the first input layer:
+$$a^{(1)} = x$$</p>
+<p>At the hidden layer:
+$$
+\begin{array}{ll}
+z^{(2)} = \theta^{(1)}*a^{(1)} + bias^{(1)} \\[2ex]
+a^{(2)} = ReLU(z^{(2)})
+\end{array} 
+$$</p>
+<p>At the output layer:
+$$
+\begin{array}{ll}
+z^{(3)} = \theta^{(2)}*a^{(2)} + bias^{(2)} \\[2ex]
+p = softmax(z^{(3)})
+\end{array} 
+$$</p>
+<p>Each entry in $p$ vector defines our output normalized probability for that specific class.</p>
+
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
 <div class="prompt input_prompt">In&nbsp;[4]:</div>
@@ -188,18 +215,18 @@ Non-differentiable at zero: however it is differentiable at any point arbitraril
     <span class="kd">global</span> <span class="n">network</span><span class="p">;</span>
     <span class="c"># collect input for each layer</span>
     <span class="c"># the last element will be the output from the neural network</span>
-    <span class="n">inputs</span> <span class="o">=</span> <span class="n">Matrix</span><span class="p">{</span><span class="kt">Float64</span><span class="p">}[];</span>
-    <span class="c"># initialize input vector with the actual data</span>
-    <span class="n">push</span><span class="o">!</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">x</span><span class="p">);</span>
+    <span class="n">activation</span> <span class="o">=</span> <span class="n">Matrix</span><span class="p">{</span><span class="kt">Float64</span><span class="p">}[];</span>
+    <span class="c"># initialize activation vector with the actual data</span>
+    <span class="n">push</span><span class="o">!</span><span class="p">(</span><span class="n">activation</span><span class="p">,</span> <span class="n">x</span><span class="p">);</span>
     <span class="k">for</span> <span class="n">layer</span> <span class="k">in</span> <span class="mi">1</span><span class="p">:</span><span class="n">length</span><span class="p">(</span><span class="n">network</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span>
-        <span class="n">push</span><span class="o">!</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">activationFn</span><span class="p">((</span><span class="n">inputs</span><span class="p">[</span><span class="n">layer</span><span class="p">]</span><span class="o">*</span><span class="n">network</span><span class="p">[</span><span class="n">layer</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span> <span class="o">.+</span> <span class="n">network</span><span class="p">[</span><span class="n">layer</span><span class="p">][</span><span class="mi">2</span><span class="p">]))</span>
+        <span class="n">push</span><span class="o">!</span><span class="p">(</span><span class="n">activation</span><span class="p">,</span> <span class="n">activationFn</span><span class="p">((</span><span class="n">activation</span><span class="p">[</span><span class="n">layer</span><span class="p">]</span><span class="o">*</span><span class="n">network</span><span class="p">[</span><span class="n">layer</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span> <span class="o">.+</span> <span class="n">network</span><span class="p">[</span><span class="n">layer</span><span class="p">][</span><span class="mi">2</span><span class="p">]))</span>
     <span class="k">end</span>
     <span class="c"># softmax on last layer</span>
-    <span class="n">score</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="n">length</span><span class="p">(</span><span class="n">network</span><span class="p">)]</span><span class="o">*</span><span class="n">network</span><span class="p">[</span><span class="n">length</span><span class="p">(</span><span class="n">network</span><span class="p">)][</span><span class="mi">1</span><span class="p">]</span> <span class="o">.+</span> <span class="n">network</span><span class="p">[</span><span class="n">length</span><span class="p">(</span><span class="n">network</span><span class="p">)][</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">score</span> <span class="o">=</span> <span class="n">activation</span><span class="p">[</span><span class="n">length</span><span class="p">(</span><span class="n">network</span><span class="p">)]</span><span class="o">*</span><span class="n">network</span><span class="p">[</span><span class="n">length</span><span class="p">(</span><span class="n">network</span><span class="p">)][</span><span class="mi">1</span><span class="p">]</span> <span class="o">.+</span> <span class="n">network</span><span class="p">[</span><span class="n">length</span><span class="p">(</span><span class="n">network</span><span class="p">)][</span><span class="mi">2</span><span class="p">]</span>
     <span class="n">exp_scores</span> <span class="o">=</span> <span class="n">exp</span><span class="p">(</span><span class="n">score</span><span class="p">);</span>
     <span class="n">probs</span> <span class="o">=</span> <span class="n">exp_scores</span> <span class="o">./</span> <span class="n">sum</span><span class="p">(</span><span class="n">exp_scores</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span> 
 
-    <span class="k">return</span> <span class="n">inputs</span><span class="p">,</span><span class="n">probs</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">activation</span><span class="p">,</span><span class="n">probs</span><span class="p">;</span>
 <span class="k">end</span>
 </pre></div>
 
@@ -229,14 +256,17 @@ Non-differentiable at zero: however it is differentiable at any point arbitraril
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 class="section-heading">Cost Function: $J$</h4><p>The last time we converted each output to an array of size $10$ with $1$ on the index representing the actual output and $0$ on the rest of the indices. Therefore we used a special case of the cross-entropy cost function where number of classes is equal to 2, assuming all of the output classes are independent of each other:</p>
+<h4 class="section-heading">Cost Function: $J$</h4><p>The <a href="http://lakshgupta.github.io/2015/06/12/NeuralNetwork/">last time</a> we converted each output to an array of size $10$ with $1$ on the index representing the actual output and $0$ on the rest of the indices. Therefore we used a special case of the cross-entropy cost function where number of classes is equal to 2, assuming all of the output classes are independent of each other:</p>
 $$J(\theta) = -\frac{1}{m}\sum_{i=1}^{m} \sum_{i=1}^{k}[ y^{(i)}_k\log{(h_{\theta}(x^{(i)})_k)} + (1-y^{(i)}_k)\log({1-(h_{\theta}(x^{(i)}))_k)}]$$<blockquote><p>If we have multiple independent binary attributes by which to classify the data, we can use a network with multiple logistic outputs and cross-entropy error. For multinomial classification problems (1-of-n, where n &gt; 2) we use a network with n outputs, one corresponding to each class, and target values of 1 for the correct class, and 0 otherwise. Since these targets are not independent of each other, however, it is no longer appropriate to use logistic output units. The corect generalization of the logistic sigmoid to the multinomial case is the softmax activation function.</p>
 <p>- <a href="https://www.willamette.edu/~gorr/classes/cs449/classify.html">Genevieve (Jenny) B. Orr</a></p>
 </blockquote>
 <p>Since we are using softmax in the output layer, the probability for one class is divided by the sum of probabilities for all the classes. As a result, we will be using the generalized cross entropy cost function:</p>
 \begin{align}
-J(\theta) = - \left[ \sum_{i=1}^{m} \sum_{k=1}^{K}  1\left\{y^{(i)} = k\right\} \log \frac{\exp(\theta^{(k)\top} h_{W,b}(x^{(i)}))}{\sum_{j=1}^K \exp(\theta^{(j)\top} h_{W,b}(x)^{(i)}))}\right].
-\end{align}<p>where $h_{W,b}(x)$ is the input from the last hidden layer. In the code, you'll see that I have also applied $L^2$ regularization.</p>
+J(\theta) = - \left[ \sum_{i=1}^{m} \sum_{k=1}^{K}  1\left\{y^{(i)} = k\right\} \log \frac{\exp(\theta^{(k)\top} x^{(i)})}{\sum_{j=1}^K \exp(\theta^{(j)\top} x^{(i)})}\right]
+\end{align}<blockquote><p>In the probabilistic interpretation, we are therefore minimizing the negative log likelihood of the correct class, which can be interpreted as performing Maximum Likelihood Estimation (MLE).</p>
+<p>- <a href="http://cs231n.github.io/linear-classify/">Andrej Karpathy</a></p>
+</blockquote>
+<p>More detailed information can be found <a href="http://ufldl.stanford.edu/tutorial/supervised/SoftmaxRegression/">here</a>.</p>
 
 </div>
 </div>
@@ -248,12 +278,13 @@ J(\theta) = - \left[ \sum_{i=1}^{m} \sum_{k=1}^{K}  1\left\{y^{(i)} = k\right\} 
     <div class="input_area">
 <div class=" highlight hl-julia"><pre><span class="k">function</span><span class="nf"> costFunction</span><span class="p">(</span><span class="n">truth</span><span class="p">::</span><span class="n">Vector</span><span class="p">{</span><span class="kt">Float64</span><span class="p">},</span> <span class="n">probability</span><span class="p">::</span><span class="n">Matrix</span><span class="p">{</span><span class="kt">Float64</span><span class="p">})</span>
     <span class="kd">global</span> <span class="n">network</span><span class="p">;</span>
-    <span class="c"># compute the loss: average cross-entropy loss and regularization</span>
+    <span class="c"># average cross-entropy loss </span>
     <span class="n">m</span> <span class="o">=</span> <span class="n">size</span><span class="p">(</span><span class="n">truth</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
     
     <span class="n">corect_logprobs</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="n">log</span><span class="p">(</span><span class="n">probability</span><span class="p">[</span><span class="n">j</span><span class="p">,</span><span class="nb">convert</span><span class="p">(</span><span class="kt">Int32</span><span class="p">,</span> <span class="n">truth</span><span class="p">[</span><span class="n">j</span><span class="p">])])</span> <span class="k">for</span> <span class="n">j</span> <span class="k">in</span> <span class="mi">1</span><span class="p">:</span><span class="n">m</span><span class="p">];</span>
     <span class="n">data_loss</span> <span class="o">=</span> <span class="n">sum</span><span class="p">(</span><span class="n">corect_logprobs</span><span class="p">)</span><span class="o">/</span><span class="n">m</span><span class="p">;</span>
     
+    <span class="c">#L2 regularization</span>
     <span class="n">reg_loss</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
     <span class="k">for</span> <span class="n">j</span> <span class="k">in</span> <span class="mi">1</span><span class="p">:</span><span class="n">length</span><span class="p">(</span><span class="n">network</span><span class="p">)</span>
         <span class="n">reg_loss</span> <span class="o">=</span> <span class="n">reg_loss</span> <span class="o">+</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">lambda</span><span class="o">*</span><span class="n">sum</span><span class="p">(</span><span class="n">network</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.^</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="n">m</span><span class="p">;</span>
@@ -356,21 +387,55 @@ J(\theta) = - \left[ \sum_{i=1}^{m} \sum_{k=1}^{K}  1\left\{y^{(i)} = k\right\} 
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>The algorithm to learn the parameters is still the same, backpropagation. The previous post has a detailed explanation of how the backpropagation algorithm works and the use of chain rule to backpropagate the error. The derivation of the cost function hence can be similarly computed. This write-up from Tambet Matiisen is also a good reference: <a href="https://courses.cs.ut.ee/MTAT.03.277/2015_fall/uploads/Main/word2vec.pdf">word2vec gradients</a></p>
-<blockquote><p>In the probabilistic interpretation, we are therefore minimizing the negative log likelihood of the correct class, which can be interpreted as performing Maximum Likelihood Estimation (MLE).</p>
-<p>- <a href="http://cs231n.github.io/linear-classify/">Andrej Karpathy</a></p>
-</blockquote>
-<p>The last layer, as before, computes the error by taking the difference between the estimated prediction and the actual prediction. The change here is that the correct output value is always $1$ else $0$ since we are now dealing with the normalized class probabilities.</p>
-<blockquote><p>Note that this loss function can be
-understood as a special case of the cross-entropy measurement between two probabilistic
-distributions.
-Let us now derive the update equation of the weights between hidden and output layers.
-Take the derivative of $E$ with regard to $j$-th unit’s net input $u_j$ , we obtain</p>
-$$\dfrac{\partial E}{\partial u_j} = y_j − t_j := e_j \tag{8}$$<p>where $t_j = 1(j = j∗)$, i.e., $t_j$ will only be $1$ when the $j$-th unit is the actual output word,
-otherwise $t_j$ = 0. Note that this derivative is simply the prediction error $e_j$ of the output
-layer.</p>
-<p>- <a href="http://arxiv.org/abs/1411.2738">Xin Rong</a></p>
-</blockquote>
+<h4 class="section-heading">Backward process</h4><p>The algorithm to learn the parameters is still the same, backpropagation. We need to calculate the parameter gradients to update them using the chain rule. For simplicity consider the cost function for a single input,</p>
+\begin{align}
+J(\theta) &= - \left[ \sum_{k=1}^{K} y_k* \log (\hat y_k) \right]
+\end{align}<p>where,</p>
+$$\hat y_k = softmax(z^3_k) = \frac{\exp(z^3_k)}{\sum_{j=1}^K \exp(z^3_j) }$$<p>and $y_k$ is either $0$ or $1$ as per the probability of the correct class.</p>
+<p>therefore, 
+$$
+\frac{\partial J}{\partial \hat y_k} = − \frac{y_k}{\hat y_k} \\[2ex]
+\frac{\partial \hat y_k}{\partial z^{(3)}_i} = \begin{cases} 
+\hat y_k(1-\hat y_k),  & \text{i = k} \\[2ex]
+-\hat y_i \hat y_k, & \text{i $\neq$ k}
+\end{cases} \[2ex]
+\begin{eqnarray}
+\frac{\partial J}{\partial z^{(3)}<em>i}
+&amp;=&amp;\sum</em>{k = 1}^{K}\frac{\partial J}{\partial \hat y<em>k}\frac{\partial \hat y_k}{\partial z^{(3)}_i} \ \nonumber
+&amp;=&amp; \underbrace{\frac{\partial J}{\partial \hat y_i}\frac{\partial \hat y_i}{\partial x_i}}</em>{i = k}</p>
+<ul>
+<li>\underbrace{\sum<em>{k \neq i}\frac{\partial J(\theta)}{\partial \hat y_k}\frac{\partial \hat y_k}{\partial x_i}}</em>{i \neq k} \ \nonumber
+&amp;=&amp;-y<em>i(1 - \hat y_i) + \sum</em>{k \neq i} y<em>k \hat y_k \ \nonumber
+&amp;=&amp;-y_i + \sum</em>{k} y_k \hat y_k \ \nonumber
+&amp;=&amp; \hat y_i - y_i \
+\end{eqnarray}
+$$</li>
+</ul>
+<p>The correct output element in the vector $y$ is always $1$ else $0$ since we are now dealing with the normalized class probabilities.</p>
+<p>For the softmax output layer:</p>
+$$ 
+\begin{eqnarray}
+\dfrac{\partial J}{\partial \theta^{(2)}} 
+&=& \dfrac{\partial J}{\partial z^{(3)}} \dfrac{\partial z^{(3)}}{\partial \theta^{(2)}} \\
+&=& (\hat y - y)* a^{(2)} 
+\end{eqnarray}
+$$$$ 
+\begin{eqnarray}
+\dfrac{\partial J}{\partial bias^{(2)}} 
+&=& \dfrac{\partial J}{\partial z^{(3)}} \dfrac{\partial z^{(3)}}{\partial bias^{(2)}} \\
+&=& (\hat y - y)* 1 
+\end{eqnarray}
+$$<p>For the hidden layer with the ReLU activation function:</p>
+$$\begin{eqnarray}
+\frac{\partial J}{\partial \theta^{(1)}}
+&=&\frac{\partial J}{\partial z^{(3)}}\frac{\partial z^{(3)}}{\partial g(z^{(2)})}\frac{\partial g(z^{(2)})}{\partial z^{(2)}}\frac{\partial z^{(2)}}{\partial \theta^{(1)}}\\ \nonumber
+&=& (\hat y - y)* \theta^{(2)} * g'(z^{(2)})*a^{(1)} \\ \nonumber
+\end{eqnarray}$$$$\begin{eqnarray}
+\frac{\partial J}{\partial bias^{(1)}}
+&=&\frac{\partial J}{\partial z^{(3)}}\frac{\partial z^{(3)}}{\partial g(z^{(2)})}\frac{\partial g(z^{(2)})}{\partial z^{(2)}}\frac{\partial z^{(2)}}{\partial bias^{(1)}}\\ \nonumber
+&=& (\hat y - y)* \theta^{(2)} * g'(z^{(2)})*1 \\ \nonumber
+\end{eqnarray}$$<p>Now we can update the weights as:</p>
+$$\theta^{(l)} \leftarrow \theta^{(l)} - \alpha \dfrac{\partial J}{\partial \theta^{l}}$$<p>All the above calculations is being performed by the backwordNN and the updateThetas method below.</p>
 
 </div>
 </div>
@@ -831,7 +896,6 @@ layer.</p>
 <h2 class="section-heading">References:</h2><ul>
 <li><a href="https://en.wikipedia.org/wiki/Rectifier_(neural_networks">Rectified linear unit (ReLU)</a>)</li>
 <li><a href="http://www.cs.toronto.edu/~hinton/absps/naturebp.pdf">Learning representations by back-propagating errors</a></li>
-<li><a href="http://www.ics.uci.edu/~pjsadows/notes.pdf">Notes on Backpropagation</a></li>
 <li><a href="http://arxiv.org/abs/1206.5533">Practical recommendations for gradient-based training of deep architectures</a></li>
 <li><a href="http://yann.lecun.com/exdb/publis/pdf/lecun-98b.pdf">Efficient BackProp</a></li>
 <li><a href="http://www.iro.umontreal.ca/~bengioy/dlbook/mlp.html">Deep Learning</a></li>
