@@ -145,7 +145,7 @@ $$word1\_tag1\;word2\_tag2\;\;...\;\; .\_.$$<p>The function readWordTagData, rea
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Setting-up-RNN">Setting up RNN<a class="anchor-link" href="#Setting-up-RNN">&#182;</a></h3><p>Looking at a time step $t$, an RNN receives an input $x_t$ along with the hidden state($h_{t-1}$) computed in the previous time step ($t-1$). If you unroll the RNN over few time steps then it becomes easier to understand and train the network, similar to a feedforward neural network. Any network with connections making a cycle can be unrolled into a series of feedforward network representing each time step. All these time steps share the respective weights and biases over the network and our task would be to learn these parameters using the backpropagation algorithm. It'll become clear once we get to the code.
-<img src="{{ site.baseurl }}/notebooks/img/nn/rnn_basic.png" alt="RNN_basic"></p>
+<img src="{{ site.baseurl }}/notebooks/img/nn/rnn_basic.png" alt="rnn_basic"></p>
 
 </div>
 </div>
@@ -288,7 +288,7 @@ $$\begin{aligned}
 $$<p>We can work out $a$ from the other equations above. In $dhnext$, the value of $\frac{\partial J}{\partial h_{t+1}}$ will backpropagate since we would have already calculated this at time step $(t+1)$ before coming on to the time step $t$. For the rest :
 $$\frac{\partial h_{t+1}}{\partial h_t} = W_{hh}*(1-h_t^2)$$</p>
 <p>A similar but a different way of working out the equations can be seen in Richard Sochers's <a href="http://cs224d.stanford.edu/lectures/CS224d-Lecture7.pdf">Recurrent Neural Network</a> lecture slide.</p>
-<blockquote><p><img src="{{ site.baseurl }}/notebooks/img/nn/rnn_bptt.png" alt="RNN_BPTT"></p>
+<blockquote><p><img src="{{ site.baseurl }}/notebooks/img/nn/rnn_bptt.png" alt="rnn_bptt"></p>
 </blockquote>
 <p>In the code we are also using gradient clipping to handle the gradient explosion problem. I first observed this being used in Andrej Karpathy's <a href="https://gist.github.com/karpathy/d4dee566867f8291f086">min-char-rnn.py</a>, and then in <a href="http://arxiv.org/abs/1211.5063">this</a> paper.</p>
 <blockquote><p>We propose a gradient norm
