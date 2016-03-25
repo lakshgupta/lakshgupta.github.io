@@ -6,7 +6,7 @@ date:       2016-01-16 12:00:00
 author:     "Laksh Gupta"
 header-img: "img/sd5-bg.jpg"
 ---
- <div tabindex="-1" id="notebook" class="border-box-sizing">
+  <div tabindex="-1" id="notebook" class="border-box-sizing">
     <div class="container" id="notebook-container">
 
 <div class="cell border-box-sizing text_cell rendered">
@@ -198,7 +198,7 @@ $$</p>
 $$
 \begin{array}{ll}
 z^{(3)} = \theta^{(2)}*a^{(2)} + bias^{(2)} \\[2ex]
-p = softmax(z^{(3)})
+\hat y = softmax(z^{(3)})
 \end{array} 
 $$</p>
 <p>Each entry in $p$ vector defines our output normalized probability for that specific class.</p>
@@ -224,9 +224,9 @@ $$</p>
     <span class="c"># softmax on last layer</span>
     <span class="n">score</span> <span class="o">=</span> <span class="n">activation</span><span class="p">[</span><span class="n">length</span><span class="p">(</span><span class="n">network</span><span class="p">)]</span><span class="o">*</span><span class="n">network</span><span class="p">[</span><span class="n">length</span><span class="p">(</span><span class="n">network</span><span class="p">)][</span><span class="mi">1</span><span class="p">]</span> <span class="o">.+</span> <span class="n">network</span><span class="p">[</span><span class="n">length</span><span class="p">(</span><span class="n">network</span><span class="p">)][</span><span class="mi">2</span><span class="p">]</span>
     <span class="n">exp_scores</span> <span class="o">=</span> <span class="n">exp</span><span class="p">(</span><span class="n">score</span><span class="p">);</span>
-    <span class="n">probs</span> <span class="o">=</span> <span class="n">exp_scores</span> <span class="o">./</span> <span class="n">sum</span><span class="p">(</span><span class="n">exp_scores</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span> 
+    <span class="n">yCap</span> <span class="o">=</span> <span class="n">exp_scores</span> <span class="o">./</span> <span class="n">sum</span><span class="p">(</span><span class="n">exp_scores</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span> 
 
-    <span class="k">return</span> <span class="n">activation</span><span class="p">,</span><span class="n">probs</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">activation</span><span class="p">,</span> <span class="n">yCap</span><span class="p">;</span>
 <span class="k">end</span>
 </pre></div>
 
