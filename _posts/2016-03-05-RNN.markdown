@@ -145,7 +145,7 @@ $$word1\_tag1\;word2\_tag2\;\;...\;\; .\_.$$<p>The function readWordTagData, rea
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="Setting-up-RNN">Setting up RNN<a class="anchor-link" href="#Setting-up-RNN">&#182;</a></h3><p>Looking at a time step $t$, an RNN receives an input $x_t$ along with the hidden state($h_{t-1}$) computed in the previous time step ($t-1$). If you unroll the RNN over few time steps then it becomes easier to understand and train the network, similar to a feedforward neural network. Any network with connections making a cycle can be unrolled into a series of feedforward network representing each time step. All these time steps share the respective weights and biases over the network and our task would be to learn these parameters using the backpropagation algorithm. It'll become clear once we get to the code.
-<img src="{{ site.baseurl }}/notebooks/img/nn/RNN_basic.png" alt="RNN_basic"></p>
+<img src="{{ site.baseurl }}/notebooks/img/nn/rnn_basic.png" alt="RNN_basic"></p>
 
 </div>
 </div>
