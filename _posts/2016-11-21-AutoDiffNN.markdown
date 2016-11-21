@@ -7,7 +7,7 @@ author:     "Laksh Gupta"
 header-img: "img/deathvalley3-bg.jpg"
 ---
 
- <div tabindex="-1" id="notebook" class="border-box-sizing">
+  <div tabindex="-1" id="notebook" class="border-box-sizing">
     <div class="container" id="notebook-container">
 
 <div class="cell border-box-sizing text_cell rendered">
@@ -181,178 +181,15 @@ loss: 0.2512032706191144
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>There is also a function available to visualize the graph but it still needs a lot more work. Here is how you can use it right now. You get more information if you hover over any of the nodes.</p>
+<p>There is also a function available to visualize the graph but it still needs a lot more work. The graph shows up in the IJulia kernel but not in my blog so I am just pasting the code below. Once you have the plot you can get more information if you hover over any of the nodes.</p>
+
+<pre><code>hidden1 = relu(X*W1 .+ b1)
+hidden2 = hidden1*W2 .+ b2
+output = softmaxLoss(y, hidden2, 2, computeLoss, 0.5*reg*sum(W1.value .^2) + 0.5*reg*sum(W2.value .^2))
+ToyAD.plot(output)</code></pre>
 
 </div>
 </div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-julia"><pre><span></span><span class="n">hidden1</span> <span class="o">=</span> <span class="n">relu</span><span class="p">(</span><span class="n">X</span><span class="o">*</span><span class="n">W1</span> <span class="o">.+</span> <span class="n">b1</span><span class="p">)</span>
-<span class="n">hidden2</span> <span class="o">=</span> <span class="n">hidden1</span><span class="o">*</span><span class="n">W2</span> <span class="o">.+</span> <span class="n">b2</span>
-<span class="n">output</span> <span class="o">=</span> <span class="n">softmaxLoss</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">hidden2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">computeLoss</span><span class="p">,</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">reg</span><span class="o">*</span><span class="n">sum</span><span class="p">(</span><span class="n">W1</span><span class="o">.</span><span class="n">value</span> <span class="o">.^</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">reg</span><span class="o">*</span><span class="n">sum</span><span class="p">(</span><span class="n">W2</span><span class="o">.</span><span class="n">value</span> <span class="o">.^</span><span class="mi">2</span><span class="p">))</span>
-<span class="n">ToyAD</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-
-<div class="output_html rendered_html output_subarea ">
-      <!DOCTYPE html>
-      <meta charset="utf-8">
-      <style>
-
-        .links line {
-          stroke: #999;
-          stroke-opacity: 0.6;
-        }
-
-        .nodes text {
-          pointer-events: none;
-          font: 10px sans-serif;
-        }
-
-        text{
-		      visibility: visible;
-	      }
-
-        .nodes circle {
-          stroke: #fff;
-          stroke-width: 1.5px;
-        }
-
-      </style>
-      <svg width="960" height="600"></svg>
-      <script type=text/javascript>
-      require.config({
-    paths: {
-      d3: '//d3js.org/d3.v4.min',
-      mathjax: '//edx-static.s3.amazonaws.com/mathjax-MathJax-727332c/MathJax.js?config=TeX-MML-AM_HTMLorMML-full'
-    },
-    shim: {
-      'd3': {
-        exports: 'd3',
-        init: function() {
-          window.d3 = d3;
-        }
-      },
-    }
-  });
-  require(["d3", "mathjax"], function(d3, mathjax) {
-      var svg = d3.select("svg"),
-      width = +svg.attr("width"),
-      height = +svg.attr("height");
-
-      var color = d3.scaleOrdinal(d3.schemeCategory20);
-      var simulation = d3.forceSimulation()
-                          .force("link", d3.forceLink().id(function(d) { return d.id; }))
-                          .force("charge", d3.forceManyBody())
-                          .force("center", d3.forceCenter(width / 2, height / 2));
-
-      var graph = {"nodes":[{"id":"Ptr{Float64} @0x000000002e167140","name":"softmaxLoss","metadata":{"valueSize":[300,3],"opNode":true,"gradSize":[300,3]},"group":1},{"id":"Ptr{Float64} @0x000000002e15e000","name":".+","metadata":{"valueSize":[300,3],"opNode":true,"gradSize":[300,3]},"group":1},{"id":"Ptr{Float64} @0x00000000802ab2a0","name":"val","metadata":{"valueSize":[1,3],"opNode":false,"gradSize":[1,3]},"group":0},{"id":"Ptr{Float64} @0x000000002e15c300","name":"*","metadata":{"valueSize":[300,3],"opNode":true,"gradSize":[300,3]},"group":1},{"id":"Ptr{Float64} @0x000000002e117f00","name":"val","metadata":{"valueSize":[100,3],"opNode":false,"gradSize":[100,3]},"group":0},{"id":"Ptr{Float64} @0x000000002f801500","name":"relu","metadata":{"valueSize":[300,100],"opNode":true,"gradSize":[300,100]},"group":1},{"id":"Ptr{Float64} @0x0000000001b73040","name":".+","metadata":{"valueSize":[300,100],"opNode":true,"gradSize":[300,100]},"group":1},{"id":"Ptr{Float64} @0x0000000087b891d0","name":"val","metadata":{"valueSize":[1,100],"opNode":false,"gradSize":[1,100]},"group":0},{"id":"Ptr{Float64} @0x000000002e7c9040","name":"*","metadata":{"valueSize":[300,100],"opNode":true,"gradSize":[300,100]},"group":1},{"id":"Ptr{Float64} @0x0000000087b26ab0","name":"val","metadata":{"valueSize":[2,100],"opNode":false,"gradSize":[2,100]},"group":0},{"id":"Ptr{Float64} @0x0000000021cc7240","name":"val","metadata":{"valueSize":[300,2],"opNode":false,"gradSize":[300,2]},"group":0}],"links":[{"source":"Ptr{Float64} @0x000000002e167140","target":"Ptr{Float64} @0x000000002e15e000","value":7},{"source":"Ptr{Float64} @0x000000002e15e000","target":"Ptr{Float64} @0x000000002e15c300","value":6},{"source":"Ptr{Float64} @0x000000002e15e000","target":"Ptr{Float64} @0x00000000802ab2a0","value":6},{"source":"Ptr{Float64} @0x000000002e15c300","target":"Ptr{Float64} @0x000000002f801500","value":5},{"source":"Ptr{Float64} @0x000000002e15c300","target":"Ptr{Float64} @0x000000002e117f00","value":5},{"source":"Ptr{Float64} @0x000000002f801500","target":"Ptr{Float64} @0x0000000001b73040","value":4},{"source":"Ptr{Float64} @0x0000000001b73040","target":"Ptr{Float64} @0x000000002e7c9040","value":3},{"source":"Ptr{Float64} @0x0000000001b73040","target":"Ptr{Float64} @0x0000000087b891d0","value":3},{"source":"Ptr{Float64} @0x000000002e7c9040","target":"Ptr{Float64} @0x0000000021cc7240","value":2},{"source":"Ptr{Float64} @0x000000002e7c9040","target":"Ptr{Float64} @0x0000000087b26ab0","value":2}]};
-      var link = svg.append("g")
-                    .attr("class", "links")
-                    .selectAll("line")
-                    .data(graph.links)
-                    .enter().append("line")
-                    .attr("stroke-width", function(d) { return Math.sqrt(d.value); });
-      var node = svg.append("g")
-                    .attr("class", "nodes")
-                    .selectAll("circle")
-                    .data(graph.nodes)
-                    .enter()
-                    .append("circle")
-                    .attr("r", 5)
-                    .attr("fill", function(d) { return color(d.group); })
-                    .call(d3.drag()
-                    .on("start", dragstarted)
-                    .on("drag", dragged)
-                    .on("end", dragended));
-
-      node.append("title")
-        .text(function(d) { return JSON.stringify(d.metadata); });
-      node.append("text")
-        .attr("dx", 12)
-        .attr("dy", ".35em")
-        .text(function(d) { return d.name });
-
-
-      simulation
-        .nodes(graph.nodes)
-        .on("tick", ticked);
-
-      simulation.force("link")
-        .links(graph.links);
-
-      setTimeout(textDisplay, 500);
-
-  	  function textDisplay(){
-  		    svg.append("g")
-  		      .selectAll("text")
-  		      .data(d3.selectAll("circle")._groups[0])
-            .enter()
-  		      .append("text")
-  		      .attr("x", function(d,i){ return d.cx.animVal.value+5;})
-  		      .attr("y", function(d,i){ return d.cy.animVal.value-5;})
-  		      .text(function(d) { return d.__data__.name })
-  		      .attr("style","")
-  		      .attr("font-family", "sans-serif")
-  		      .attr("font-size", "15px");
-  	  }
-
-      function ticked() {
-        link
-          .attr("x1", function(d) { return d.source.x; })
-          .attr("y1", function(d) { return d.source.y; })
-          .attr("x2", function(d) { return d.target.x; })
-          .attr("y2", function(d) { return d.target.y; });
-        node
-          .attr("cx", function(d) { return d.x; })
-          .attr("cy", function(d) { return d.y; });
-      }
-
-      function dragstarted(d) {
-        if (!d3.event.active) simulation.alphaTarget(0.3).restart();
-        d.fx = d.x;
-        d.fy = d.y;
-        svg.selectAll("text").remove()
-	      textDisplay();
-      }
-
-      function dragged(d) {
-        d.fx = d3.event.x;
-        d.fy = d3.event.y;
-        svg.selectAll("text").remove()
-	      textDisplay();
-      }
-
-      function dragended(d) {
-        if (!d3.event.active) simulation.alphaTarget(0);
-        d.fx = null;
-        d.fy = null;
-        svg.selectAll("text").remove()
-	      textDisplay();
-      }
-      });
-  </script>
-
-</div>
-
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
@@ -498,4 +335,4 @@ loss: 0.2512032706191144
 </div>
 </div>
     </div>
-  </d
+  </div>
