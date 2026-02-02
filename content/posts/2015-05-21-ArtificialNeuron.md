@@ -15,14 +15,13 @@ Billions of neuron work together in a highly parallel manner to form the most so
 
 <p></br></p>
 <center>
-<img src="/images/nn/bioneuron.jpg" alt="Biological Neuron">
-<span class="caption text-muted">A Biological Neuron</span>
+<img src="/notebooks/img/nn/bioneuron.jpg" alt="Biological Neuron">
 </center>
 
 More information about a biological neuron can be found on <a href="http://en.wikipedia.org/wiki/Neuron">Wikipedia</a>.
 
 <h2 class="section-heading">Artificial Neuron</h2>
-An artificial neuron is a mathematical model of a biological neuron. The steps mentined for a biological neuron can be mapped to an artificial neuron as:
+An artificial neuron is a mathematical model of a biological neuron. The steps mentioned for a biological neuron can be mapped to an artificial neuron as:
 
 - an artificial neuron receives the input as numerical values rather than the electrical signals. Input can come from different sources such as an image or a text.
 - it then multiplies each of the input value by a value called the weight.
@@ -36,7 +35,7 @@ The artificial neuron receives one or more inputs (representing dendrites) and s
 </blockquote>
 
 <p>Considering only a single input vector x:</p>
-<center><canvas id="artificialneuron" width="500" heigth="400"></canvas></center>
+<center><canvas id="artificialneuron" width="500" height="400"></canvas></center>
 
 
 - $$f(x,w) = \phi(\sum\limits_{i=0}^n(w_i x_i)) = \phi(w^Tx)$$ &nbsp;
@@ -49,7 +48,7 @@ The artificial neuron receives one or more inputs (representing dendrites) and s
 Notice that in terms of "learning" in almost all of the machine learning algorithms, we learn the weight parameters $$w_i$$. 
 
 <h2 class="section-heading">Activation Function</h2>
-An artificial neuron using a step activation function is known as a Perceptron. Perceptron can act as a binary classifier based on if the value of the activation function is above or below a threashold. But step activation function may not be a good choice every time.
+An artificial neuron using a step activation function is known as a Perceptron. Perceptron can act as a binary classifier based on if the value of the activation function is above or below a threshold. But step activation function may not be a good choice every time.
 
 
 <blockquote>
@@ -79,3 +78,55 @@ This ends the brief overview of a neuron. In the coming posts I'll try to cover 
 <script language="javascript" type="text/javascript" src="/js/nn/neuron.js"></script>
 <script language="javascript" type="text/javascript" src="/js/nn/neuralnet.js"></script>
 <script language="javascript" type="text/javascript" src="/js/plot/eqgraph.js" charset="utf-8"></script>
+<script>
+window.addEventListener('load', function() {
+  //artificial neuron
+  var _ancanvas = document.getElementById("artificialneuron");
+  var _anctx = _ancanvas.getContext("2d");
+  var neuronIn1 = new neuron(_anctx, 50, 40, neuronRadius,"x_0");
+  var neuronIn2 = new neuron(_anctx, 50, 110, neuronRadius, "x_n");
+  var hiddenLayer = new neuron(_anctx, 200, 75, neuronRadius);
+  _anctx.mathText("f(x,w)",200,120,{"text-align": "center"});
+  var neuronOut = new neuron(_anctx, 350, 75, neuronRadius,"y");
+  //input to hidden layer
+  connectLayers([neuronIn1, neuronIn2], [hiddenLayer]);
+  //hidden to output layer
+  connectLayers([hiddenLayer], [neuronOut]);
+
+  //plot step
+  function step(z){ 
+      if(z < 2){
+        return 0;
+      }else{
+        return 1;
+      }
+  }
+  var stepGraph = new EqGraph({canvasId: 'step', minX: -4, minY: -2, maxX: 4, maxY: 2, unitsPerTick: 1 });
+  stepGraph.drawEquation(step , 'blue', 2);
+  var stepCanv = document.getElementById('step');
+  var stepcontext = stepCanv.getContext('2d');
+  stepcontext.font = 'italic 14pt Calibri';
+  stepcontext.fillStyle = '#777';
+  stepcontext.fillText('step', 10, stepCanv.height-5);
+
+  //plot sigmoid
+  function sigmoid(z){ return  1.0/(1.0+Math.exp(-z));}
+  var sigmoidGraph = new EqGraph({canvasId: 'sigmoid', minX: -6, minY: -2, maxX: 6, maxY: 2, unitsPerTick: 1 });
+  sigmoidGraph.drawEquation(sigmoid , 'blue', 2);
+  var sigmoidCanv = document.getElementById('sigmoid');
+  var sigmoidcontext = sigmoidCanv.getContext('2d');
+  sigmoidcontext.font = 'italic 14pt Calibri';
+  sigmoidcontext.fillStyle = '#777';
+  sigmoidcontext.fillText('sigmoid', 10, sigmoidCanv.height-5);
+
+  //plot tanh
+  function tanh(z){ return (Math.exp(z)-Math.exp(-z))/(Math.exp(z)+Math.exp(-z));}
+  var tanhGraph = new EqGraph({canvasId: 'tanh', minX: -6, minY: -2, maxX: 6, maxY: 2, unitsPerTick: 1 });
+  tanhGraph.drawEquation(tanh , 'blue', 2);
+  var tanhCanv = document.getElementById('tanh');
+  var tanhcontext = tanhCanv.getContext('2d');
+  tanhcontext.font = 'italic 14pt Calibri';
+  tanhcontext.fillStyle = '#777';
+  tanhcontext.fillText('tanh', 10, tanhCanv.height-5);
+});
+</script>
