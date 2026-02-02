@@ -5,7 +5,13 @@ defaultContentLanguage: en
 permalinks:
   posts: /posts/:title/
 
-paginate: 5
+pagination:
+  pagerSize: 5
+
+outputs:
+  home:
+    - HTML
+    - RSS
 
 theme:
   - github.com/nodejh/hugo-theme-mini
@@ -17,6 +23,10 @@ params:
   enableRSS: true
   enableComments: false
   showToc: true
+  social: []
+
+taxonomies:
+  social: social
 
 markup:
   highlight:
