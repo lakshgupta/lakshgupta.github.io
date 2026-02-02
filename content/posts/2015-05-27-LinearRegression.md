@@ -1,9 +1,11 @@
 ---
 title: "Linear Regression"
 subtitle: "what can a neuron do"
+description: "Using a single neuron to perform linear regression and train via gradient descent."
 date: 2015-05-27T12:00:00
 author: "Laksh Gupta"
 header_img: "img/sd2-bg.jpg"
+tags: ["machine-learning", "linear-regression"]
 ---
 
 Alright, in the last post we looked at the very basic building block of a neural network: a neuron. But what could possibly a single neuron be good for? Well, as I mentioned in my last post it can be used to learn very simple models. Let us try to solve a linear regression problem using a neuron.

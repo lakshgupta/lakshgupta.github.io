@@ -1,9 +1,11 @@
 ---
 title: "Neural Network"
 subtitle: "activation function, cost function, regularization, backpropagation, gradient descent"
+description: "Building neural networks for MNIST digit recognition; activation, cost, and backpropagation."
 date: 2015-06-12T12:00:00
 author: "Laksh Gupta"
 header_img: "img/sd3-bg.jpg"
+tags: ["neural-network", "machine-learning"]
 ---
 
 <div tabindex="-1" id="notebook" class="border-box-sizing">

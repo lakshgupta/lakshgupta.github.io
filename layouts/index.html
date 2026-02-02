@@ -1,9 +1,5 @@
 {{ define "main" }}
-<header class="profile">
-  {{ with .Site.Params.avatar }}<img class="avatar" src="{{ . | relURL }}" alt="avatar">{{ end }}
-  <h1>{{ .Site.Title }}</h1>
-  {{ with .Site.Params.bio }}<h2>{{ . }}</h2>{{ end }}
-</header>
+{{ partial "profile.html" . }}
 
 <div id="list-page">
   {{ $paginator := .Paginate (where .Site.RegularPages "Section" "posts") }}
@@ -13,6 +9,9 @@
         <h1 class="title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h1>
         <div class="date"><time datetime="{{ .Date }}">{{ .Date.Format "Jan 2, 2006" }}</time></div>
       </div>
+      {{ with .Params.tags }}
+      <div class="tags">Tags: {{ range $i, $t := . }}{{ if $i }}, {{ end }}<a href="{{ printf "/tags/%s/" (urlize $t) | relURL }}">{{ $t }}</a>{{ end }}</div>
+      {{ end }}
       <div class="summary">
         {{ with .Params.description }}
           {{ . | markdownify }}

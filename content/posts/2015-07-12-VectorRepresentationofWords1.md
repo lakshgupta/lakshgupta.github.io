@@ -1,9 +1,11 @@
 ---
 title: "Vector Representation of Words - 1"
 subtitle: "text data as an input"
+description: "Word embeddings and vector representations: one-hot vectors, co-occurrence matrices, and SVD."
 date: 2015-07-12T12:00:00
 author: "Laksh Gupta"
 header_img: "img/sd4-bg.jpg"
+tags: ["nlp", "word-embeddings", "machine-learning"]
 ---
  <div tabindex="-1" id="notebook" class="border-box-sizing">
     <div class="container" id="notebook-container">

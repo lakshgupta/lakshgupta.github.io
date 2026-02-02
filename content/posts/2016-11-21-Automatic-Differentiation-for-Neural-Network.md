@@ -1,9 +1,11 @@
 ---
 title: "Automatic Differentiation for Neural Network"
 subtitle: "Automatic differentiation, derivatives, backpropagation"
+description: "Using automatic differentiation for reverse-mode AD in neural networks (backpropagation)."
 date: 2016-11-21T12:00:00
 author: "Laksh Gupta"
 header_img: "img/deathvalley3-bg.jpg"
+tags: ["automatic-differentiation", "neural-network", "machine-learning"]
 ---
   <div tabindex="-1" id="notebook" class="border-box-sizing">
     <div class="container" id="notebook-container">

@@ -5,8 +5,10 @@ header-img: "img/about-bg.jpg"
 draft: false
 ---
 
-Hello! My name is Laksh Gupta. I am a software engineer by profession and spend my spare time on my pet projects.
+Hello — I'm **Laksh Gupta**, a software engineer interested in **databases** and **artificial intelligence**. I write about building data-driven systems, machine learning models, and reproducible notebooks that help turn ideas into reliable experiments.
 
-If you have any questions or suggestions feel free to contact me on [Twitter](https://twitter.com/).
+If you'd like to connect, use the links below.
 
-Thanks for reading!
+## Contact
+
+{{< contact >}}

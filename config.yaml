@@ -18,12 +18,16 @@ theme:
 
 params:
   author: "Laksh Gupta"
-  bio: "Software Engineer"
+  bio: "Databases, Models, and the Space Between"
+  avatar: "images/avatar.png"
   description: "Personal blog about machine learning and related topics"
   enableRSS: true
   enableComments: false
   showToc: true
   social: []
+  email: ""
+  twitter: "lakshgupta_"
+  linkedin: "https://www.linkedin.com/in/lakshgupta"
 
 taxonomies:
   tag: tags

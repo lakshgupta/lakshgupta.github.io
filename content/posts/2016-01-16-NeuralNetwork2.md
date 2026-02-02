@@ -1,9 +1,11 @@
 ---
 title: "Neural Network 2"
 subtitle: "improve accuracy, ReLU, softmax, mini-batch gradient descent"
+description: "Improving neural network performance with ReLU, softmax, and mini-batch gradient descent."
 date: 2016-01-16T12:00:00
 author: "Laksh Gupta"
 header_img: "img/sd5-bg.jpg"
+tags: ["neural-network", "machine-learning"]
 ---
   <div tabindex="-1" id="notebook" class="border-box-sizing">
     <div class="container" id="notebook-container">

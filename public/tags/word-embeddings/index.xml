@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Word-Embeddings on Laksh Gupta</title><link>https://lakshgupta.github.io/tags/word-embeddings/</link><description>Recent content in Word-Embeddings on Laksh Gupta</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Sun, 12 Jul 2015 12:00:00 +0000</lastBuildDate><atom:link href="https://lakshgupta.github.io/tags/word-embeddings/index.xml" rel="self" type="application/rss+xml"/><item><title>Vector Representation of Words - 1</title><link>https://lakshgupta.github.io/posts/vector-representation-of-words-1/</link><pubDate>Sun, 12 Jul 2015 12:00:00 +0000</pubDate><guid>https://lakshgupta.github.io/posts/vector-representation-of-words-1/</guid><description>&lt;div tabindex="-1" id="notebook" class="border-box-sizing"&gt;
+ &lt;div class="container" id="notebook-container"&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;Let us see how we can process the textual information to create a vector representation, also known as word embeddings or word vectors, which can be used as an input to a neural network.&lt;/p&gt;
+&lt;h2 class="section-heading"&gt;One-Hot Vector&lt;/h2&gt;&lt;p&gt;This is the most simplest one where for each word we create a vector of length equal to the size of the vocabulary, $R^{\left\|V\right\|}$. We fill the vector with $1$ at the index of the word, rest all $0s$.&lt;/p&gt;</description></item></channel></rss>

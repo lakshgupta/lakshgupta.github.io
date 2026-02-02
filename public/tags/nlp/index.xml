@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Nlp on Laksh Gupta</title><link>https://lakshgupta.github.io/tags/nlp/</link><description>Recent content in Nlp on Laksh Gupta</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Sat, 05 Mar 2016 12:00:00 +0000</lastBuildDate><atom:link href="https://lakshgupta.github.io/tags/nlp/index.xml" rel="self" type="application/rss+xml"/><item><title>Recurrent Neural Network</title><link>https://lakshgupta.github.io/posts/recurrent-neural-network/</link><pubDate>Sat, 05 Mar 2016 12:00:00 +0000</pubDate><guid>https://lakshgupta.github.io/posts/recurrent-neural-network/</guid><description>&lt;div tabindex="-1" id="notebook" class="border-box-sizing"&gt;
+ &lt;div class="container" id="notebook-container"&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;h3 id="Recurrent-Neural-Network"&gt;Recurrent Neural Network&lt;a class="anchor-link" href="#Recurrent-Neural-Network"&gt;&amp;#182;&lt;/a&gt;&lt;/h3&gt;&lt;p&gt;Let us now move on to Recurrent Neural Network (RNN). Recurrent neural network is good in handling sequential data because they have a memory component which enables this network to remember past (few) information making it better for a model requiring varying length inputs and outputs.&lt;/p&gt;
+&lt;blockquote&gt;&lt;p&gt;For example, consider the two sentences “I went to Nepal in 2009” and “In 2009,I went to Nepal.” If we ask a machine learning model to read each sentence and extract the year in which the narrator went to Nepal, we would like it to recognize the year 2009 as the relevant piece of information, whether it appears in the sixth word or the second word of the sentence. Suppose that we trained a feedforward network that processes sentences of ﬁxed length. A traditional fully connected feedforward network would have separate parameters for each input feature, so itwould need to learn all of the rules of the language separately at each position in the sentence.&lt;/p&gt;</description></item><item><title>Vector Representation of Words - 1</title><link>https://lakshgupta.github.io/posts/vector-representation-of-words-1/</link><pubDate>Sun, 12 Jul 2015 12:00:00 +0000</pubDate><guid>https://lakshgupta.github.io/posts/vector-representation-of-words-1/</guid><description>&lt;div tabindex="-1" id="notebook" class="border-box-sizing"&gt;
+ &lt;div class="container" id="notebook-container"&gt;
+&lt;div class="cell border-box-sizing text_cell rendered"&gt;
+&lt;div class="prompt input_prompt"&gt;
+&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
+&lt;p&gt;Let us see how we can process the textual information to create a vector representation, also known as word embeddings or word vectors, which can be used as an input to a neural network.&lt;/p&gt;
+&lt;h2 class="section-heading"&gt;One-Hot Vector&lt;/h2&gt;&lt;p&gt;This is the most simplest one where for each word we create a vector of length equal to the size of the vocabulary, $R^{\left\|V\right\|}$. We fill the vector with $1$ at the index of the word, rest all $0s$.&lt;/p&gt;</description></item></channel></rss>
