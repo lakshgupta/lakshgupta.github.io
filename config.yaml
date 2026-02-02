@@ -1,0 +1,28 @@
+baseURL: "https://lakshgupta.github.io/"
+languageCode: "en-us"
+title: "Laksh Gupta"
+defaultContentLanguage: en
+permalinks:
+  posts: /posts/:title/
+
+paginate: 5
+
+theme:
+  - github.com/nodejh/hugo-theme-mini
+
+params:
+  author: "Laksh Gupta"
+  bio: "Software Engineer"
+  description: "Personal blog about machine learning and related topics"
+  enableRSS: true
+  enableComments: false
+  showToc: true
+
+markup:
+  highlight:
+    guessSyntax: true
+  goldmark:
+    renderer:
+      unsafe: true
+
+# Add other settings as needed
