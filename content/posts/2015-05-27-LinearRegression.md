@@ -4,7 +4,6 @@ subtitle: "what can a neuron do"
 description: "Using a single neuron to perform linear regression and train via gradient descent."
 date: 2015-05-27T12:00:00
 author: "Laksh Gupta"
-header_img: "img/sd2-bg.jpg"
 tags: ["machine-learning", "linear-regression"]
 ---
 

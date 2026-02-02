@@ -4,7 +4,6 @@ subtitle: "how brain learns"
 description: "Overview of artificial neuron models and activation functions (sigmoid, tanh, ReLU)."
 date: 2015-05-21T12:00:00
 author: "Laksh Gupta"
-header_img: "img/sd1-bg.jpg"
 tags: ["neural-network", "machine-learning"]
 ---
 

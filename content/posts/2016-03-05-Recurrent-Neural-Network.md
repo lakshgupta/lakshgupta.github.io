@@ -4,7 +4,6 @@ subtitle: "sequence to sequence learning, part-of-speech tagging, backpropagatio
 description: "Introduction to recurrent neural networks and applying them to POS tagging."
 date: 2016-03-05T12:00:00
 author: "Laksh Gupta"
-header_img: "img/yellowstone1-bg.jpg"
 tags: ["neural-network", "rnn", "nlp"]
 ---
 

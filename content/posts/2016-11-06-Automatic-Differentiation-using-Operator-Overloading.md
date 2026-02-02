@@ -4,7 +4,6 @@ subtitle: "Automatic differentiation, derivatives"
 description: "Implementing automatic differentiation using operator overloading and forward/reverse modes."
 date: 2016-11-06T12:00:00
 author: "Laksh Gupta"
-header_img: "img/deathvalley1-bg.jpg"
 tags: ["automatic-differentiation", "machine-learning"]
 ---
   <div tabindex="-1" id="notebook" class="border-box-sizing">
