@@ -77,6 +77,12 @@ jobs:
           key: hugo-${{ github.run_id }}
           restore-keys:
             hugo-
+      - name: Fetch Hugo modules (theme)
+        run: |
+          echo "Fetching Hugo modules (theme)..."
+          # ensure the theme (Hugo module) is available during the build
+          hugo mod get -u github.com/nodejh/hugo-theme-mini || true
+          hugo mod get -u || true
       - name: Build the site
         run: |
           hugo \
