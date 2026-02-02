@@ -86,7 +86,6 @@ window.addEventListener('load', function() {
   connectLayers([neuronIn1, neuronIn2], [hiddenLayer]);
   //hidden to output layer
   connectLayers([hiddenLayer], [neuronOut]);
-
   //plot step
   function step(z){ 
       if(z < 2){
@@ -102,7 +101,6 @@ window.addEventListener('load', function() {
   stepcontext.font = 'italic 14pt Calibri';
   stepcontext.fillStyle = '#777';
   stepcontext.fillText('step', 10, stepCanv.height-5);
-
   //plot sigmoid
   function sigmoid(z){ return  1.0/(1.0+Math.exp(-z));}
   var sigmoidGraph = new EqGraph({canvasId: 'sigmoid', minX: -6, minY: -2, maxX: 6, maxY: 2, unitsPerTick: 1 });
@@ -112,7 +110,6 @@ window.addEventListener('load', function() {
   sigmoidcontext.font = 'italic 14pt Calibri';
   sigmoidcontext.fillStyle = '#777';
   sigmoidcontext.fillText('sigmoid', 10, sigmoidCanv.height-5);
-
   //plot tanh
   function tanh(z){ return (Math.exp(z)-Math.exp(-z))/(Math.exp(z)+Math.exp(-z));}
   var tanhGraph = new EqGraph({canvasId: 'tanh', minX: -6, minY: -2, maxX: 6, maxY: 2, unitsPerTick: 1 });

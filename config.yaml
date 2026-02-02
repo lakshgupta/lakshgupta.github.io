@@ -18,7 +18,10 @@ theme:
 
 params:
   author: "Laksh Gupta"
-  bio: "Databases, Models, and the Space Between"
+  bio: |
+    Databases, Models, and the Space Between
+
+
   avatar: "images/avatar.png"
   description: "Personal blog about machine learning and related topics"
   enableRSS: true

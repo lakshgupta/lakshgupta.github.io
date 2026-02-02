@@ -41,8 +41,8 @@ Since we want to linearly fit the data, we'll use the linear activation function
 <center>$$f(x_i,w) = \phi(\sum\limits_{j=0}^n(w^j x_i^j)) = \sum\limits_{j=0}^n(w^j x_i^j) = w^Tx_i$$</center>
 where 
 
-- $$i$$ represents a row of a matrix
-- $$j$$ represetns an element of a matrix
+- $i$ represents a row of a matrix
+- $j$ represetns an element of a matrix
 
 
 The other way to look at our setup is that we are trying to fit a line to the data represented as
@@ -56,10 +56,10 @@ The idea is to use this value to modify our randomly initialized weight matrix t
 <center>$$w = w - \frac{\alpha}{m}\Delta J(w)$$</center>
 here 
 
-- $$w$$ is the weight matrix
-- $$\alpha$$ is the learning rate
-- $$m$$ is the size of our data acting as a normalizing factor
-- $$\Delta J(w)$$ is the gradient of the cost function with respect to each of the weight under consideration say weight for the connection between a neuron $$j$$ and a neuron $$k$$
+- $w$ is the weight matrix
+- $\alpha$ is the learning rate
+- $m$ is the size of our data acting as a normalizing factor
+- $\Delta J(w)$ is the gradient of the cost function with respect to each of the weight under consideration say weight for the connection between a neuron $j$ and a neuron $k$
 
 
 $$\frac{\partial}{\partial w_{jk}} J(w) = \sum\limits_{i=0}^n 2\left(f(x_i, w)-y_i\right) \frac{\partial}{\partial w_{jk}} f(x_i, w) $$
