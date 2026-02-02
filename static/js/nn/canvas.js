@@ -12,6 +12,11 @@ function parseArgs(args, deflt) {
     return args;
 }
 
+function isAlpha(s) {
+    // Checks whether the string s contains alphabetical characters only
+    return /^[a-zA-Z]+$/.test(s);
+}
+
 CanvasRenderingContext2D.prototype.clear = function() {
     // Clear the canvas corresponding to this context
     this.canvas.width = this.canvas.width;
