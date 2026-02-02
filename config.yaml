@@ -26,6 +26,8 @@ params:
   social: []
 
 taxonomies:
+  tag: tags
+  category: categories
   social: social
 
 markup:
