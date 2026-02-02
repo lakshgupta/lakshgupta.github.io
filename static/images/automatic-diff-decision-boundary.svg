@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 480" width="800" height="480">
+  <rect width="100%" height="100%" fill="#fff"/>
+  <!-- three soft regions -->
+  <path d="M0,0 C300,50 300,430 0,480 Z" fill="#fde0dd" opacity="0.95"/>
+  <path d="M800,0 C500,50 500,430 800,480 Z" fill="#e6f5d0" opacity="0.95"/>
+  <circle cx="400" cy="240" r="260" fill="#d0e7fb" opacity="0.9"/>
+
+  <!-- decision boundary lines (stylized) -->
+  <g stroke="#888" stroke-width="2" fill="none" opacity="0.6">
+    <path d="M50,120 C180,80 300,160 400,140"/>
+    <path d="M400,140 C520,120 620,200 750,160"/>
+    <path d="M80,360 C220,320 340,400 470,360"/>
+  </g>
+
+  <!-- sample data points -->
+  <!-- class 1 -->
+  <g fill="#d7191c" stroke="#800" stroke-width="0.5">
+    <circle cx="160" cy="140" r="5"/>
+    <circle cx="190" cy="180" r="5"/>
+    <circle cx="140" cy="200" r="5"/>
+    <circle cx="180" cy="120" r="5"/>
+  </g>
+  <!-- class 2 -->
+  <g fill="#2b83ba" stroke="#123" stroke-width="0.5">
+    <circle cx="600" cy="160" r="5"/>
+    <circle cx="640" cy="200" r="5"/>
+    <circle cx="580" cy="140" r="5"/>
+    <circle cx="620" cy="120" r="5"/>
+  </g>
+  <!-- class 3 -->
+  <g fill="#fdae61" stroke="#b35" stroke-width="0.5">
+    <circle cx="380" cy="340" r="5"/>
+    <circle cx="420" cy="300" r="5"/>
+    <circle cx="340" cy="360" r="5"/>
+    <circle cx="430" cy="380" r="5"/>
+  </g>
+
+  <!-- caption -->
+  <text x="20" y="470" font-size="12" fill="#333">Decision regions (illustrative) — generated from a trained two-layer network</text>
+</svg>
