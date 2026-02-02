@@ -35,36 +35,30 @@ The artificial neuron receives one or more inputs (representing dendrites) and s
 </blockquote>
 
 <p>Considering only a single input vector x:</p>
-<center><canvas id="artificialneuron" width="500" height="400"></canvas></center>
+<center><canvas id="artificialneuron" width="500" height="150"></canvas></center>
+$$f(x,w) = \phi(\sum\limits_{i=0}^n(w_i x_i)) = \phi(w^Tx)$$
 
+- $\phi$ is our activation function. 
+- $x_i$ are the elements of the input vector x. 
+- $w_i$ are the elements of the weight vector w. 
+- $y$ is the output.
 
-- $$f(x,w) = \phi(\sum\limits_{i=0}^n(w_i x_i)) = \phi(w^Tx)$$ &nbsp;
-- $$\phi$$ is our activation function.
-- $$x_i$$ are the elements of the input vector x.
-- $$w_i$$ are the elements of the weight vector w. 
-- $$y$$ is the output.
-
-
-Notice that in terms of "learning" in almost all of the machine learning algorithms, we learn the weight parameters $$w_i$$. 
+Notice that in terms of "learning" in almost all of the machine learning algorithms, we learn the weight parameters $w_i$. 
 
 <h2 class="section-heading">Activation Function</h2>
 An artificial neuron using a step activation function is known as a Perceptron. Perceptron can act as a binary classifier based on if the value of the activation function is above or below a threshold. But step activation function may not be a good choice every time.
-
 
 <blockquote>
   In fact, a small change in the weights or bias of any single perceptron in the network can sometimes cause the output of that perceptron to completely flip, say from 0 to 1. That flip may then cause the behaviour of the rest of the network to completely change in some very complicated way. So while your "9" might now be classified correctly, the behaviour of the network on all the other images is likely to have completely changed in some hard-to-control way. That makes it difficult to see how to gradually modify the weights and biases so that the network gets closer to the desired behaviour.
   <p align="right">- <a href="http://neuralnetworksanddeeplearning.com/chap1.html">Michael Nielsen</a></p>
 </blockquote>
 
-
 There are other activation functions which seem to work generally better in most of the cases, such as tanh or maxout functions.
-
 
 <blockquote>
   "What neuron type should I use?" Use the ReLU non-linearity, be careful with your learning rates and possibly monitor the fraction of "dead" units in a network. If this concerns you, give Leaky ReLU or Maxout a try. Never use sigmoid. Try tanh, but expect it to work worse than ReLU/Maxout.
   <p align="right">- <a href="http://cs231n.github.io/neural-networks-1/">Andrej Karpathy</a></p>
 </blockquote>
-
 
 <center>
  <canvas id="step" width="200" height="200"></canvas>
