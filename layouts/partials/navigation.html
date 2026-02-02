@@ -1,0 +1,13 @@
+<nav class="site-nav">
+  <style>
+    .site-nav { display:flex; justify-content:flex-end; align-items:center; gap:0.6rem; }
+    .site-nav a { text-decoration:none; color:inherit; }
+    .site-nav a { margin-left:0.6rem; }
+  </style>
+  <div class="nav-right">
+    <a href="{{ "/" | relURL }}">Home</a>
+    <a href="{{ "/posts/" | relURL }}">Archive</a>
+    <a href="{{ "/tags/" | relURL }}">Tags</a>
+    <a href="{{ "/about/" | relURL }}">About</a>
+  </div>
+</nav>

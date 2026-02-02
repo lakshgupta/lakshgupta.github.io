@@ -1,0 +1,35 @@
+{{ define "main" }}
+{{ partial "profile.html" . }}
+
+<div id="list-page">
+  {{ $paginator := .Paginate (where .Site.RegularPages "Section" "posts") }}
+  {{ range $paginator.Pages }}
+    <section class="item">
+      <div>
+        <h1 class="title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h1>
+        <div class="date"><time datetime="{{ .Date }}">{{ .Date.Format "Jan 2, 2006" }}</time></div>
+      </div>
+      {{ with .Params.tags }}
+      <div class="tags">Tags: {{ range $i, $t := . }}{{ if $i }}, {{ end }}<a href="{{ printf "/tags/%s/" (urlize $t) | relURL }}">{{ $t }}</a>{{ end }}</div>
+      {{ end }}
+      <div class="summary">
+        {{ with .Params.description }}
+          {{ . | markdownify }}
+        {{ else }}
+          {{ .Summary }}
+        {{ end }}
+      </div>
+    </section>
+  {{ end }}
+
+  {{ if gt $paginator.TotalPages 1 }}
+    <div class="pagination">
+      {{ if $paginator.HasPrev }}<a class="pre" href="{{ $paginator.Prev.URL }}">Previous</a>{{ end }}
+      {{ range $p := $paginator.Pagers }}
+        <a href="{{ $p.URL }}">{{ $p.PageNumber }}</a>
+      {{ end }}
+      {{ if $paginator.HasNext }}<a class="next" href="{{ $paginator.Next.URL }}">Next</a>{{ end }}
+    </div>
+  {{ end }}
+</div>
+{{ end }}

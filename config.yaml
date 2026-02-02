@@ -1,0 +1,47 @@
+baseURL: "https://lakshgupta.github.io/"
+languageCode: "en-us"
+title: "Laksh Gupta"
+defaultContentLanguage: en
+permalinks:
+  posts: /posts/:title/
+
+pagination:
+  pagerSize: 5
+
+outputs:
+  home:
+    - HTML
+    - RSS
+
+theme:
+  - github.com/nodejh/hugo-theme-mini
+
+params:
+  author: "Laksh Gupta"
+  bio: |
+    Databases, Models, and the Space Between
+
+
+  avatar: "images/avatar.png"
+  description: "Personal blog about machine learning and related topics"
+  enableRSS: true
+  enableComments: false
+  showToc: true
+  social: []
+  email: ""
+  twitter: "lakshgupta_"
+  linkedin: "https://www.linkedin.com/in/lakshgupta"
+
+taxonomies:
+  tag: tags
+  category: categories
+  social: social
+
+markup:
+  highlight:
+    guessSyntax: true
+  goldmark:
+    renderer:
+      unsafe: true
+
+# Add other settings as needed
