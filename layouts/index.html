@@ -1,0 +1,36 @@
+{{ define "main" }}
+<header class="profile">
+  {{ with .Site.Params.avatar }}<img class="avatar" src="{{ . | relURL }}" alt="avatar">{{ end }}
+  <h1>{{ .Site.Title }}</h1>
+  {{ with .Site.Params.bio }}<h2>{{ . }}</h2>{{ end }}
+</header>
+
+<div id="list-page">
+  {{ $paginator := .Paginate (where .Site.RegularPages "Section" "posts") }}
+  {{ range $paginator.Pages }}
+    <section class="item">
+      <div>
+        <h1 class="title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h1>
+        <div class="date"><time datetime="{{ .Date }}">{{ .Date.Format "Jan 2, 2006" }}</time></div>
+      </div>
+      <div class="summary">
+        {{ with .Params.description }}
+          {{ . | markdownify }}
+        {{ else }}
+          {{ .Summary }}
+        {{ end }}
+      </div>
+    </section>
+  {{ end }}
+
+  {{ if gt $paginator.TotalPages 1 }}
+    <div class="pagination">
+      {{ if $paginator.HasPrev }}<a class="pre" href="{{ $paginator.Prev.URL }}">Previous</a>{{ end }}
+      {{ range $p := $paginator.Pagers }}
+        <a href="{{ $p.URL }}">{{ $p.PageNumber }}</a>
+      {{ end }}
+      {{ if $paginator.HasNext }}<a class="next" href="{{ $paginator.Next.URL }}">Next</a>{{ end }}
+    </div>
+  {{ end }}
+</div>
+{{ end }}

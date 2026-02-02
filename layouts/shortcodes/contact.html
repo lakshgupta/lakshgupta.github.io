@@ -1,0 +1,13 @@
+{{ if .Site.Params.email }}
+<p>Email: <a href="mailto:{{ .Site.Params.email }}">{{ .Site.Params.email }}</a></p>
+{{ end }}
+{{ if .Site.Params.twitter }}
+  {{ $tw := replaceRE "^@" "" .Site.Params.twitter }}
+<p>Twitter: <a href="https://twitter.com/{{ $tw }}">@{{ $tw }}</a></p>
+{{ end }}
+{{ if .Site.Params.linkedin }}
+<p>LinkedIn: <a href="{{ .Site.Params.linkedin }}" target="_blank" rel="noopener">LinkedIn profile</a></p>
+{{ end }}
+{{ if not (or .Site.Params.email .Site.Params.twitter .Site.Params.linkedin) }}
+<p>Please set <code>params.email</code>, <code>params.twitter</code>, or <code>params.linkedin</code> in <code>config.yaml</code> to expose contact methods on this page.</p>
+{{ end }}
