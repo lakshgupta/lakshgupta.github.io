@@ -3,6 +3,15 @@ function selfOrDefault(x, deflt) {
     return (typeof x !== "undefined") ? x : deflt;
 }
 
+// Small helper to fill in default args for canvas helpers.
+function parseArgs(args, deflt) {
+    args = selfOrDefault(args, {});
+    for (var index in deflt) {
+        args[index] = selfOrDefault(args[index], deflt[index]);
+    }
+    return args;
+}
+
 CanvasRenderingContext2D.prototype.clear = function() {
     // Clear the canvas corresponding to this context
     this.canvas.width = this.canvas.width;
